@@ -31,3 +31,9 @@
 
 en:
   hello: "Hello world"
+
+  tickets:
+    success:
+      create: "Ticket created successfully"
+    error:
+      create: "Unable to create ticket"
