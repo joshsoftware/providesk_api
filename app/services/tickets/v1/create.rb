@@ -9,10 +9,10 @@ module Tickets::V1
     end
 
     def call
-      save
+      save_ticket
     end
 
-    def save
+    def save_ticket
       @ticket = Ticket.create!(title: title, description: description)
       return true if ticket
 
