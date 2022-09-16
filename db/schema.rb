@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_16_181534) do
+
+ActiveRecord::Schema.define(version: 2022_09_16_185458) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "activities", force: :cascade do |t|
+    t.string "assigned_from", null: false
+    t.string "assigned_to", null: false
+    t.string "description"
+    t.string "asset_url"
+    t.integer "current_ticket_status", default: 0
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
 
   create_table "categories", force: :cascade do |t|
     t.string "name", null: false
@@ -68,6 +79,8 @@ ActiveRecord::Schema.define(version: 2022_09_16_181534) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "role_id"
     t.bigint "organization_id"
+    t.bigint "departments_id"
+    t.index ["departments_id"], name: "index_users_on_departments_id"
     t.index ["organization_id"], name: "index_users_on_organization_id"
     t.index ["role_id"], name: "index_users_on_role_id"
   end
@@ -76,6 +89,7 @@ ActiveRecord::Schema.define(version: 2022_09_16_181534) do
   add_foreign_key "tickets", "departments"
   add_foreign_key "tickets", "users", column: "requester_id"
   add_foreign_key "tickets", "users", column: "resolver_id"
+  add_foreign_key "users", "departments", column: "departments_id"
   add_foreign_key "users", "organizations"
   add_foreign_key "users", "roles"
 end
