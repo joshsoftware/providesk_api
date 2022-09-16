@@ -9,7 +9,6 @@ resource 'Ticket Details' do
   let!(:ticket) { create(:ticket) }
 
   post '/tickets' do
-    
     describe '#create' do
       example 'Success - Ticket created successfully ' do
         do_request
