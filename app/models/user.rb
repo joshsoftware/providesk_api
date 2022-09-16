@@ -7,8 +7,11 @@ class User < ApplicationRecord
   
   before_validation(on: :create) do
     domain = email.split('@')[1]
-    self.role_id = role_id || 1
+    self.role_id = role_id || Role.find_by(name: 'employee').id
     self.organization_id = get_organization(domain)
+    if self.organization_id.nil?
+      self.errors.add :organization, "not found"
+    end
   end
 
   def get_organization(organization_domain)
