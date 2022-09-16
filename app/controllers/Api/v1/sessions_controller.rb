@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Api::V1
   class SessionsController < BaseController
     skip_before_action :authenticate!
@@ -22,7 +21,6 @@ module Api::V1
     end
 
     private
-
     def permitted_params
       params.require(:user).permit(:email, :name, :google_user_id)
     end
