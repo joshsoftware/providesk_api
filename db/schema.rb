@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_16_200705) do
+ActiveRecord::Schema.define(version: 2022_09_16_202136) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,8 +60,8 @@ ActiveRecord::Schema.define(version: 2022_09_16_200705) do
     t.text "description"
     t.string "ticket_number"
     t.integer "status", default: 0
-    t.integer "priority", default: 0
-    t.integer "type"
+    t.integer "priority", default: 1
+    t.integer "ticket_type"
     t.datetime "resolved_at"
     t.bigint "resolver_id"
     t.bigint "requester_id"
@@ -88,13 +88,12 @@ ActiveRecord::Schema.define(version: 2022_09_16_200705) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
+  add_foreign_key "categories", "departments"
+  add_foreign_key "departments", "organizations"
   add_foreign_key "tickets", "categories"
   add_foreign_key "tickets", "departments"
   add_foreign_key "tickets", "users", column: "requester_id"
   add_foreign_key "tickets", "users", column: "resolver_id"
-  add_foreign_key "users", "departments", column: "departments_id"
-  add_foreign_key "categories", "departments"
-  add_foreign_key "departments", "organizations"
   add_foreign_key "users", "departments"
   add_foreign_key "users", "organizations"
   add_foreign_key "users", "roles"
