@@ -1,4 +1,6 @@
 class Ticket < ApplicationRecord
+  has_many :activities
+  
   enum status: {
     "assigned": 0,
     "inprogress": 1,
