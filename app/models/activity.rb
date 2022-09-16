@@ -1,4 +1,5 @@
 class Activity < ApplicationRecord
+  belongs_to :ticket
 
   enum current_status: {
     "assigned": 0,
