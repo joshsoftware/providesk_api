@@ -14,7 +14,7 @@ class Ticket < ApplicationRecord
     "low": 3
   }
 
-  enum type: {
+  enum ticket_type: {
     "complaint": 0,
     "request": 1
   }
