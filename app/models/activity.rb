@@ -1,6 +1,6 @@
 class Activity < ApplicationRecord
-  
-  enum :current_status {
+
+  enum current_status: {
     "assigned": 0,
     "inprogress": 1,
     "resolved": 2,
