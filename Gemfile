@@ -26,9 +26,17 @@ gem 'bootsnap', '>= 1.4.4', require: false
 gem 'rack-cors'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 6.0.0.rc1'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+
+  #rspec-rails is a testing framework for Rails
+  gem 'rspec-rails', '~> 6.0.0.rc1'
+  # factory_bot_rails provides integration between factory_bot and rails 4.2 or newer
+  gem 'factory_bot_rails', '~> 6.2'
+
+  # Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.
+  gem 'faker', '~> 2.23'
+  gem 'rspec_api_documentation'
 end
 
 group :development do
