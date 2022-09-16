@@ -12,10 +12,12 @@ module Departments::V1
     end
 
     def save_department
-      @department = Department.create!(name: name)
-      return department.id.to_s if department
-
-      false
+      @department = Department.new(name: name)
+      if @department.save
+        { status: true }.as_json
+      else
+        { status: false, error_message: @department.errors.full_messages.join(", ") }.as_json
+      end
     end
   end
 end

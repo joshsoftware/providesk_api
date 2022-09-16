@@ -5,10 +5,10 @@ module Api::V1
     def create
       if params[:name].present?
         result = Departments::V1::Create.new(params).call
-        if result.present?
+        if result["status"]
           render json: { message: I18n.t('department.success.create') }
         else
-          render json: { message: I18n.t('department.error.create')}, status: :unprocessable_entity
+          render json: { message: result["error_message"] } , status: :unprocessable_entity
         end
       else
         render json: { message: I18n.t('department.invalid_params')}, status: :unprocessable_entity
