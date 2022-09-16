@@ -1,6 +1,8 @@
 class Ticket < ApplicationRecord
   has_many :activities
   
+  validates_assocaited :activities
+
   enum status: {
     "assigned": 0,
     "inprogress": 1,
@@ -20,6 +22,10 @@ class Ticket < ApplicationRecord
     "complaint": 0,
     "request": 1
   }
+
+  validates :title, presence: true
+  validates :description, presence: true
+  validates :ticket_type, presence: true
 
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
   belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
