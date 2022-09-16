@@ -16,5 +16,15 @@ resource 'Departments' do
         expect(response_data["message"]).to eq(I18n.t('department.success.create'))
       end
     end
+
+    context '422' do
+      example 'Unable to create department due to invalid params' do
+        request = {}
+        do_request(request)
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('department.invalid_params'))
+      end
+    end
   end
 end
