@@ -172,9 +172,16 @@ GEM
     thor (1.2.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    versionist (2.0.1)
+      activesupport (>= 3)
+      railties (>= 3)
+      yard (~> 0.9.20)
+    webrick (1.7.0)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
+    yard (0.9.28)
+      webrick (~> 1.7.0)
     zeitwerk (2.6.0)
 
 PLATFORMS
@@ -194,6 +201,7 @@ DEPENDENCIES
   rspec_api_documentation
   spring
   tzinfo-data
+  versionist
 
 RUBY VERSION
    ruby 3.0.0p0
