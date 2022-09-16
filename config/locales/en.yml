@@ -30,4 +30,9 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  session:
+    expired: "The session has expired."
+    invalid: "Token is invalid"
+  login:
+    success: "Logged in successfully"
+    failure: "Invalid Credentials"
