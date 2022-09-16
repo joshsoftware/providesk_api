@@ -31,3 +31,9 @@
 
 en:
   hello: "Hello world"
+
+  department:
+    success:
+      create: "Department created successfully"
+    error:
+      create: "Unable to create department"
