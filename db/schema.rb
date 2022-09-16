@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2022_09_16_185458) do
+ActiveRecord::Schema.define(version: 2022_09_16_194429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,8 +55,8 @@ ActiveRecord::Schema.define(version: 2022_09_16_185458) do
     t.string "title"
     t.text "description"
     t.string "ticket_number"
-    t.integer "status"
-    t.integer "priority"
+    t.integer "status", default: 0
+    t.integer "priority", default: 0
     t.integer "type"
     t.datetime "resolved_at"
     t.bigint "resolver_id"
