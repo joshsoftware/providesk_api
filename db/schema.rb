@@ -10,17 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-<<<<<<< HEAD
-ActiveRecord::Schema.define(version: 0) do
-=======
-ActiveRecord::Schema.define(version: 2022_09_16_143643) do
->>>>>>> e96d78a4992489b85a121e6bafaf03121eddd8ad
+ActiveRecord::Schema.define(version: 2022_09_16_162515) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-<<<<<<< HEAD
-=======
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
     t.string "domain", default: [], array: true
@@ -34,5 +28,18 @@ ActiveRecord::Schema.define(version: 2022_09_16_143643) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
->>>>>>> e96d78a4992489b85a121e6bafaf03121eddd8ad
+  create_table "users", force: :cascade do |t|
+    t.string "name", null: false
+    t.string "email", null: false
+    t.string "jwt_token", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "roles_id"
+    t.bigint "organizations_id"
+    t.index ["organizations_id"], name: "index_users_on_organizations_id"
+    t.index ["roles_id"], name: "index_users_on_roles_id"
+  end
+
+  add_foreign_key "users", "organizations", column: "organizations_id"
+  add_foreign_key "users", "roles", column: "roles_id"
 end
