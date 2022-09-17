@@ -13,6 +13,7 @@ class ApplicationController < ActionController::API
       token = request.headers['Authorization']
       @payload = JsonWebToken.decode(token)
       return token_invalid unless JsonWebToken.valid_payload(@payload)
+      true
     else
       render_json(message: I18n.t('session.invalid'), status_code: :unauthorized)
     end
