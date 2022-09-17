@@ -3,9 +3,9 @@ require 'rspec_api_documentation/dsl'
 
 resource "Sessions" do
   before do
-    FactoryBot.create(:role, name: 'employee')
-    FactoryBot.create(:role, name: 'admin')
-    FactoryBot.create(:role, name: 'super_admin')
+    @employee = FactoryBot.create(:role, name: 'employee')
+    @admin = FactoryBot.create(:role, name: 'admin')
+    @super_admin = FactoryBot.create(:role, name: 'super_admin')
   end
 
   post "/sessions" do
@@ -14,8 +14,8 @@ resource "Sessions" do
     parameter :google_user_id, "google_user_id of user"
     context '200' do
       before do 
-        FactoryBot.create(:organization, name: 'Josh', domain: ["josh.com"])
-        @user1 = FactoryBot.create(:user, name: 'Aditya', email: "user1@josh.com")
+        organization = FactoryBot.create(:organization, name: 'Josh', domain: ["josh.com"])
+        @user1 = FactoryBot.create(:user, name: 'Aditya', email: "user1@josh.com", role_id: nil, organization_id: nil)
         header "Accept", "application/vnd.providesk; version=1"
       end
       example "Creating new user" do
