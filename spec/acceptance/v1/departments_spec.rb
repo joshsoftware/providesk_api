@@ -12,7 +12,7 @@ resource 'Departments' do
   post '/departments' do
     context '200' do
       example 'Create a department successfully ' do
-        request = { name: "Varun" , organization_id: @org.id }
+        request = { name: Faker::Name.name , organization_id: @org.id }
         do_request(request)
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
@@ -31,10 +31,11 @@ resource 'Departments' do
 
 
       example 'Unable to create department as department already exisits' do
-        request = { name: "My Dept" , organization_id: @org.id }
+        dept_name = "My Dept"
+        request = { name: dept_name , organization_id: @org.id }
         do_request(request)
 
-        new_request = { name: "My Dept" , organization_id: @org.id }
+        new_request = { name: dept_name , organization_id: @org.id }
         do_request(new_request)
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
