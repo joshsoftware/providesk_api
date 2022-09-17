@@ -9,12 +9,13 @@ module Categories::V1
     end
 
     def call
-      check_existing_category_name && save_category
+      byebug
+      not_exits = !check_existing_category_name && save_category
+      not_exits ? { status: true } : { status: false } 
     end
 
     def check_existing_category_name
-      return { status: false } if Category.find_by(name: @name)
-      true
+      Category.find_by(name: @name)
     end
 
     def save_category
