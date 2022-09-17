@@ -1,6 +1,15 @@
 class Ticket < ApplicationRecord
   has_many :activities
-  
+  belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
+  belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
+  belongs_to :department
+  belongs_to :category
+
+  validates_assocaited :activities
+  validates :title, presence: true
+  validates :description, presence: true
+  validates :ticket_type, presence: true
+
   enum status: {
     "assigned": 0,
     "inprogress": 1,
@@ -20,9 +29,5 @@ class Ticket < ApplicationRecord
     "complaint": 0,
     "request": 1
   }
-
-  belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
-  belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
-  belongs_to :department
-  belongs_to :category
+  
 end
