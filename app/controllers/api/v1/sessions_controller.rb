@@ -15,7 +15,7 @@ module Api::V1
           message: I18n.t('login.success'),
           data: { 
             auth_token: token,
-            role_id: @user.role_id 
+            role: @user.role.name
           }
       }, status: :ok
     end

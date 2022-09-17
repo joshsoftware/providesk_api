@@ -16,7 +16,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       post :create, params: params, as: :json
       expect(response).to be_successful
       expect(JSON.parse(response.body)['message']).to eq(I18n.t('login.success'))
-      expect(JSON.parse(response.body)['data'].keys).to eq(['auth_token', 'role_id'])
+      expect(JSON.parse(response.body)['data'].keys).to eq(['auth_token', 'role'])
     end
 
     it "existing user sign in" do
@@ -26,7 +26,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
       post :create, params: params, as: :json
       expect(response).to be_successful
       expect(JSON.parse(response.body)['message']).to eq(I18n.t('login.success'))
-      expect(JSON.parse(response.body)['data'].keys).to eq(['auth_token', 'role_id'])
+      expect(JSON.parse(response.body)['data'].keys).to eq(['auth_token', 'role'])
     end
 
     it 'should raise error if Organization id missing for auto generated role i.e employee' do
