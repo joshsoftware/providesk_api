@@ -10,7 +10,7 @@ resource 'Tickets' do
 	let!(:category) { FactoryBot.create(:category, name: "Hardware", priority: 0, department_id: department.id)}
 	let!(:role) { FactoryBot.create(:role, name: 'super_admin')}
 	let!(:role1) { FactoryBot.create(:role, name: 'employee')}
-	let(:user) { FactoryBot.create(:user, role_id: role.id) }
+	let(:user) { FactoryBot.create(:user, role_id: role.id, department_id: department.id) }
 	let(:user1) { FactoryBot.create(:user, role_id: role.id) }
 
   post '/tickets' do
