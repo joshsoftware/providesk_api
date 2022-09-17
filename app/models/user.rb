@@ -6,9 +6,8 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email,presence: true, uniqueness: true
-  validates_assocaited :tickets
+  validates_associated :tickets
 
-  validates :email, uniqueness: true
   before_validation(on: :create) do
     domain = email.split('@')[1]
     self.role_id = role_id || Role.find_by(name: 'employee').id
