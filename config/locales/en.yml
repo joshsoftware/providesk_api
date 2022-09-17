@@ -37,6 +37,12 @@ en:
     success: "Logged in successfully"
     failure: "Invalid Credentials"
 
+  categories:
+    success:
+      create: "Categories created successfully"
+    error:
+      create: "Unable to create categories"
+  
   tickets:
     success:
       create: "Ticket created successfully"
