@@ -30,6 +30,12 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
+  session:
+    expired: "The session has expired."
+    invalid: "Token is invalid"
+  login:
+    success: "Logged in successfully"
+    failure: "Invalid Credentials"
   hello: "Hello world"
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"

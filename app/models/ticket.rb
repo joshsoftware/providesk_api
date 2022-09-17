@@ -7,7 +7,7 @@ class Ticket < ApplicationRecord
   belongs_to :department
   belongs_to :category
 
-  validates_assocaited :activities
+  validates_associated :activities
   validates :title, presence: true
   validates :description, presence: true
   validates :ticket_type, presence: true
