@@ -1,6 +1,8 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    aasm (5.3.0)
+      concurrent-ruby (~> 1.0)
     actioncable (6.1.7)
       actionpack (= 6.1.7)
       activesupport (= 6.1.7)
@@ -60,6 +62,8 @@ GEM
       minitest (>= 5.1)
       tzinfo (~> 2.0)
       zeitwerk (~> 2.3)
+    addressable (2.8.1)
+      public_suffix (>= 2.0.2, < 6.0)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -80,6 +84,10 @@ GEM
       activesupport (>= 5.0)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    launchy (2.5.0)
+      addressable (~> 2.7)
+    letter_opener (1.8.1)
+      launchy (>= 2.2, < 3)
     listen (3.7.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -98,6 +106,7 @@ GEM
     nokogiri (1.13.8-x86_64-linux)
       racc (~> 1.4)
     pg (1.4.3)
+    public_suffix (5.0.0)
     puma (5.6.5)
       nio4r (~> 2.0)
     racc (1.6.0)
@@ -188,10 +197,12 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  aasm (~> 5.3)
   bootsnap (>= 1.4.4)
   byebug
   factory_bot_rails (~> 6.2)
   faker (~> 2.23)
+  letter_opener (~> 1.8, >= 1.8.1)
   listen (~> 3.3)
   pg (~> 1.1)
   puma (~> 5.0)
