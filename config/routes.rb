@@ -5,6 +5,11 @@ Rails.application.routes.draw do
       resources :tickets, only: [:create]
       resources :sessions, only: :create
       resources :departments, only: :create
+      resources :organizations, only: :show do
+        resources :departments, only: :show do
+          get '/categories', to: 'departments#show_categories'
+        end
+      end
       get '/organizations/:id/departments', to: 'organizations#show_departments' 
   end
 end
