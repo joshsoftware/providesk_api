@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :user do
     name { "XYZ" }
-    email { 'xyz@gmail.com' }
+    email { Faker::Internet.email }
     role_id { create(:role, name: 'admin').id }
-    organization_id { create(:organization, name: 'GMAIL', domain: ['gmail.com']) }
+    organization_id { create(:organization, name: Faker::Name.name, domain: [email.split('@')[1]]) }
   end
 end
