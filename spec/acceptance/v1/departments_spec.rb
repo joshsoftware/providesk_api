@@ -4,12 +4,15 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource 'Departments' do
-  header 'Accept', 'application/vnd.providesk; version=1'
+  before do
+    login_user
+  end
+
 
   post '/departments' do
     context '200' do
       example 'Create a department successfully ' do
-        request = { name: "Varun" }
+        request = { name: "Varun" , organization_id: @org.id }
         do_request(request)
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
@@ -28,10 +31,10 @@ resource 'Departments' do
 
 
       example 'Unable to create department as department already exisits' do
-        request = { name: "My Dept" }
+        request = { name: "My Dept" , organization_id: @org.id }
         do_request(request)
 
-        new_request = { name: "My Dept" }
+        new_request = { name: "My Dept" , organization_id: @org.id }
         do_request(new_request)
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)

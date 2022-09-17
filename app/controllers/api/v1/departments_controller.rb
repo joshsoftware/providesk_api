@@ -3,8 +3,8 @@
 module Api::V1
   class DepartmentsController < ApplicationController
     def create
-      if params[:name].present?
-        result = Departments::V1::Create.new(params).call
+      if params[:name].present? && params[:organization_id].present?
+        result = Departments::V1::Create.new(params, current_user).call
         if result["status"]
           render json: { message: I18n.t('department.success.create') }
         else

@@ -1,10 +1,9 @@
 module Departments::V1
   class Create
-    attr_accessor :name, :department
-
-    def initialize(params)
-      @current_user = params[:current_user]
+    def initialize(params, current_user)
+      @current_user = current_user
       @name = params[:name]
+      @organization_id = params[:organization_id]
     end
 
     def call
@@ -12,7 +11,7 @@ module Departments::V1
     end
 
     def save_department
-      @department = Department.new(name: name)
+      @department = Department.new(name: @name, organization_id: @organization_id)
       if @department.save
         { status: true }.as_json
       else
