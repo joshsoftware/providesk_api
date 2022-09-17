@@ -4,12 +4,12 @@ module Tickets::V1
                   :current_user, :priority, :resolver_id, :requester_id, :ticket_type
 
     def initialize(params, user)
-      @current_user = user
-      @title = params[:title]
-      @description = params[:description]
-      @category_id = params[:category_id]
-      @department_id = params[:department_id]
-      @ticket_type = params[:ticket_type]
+      current_user = user
+      title = params[:title]
+      description = params[:description]
+      category_id = params[:category_id]
+      department_id = params[:department_id]
+      ticket_type = params[:ticket_type]
     end
 
     def call
