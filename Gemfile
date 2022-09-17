@@ -25,7 +25,12 @@ gem 'jwt'
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
 gem 'rack-cors'
+
+#Use versionist for handling headers based api versioning
 gem 'versionist'
+
+#Use aasm for state machine management
+gem 'aasm', '~> 5.3'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -39,6 +44,9 @@ group :development, :test do
   # Faker, a port of Data::Faker from Perl, is used to easily generate fake data: names, addresses, phone numbers, etc.
   gem 'faker', '~> 2.23'
   gem 'rspec_api_documentation'
+
+  #Use letter Opener to test the mailers
+  gem 'letter_opener', '~> 1.8', '>= 1.8.1'
 end
 
 group :development do
