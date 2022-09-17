@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 module Api::V1
-  class SessionsController < BaseController
+  class SessionsController < ApplicationController
     skip_before_action :authenticate!
     before_action :find_or_create_user, only: [:create]
 
