@@ -12,6 +12,8 @@ class Ticket < ApplicationRecord
   validates :description, presence: true
   validates :ticket_type, presence: true
 
+  after_save :create_activity
+
   enum status: {
     "assigned": 0,
     "inprogress": 1,
@@ -46,15 +48,15 @@ class Ticket < ApplicationRecord
     end
 
     event :reject do
-      transitions from: :assigned, to: :rejected
+      transitions from: [:assigned, :inprogress], to: :rejected
     end
 
     event :resolve do
-      transitions from: :inprogress, to: :resolved
+      transitions from: [:assigned, :inprogress], to: :resolved
     end
 
     event :close do
-      transitions from: :resolve, to: :closed
+      transitions from: [:assigned, :inprogress, :resolve], to: :closed
     end
   end
 
@@ -67,5 +69,31 @@ class Ticket < ApplicationRecord
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
+  end
+
+  def set_status(update_params[:status])
+    status = update_params[:status]
+    case status
+    when 'inprogress'
+      self.start!
+    when 'resolved'
+      self.resolve!
+    when 'closed'
+      self.close!
+    when 'rejected'
+      self.reject!
+    end
+  end
+
+  def create_activity
+    activity_attr = {current_ticket_status: status, ticket_id: id,
+                     description: I18n.t("ticket.#{status}"), ticket_type: ticket_type, resolver: resolver.name,
+                     requester: requester.name}
+    if self.resolver_changed?
+      activity_attr.merge!(assigned_from: self.resolver_was.id, assigned_to: self.resolver.id)
+    else
+      activity_attr.merge!(assigned_from: "", assigned_to: "")
+    end
+    Activity.create(activity_attr)
   end
 end
