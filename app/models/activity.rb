@@ -4,7 +4,7 @@ class Activity < ApplicationRecord
   validates :assigned_from, presence: true
   validates :assigned_to, presence: true
   validates :description, presence: true
-  validates :current_status, inclusion: { in: ["assigned", "inprogress", "resolved", "closed", "resolved"] }
+  validates :current_status, inclusion: { in: ["assigned", "inprogress", "resolved", "closed", "rejected"] }
 
   enum current_ticket_status: {
     "assigned": 0,
