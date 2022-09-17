@@ -31,7 +31,7 @@ RSpec.describe Api::V1::SessionsController, type: :controller do
 
     it 'should raise error if Organization id missing for auto generated role i.e employee' do
       @request.env["Accept"] = 'application/vnd.providesk; version=1'
-      params = { user: { email: 'abc@josh.com', name: 'Name' } }
+      params = { user: { email: 'abc@gmail.com', name: 'Name' } }
       post :create, params: params, as: :json
       expect(response.status).to eq(422)
       expect(JSON.parse(response.body)['errors']).to eq("Organization can't be blank")
