@@ -1,11 +1,16 @@
 class Ticket < ApplicationRecord
   include AASM
 
+  has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
   belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
   belongs_to :department
   belongs_to :category
-  has_many :activities
+
+  validates_assocaited :activities
+  validates :title, presence: true
+  validates :description, presence: true
+  validates :ticket_type, presence: true
 
   enum status: {
     "assigned": 0,
