@@ -42,7 +42,7 @@ en:
       create: "Department created successfully"
     error:
       create: "Unable to create department"
-    invalid_params: "Invalid params."
+      invalid_params: "Invalid params."
 
   tickets:
     success:
