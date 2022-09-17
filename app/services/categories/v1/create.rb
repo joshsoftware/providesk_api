@@ -9,7 +9,6 @@ module Categories::V1
     end
 
     def call
-      byebug
       not_exits = !check_existing_category_name && save_category
       not_exits ? { status: true } : { status: false } 
     end

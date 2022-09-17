@@ -2,7 +2,6 @@ module Api::V1
   class CategoriesController < ApplicationController
     def create
       result = Categories::V1::Create.new(categories_params, current_user).call
-      byebug
       if result[:status]
         render json: { message: I18n.t('categories.success.create') }
       else
