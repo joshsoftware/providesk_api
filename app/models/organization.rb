@@ -4,5 +4,5 @@ class Organization < ApplicationRecord
 
   validates_associated :departments
   validates_associated :users
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: true
 end
