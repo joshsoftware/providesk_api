@@ -3,7 +3,7 @@ require 'rspec_api_documentation/dsl'
 
 resource "Organizations" do
   let!(:organization) {FactoryBot.create(:organization, name: 'Josh4', domain: ["josh4.com"])}
-  get "/organizations/:id" do
+  get "/organizations/:id/departments" do
     context '200' do
       let(:id) { organization.id }
       before do 
