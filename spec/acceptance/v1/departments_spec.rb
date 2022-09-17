@@ -5,7 +5,12 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Departments' do
   before do
-    login_user
+    user = FactoryBot.create(:user)
+    @org = user.organization
+    payload = { user_id: user.id, name: user.name, email: user.email, google_user_id: 1 }
+    token = JsonWebToken.encode(payload)
+    header 'Accept', 'application/vnd.providesk; version=1'
+    header 'Authorization', token
   end
 
 
@@ -30,7 +35,7 @@ resource 'Departments' do
       end
 
 
-      example 'Unable to create department as department already exisits' do
+      example 'Fail to create a department with the same name' do
         dept_name = "My Dept"
         request = { name: dept_name , organization_id: @org.id }
         do_request(request)
