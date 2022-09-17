@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     name: "Accept", :value => "application/vnd.providesk; version=1"}) do
       resources :tickets, only: [:create]
       resources :sessions, only: :create
+      resources :departments, only: :create
       get '/organizations/:id/departments', to: 'organizations#show_departments' 
   end
 end
