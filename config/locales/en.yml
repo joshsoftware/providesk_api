@@ -42,6 +42,7 @@ en:
       create: "Ticket created successfully"
     error:
       create: "Unable to create ticket"
+      show: "Ticket not found"
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"
     inprogress: "The work has been started on the %{ticket_type}"

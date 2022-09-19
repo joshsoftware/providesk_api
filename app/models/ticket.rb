@@ -68,4 +68,12 @@ class Ticket < ApplicationRecord
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
   end
+
+  def department_name
+    self&.department&.name
+  end
+
+  def category_name
+    self&.category&.name
+  end
 end
