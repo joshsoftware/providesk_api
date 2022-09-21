@@ -2,17 +2,18 @@ require 'rails_helper'
 require 'rspec_api_documentation/dsl'
 
 resource "Organizations" do
-  let!(:organization) {FactoryBot.create(:organization, name: 'Josh4', domain: ["josh4.com"])}
+  before do
+    @user = FactoryBot.create(:user)
+    @department = Department.find(@user.department_id)
+    @organization = Organization.find(@user.organization_id)
+  end
   get "/organizations/:id/departments" do
     context '200' do
-      let(:id) { organization.id }
-      before do 
-        @department = FactoryBot.create(:department, name: 'TAD', organization_id: organization.id)
-        employee = FactoryBot.create(:role, name: 'employee')
-        user = FactoryBot.create(:user, name: Faker::Name.name, email: "user3@josh4.com", role_id: nil, organization_id: nil)
-        payload = { user_id: user.id,
-          name: user.name,
-          email: user.email,
+      let(:id) { @organization.id }
+      before do         
+        payload = { user_id: @user.id,
+          name: @user.name,
+          email: @user.email,
           google_user_id: 1
         }
         token = JsonWebToken.encode(payload)
@@ -38,14 +39,12 @@ resource "Organizations" do
       end
     end
     context '403' do
-      let(:id) { organization.id }
+      let(:id) { @organization1.id }
       before do 
-        organization1 = FactoryBot.create(:organization, name: 'Josh3', domain: ["josh3.com"])
-        employee = FactoryBot.create(:role, name: 'employee')
-        user = FactoryBot.create(:user, name: Faker::Name.name, email: "user3@josh3.com", role_id: nil, organization_id: nil)
-        payload = { user_id: user.id,
-          name: user.name,
-          email: user.email,
+        @organization1 = FactoryBot.create(:organization, name: 'Josh3', domain: ["josh3.com"])
+        payload = { user_id: @user.id,
+          name: @user.name,
+          email: @user.email,
           google_user_id: 2
         }
         token = JsonWebToken.encode(payload)

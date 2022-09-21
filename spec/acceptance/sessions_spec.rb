@@ -4,8 +4,11 @@ require 'rspec_api_documentation/dsl'
 resource "Sessions" do
   before do
     @employee = FactoryBot.create(:role, name: 'employee')
-    @admin = FactoryBot.create(:role, name: 'admin')
     @super_admin = FactoryBot.create(:role, name: 'super_admin')
+    @user = FactoryBot.create(:user)
+    @department = Department.find(@user.department_id)
+    @organization = Organization.find(@user.organization_id)
+    @domain = @user.email.split('@')[1]
   end
 
   post "/sessions" do
@@ -14,14 +17,12 @@ resource "Sessions" do
     parameter :google_user_id, "google_user_id of user"
     context '200' do
       before do 
-        organization = FactoryBot.create(:organization, name: 'Josh', domain: ["josh.com"])
-        @user1 = FactoryBot.create(:user, name: 'Aditya', email: "user1@josh.com", role_id: nil, organization_id: nil)
         header "Accept", "application/vnd.providesk; version=1"
       end
       example "Creating new user" do
         request = {
           user: {
-            email: "ad@josh.com",
+            email: "aditya@"+@domain,
             name: "Aditya",
             google_user_id: 1
           }
@@ -32,8 +33,8 @@ resource "Sessions" do
       example "Login existing user" do
         request = {
           user: {
-            email: "user1@josh.com",
-            name: "Aditya",
+            email: @user.email,
+            name: @user.name,
             google_user_id: 2
           }
         }
@@ -43,7 +44,6 @@ resource "Sessions" do
     end
     context '422' do
       before do 
-        FactoryBot.create(:organization, name: 'Josh', domain: ["josh.com"])
         header "Accept", "application/vnd.providesk; version=1"
       end
       example "User email does not belong to domain" do
@@ -60,7 +60,6 @@ resource "Sessions" do
     end
     context '422' do
       before do 
-        FactoryBot.create(:organization, name: 'Josh')
         header "Accept", "application/vnd.providesk; version=1"
       end
       example "Domain of company not added" do
