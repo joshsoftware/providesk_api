@@ -14,5 +14,31 @@ module Api::V1
         render json: { message: I18n.t('department.invalid_params')}, status: :unprocessable_entity
       end
     end
+    def show_users
+      department = Department.where(id: params[:department_id]).last
+      render json: { message: "Department not found"}, status: :unprocessable_entity and return if department.nil?
+      if(current_user.organization_id.eql?(department.organization_id))
+        users = User.where(department_id: department.id)
+        users_list = []
+        users.each do |user|
+          users_list.push(
+            {
+              name: user.name,
+              id: user.id
+            }
+          )
+        end
+        render json:{
+          data:{
+            total: users_list.length,
+            users: users_list
+          }
+        }
+      else
+        render json:{
+          message: "User not registered to organization"
+        }, status: 403
+      end
+    end
   end
 end

@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       resources :sessions, only: :create
       resources :categories, only: :create
       resources :departments, only: :create
+      resources :departments, only: :show do
+        get '/users', to: 'departments#show_users'
+      end
       get '/organizations/:id/departments', to: 'organizations#show_departments' 
   end
 end
