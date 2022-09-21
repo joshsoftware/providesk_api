@@ -16,31 +16,25 @@ module Api::V1
     end
 
     def show_categories
-      if(current_user.organization_id.eql?(params[:organization_id].to_i))
-        department = Department.where(id: params[:department_id]).last
-        render json: { message: "Department not found"}, status: :unprocessable_entity and return if department.nil?
-        if(department.organization_id.eql?(params[:organization_id].to_i))
-          categories = Category.where(department_id: params[:department_id].to_i)
-          categories_list = []
-          categories.each do |category|
-            categories_list.push(
-              {
-                name: category.name,
-                id: category.id
-              }
-            )     
-          end
-          render json:{
-            data: {
-              total: categories_list.length,
-              categories: categories_list
+      department = Department.where(id: params[:department_id]).last
+      render json: { message: "Department not found"}, status: :unprocessable_entity and return if department.nil?
+      if(department.organization_id.eql?(current_user.organization_id))
+        categories = Category.where(department_id: department.id)
+        categories_list = []
+        categories.each do |category|
+          categories_list.push(
+            {
+              name: category.name,
+              id: category.id
             }
-          }
-        else
-          render json:{
-            message: "Entered organization does not have specified department"
-          }, status: 400
+          )     
         end
+        render json:{
+          data: {
+            total: categories_list.length,
+            categories: categories_list
+          }
+        }
       else
         render json:{
           message: "User not registered to organization"
