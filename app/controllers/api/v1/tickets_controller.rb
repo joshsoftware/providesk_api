@@ -10,5 +10,10 @@ module Api::V1
         render json: { message: I18n.t('tickets.error.create') }, status: :unprocessable_entity
       end
     end
+
+    def index
+      result = Tickets::V1::Index.new(params).call
+      render json: result
+    end
   end
 end

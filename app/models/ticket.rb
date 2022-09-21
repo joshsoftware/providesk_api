@@ -58,6 +58,8 @@ class Ticket < ApplicationRecord
     end
   end
 
+  scope :of_status, ->(status) { where(status: status) }
+
   def add_activity
     Activity.create( assigned_from: "", assigned_to: "", current_ticket_status: status, ticket_id: id, 
                      description: I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
@@ -67,5 +69,24 @@ class Ticket < ApplicationRecord
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
+  end
+
+  def listing_data_attributes
+    self.as_json(
+      only: [:id, :status, :title, :description, :ticket_number, :ticket_type, :priority, :created_at, :resolved_at],
+      methods: [:department_name, :category_name, :resolver_name]
+    )
+  end
+
+  def department_name
+    self&.department&.name
+  end
+
+  def category_name
+    self&.category&.name
+  end
+
+  def resolver_name
+    self&.resolver&.name
   end
 end
