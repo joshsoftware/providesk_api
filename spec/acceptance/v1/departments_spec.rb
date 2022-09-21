@@ -5,14 +5,16 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Departments' do
   before do
-    user = FactoryBot.create(:user)
-    @org = user.organization
-    payload = { user_id: user.id, name: user.name, email: user.email, google_user_id: 1 }
+    @user = FactoryBot.create(:user)
+    @org = @user.organization
+    @department = FactoryBot.create(:department, name: 'TAD', organization_id: @org.id)
+    @some_other_organization = FactoryBot.create(:organization, name: "SomeOther", domain: "someother.com")
+    @some_other_department = FactoryBot.create(:department, name: 'TAD', organization_id: @some_other_organization.id)
+    payload = { user_id: @user.id, name: @user.name, email: @user.email, google_user_id: 1 }
     token = JsonWebToken.encode(payload)
     header 'Accept', 'application/vnd.providesk; version=1'
     header 'Authorization', token
   end
-
 
   post '/departments' do
     context '200' do
@@ -45,6 +47,57 @@ resource 'Departments' do
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
         expect(response_data["message"]).to eq("Name has already been taken")
+      end
+    end
+  end
+  get 'departments/:department_id/users' do
+    context '200' do
+      let!(:department_id){ @user.department_id }
+      before do
+        @category = FactoryBot.create(:category, name: 'TAD1', priority:1, department_id: @department.id)
+      end
+      example 'List users of department successfully' do
+        expected_response = {
+          data:{
+            total: 1,
+            users: [
+              {
+                name: @user.name,
+                id: @user.id
+              }
+            ]
+          }
+        }.to_json
+        do_request()
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        response_body.should eq(expected_response)
+      end
+    end
+    context '422' do
+      let!(:department_id){ 0 }
+
+      example 'Pass invalid department id which does not exist in database' do
+        expected_response = {
+          message: "Department not found"
+        }.to_json
+        do_request()
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        response_body.should eq(expected_response)
+      end
+    end
+    context '403' do
+      let!(:department_id){ @some_other_department.id }
+
+      example 'Pass invalid department id of organization to which user is not registered' do
+        expected_response = {
+          message: "User not registered to organization"
+        }.to_json
+        do_request()
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(403)
+        response_body.should eq(expected_response)
       end
     end
   end
