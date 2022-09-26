@@ -43,7 +43,10 @@ en:
     error:
       create: "Unable to create department"
       invalid_params: "Invalid params."
-
+      invalid_department_id: "Department not found"
+  organization:
+    error:
+      unauthorized_user: "User not registered to organization"
   categories:
     success:
       create: "Categories created successfully"
