@@ -20,7 +20,7 @@ class Api::V1::OrganizationsController < ApplicationController
       }, status: 200
     else
       render json:{
-        message: "User not registered to organization"
+        message: I18n.t('organization.error.unauthorized_user')
       }, status: 403
     end
   end
