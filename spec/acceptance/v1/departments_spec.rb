@@ -79,7 +79,7 @@ resource 'Departments' do
 
       example 'Pass invalid department id which does not exist in database' do
         expected_response = {
-          message: "Department not found"
+          message: I18n.t('department.error.invalid_department_id')
         }.to_json
         do_request()
         response_data = JSON.parse(response_body)
@@ -92,7 +92,7 @@ resource 'Departments' do
 
       example 'Pass invalid department id of organization to which user is not registered' do
         expected_response = {
-          message: "User not registered to organization"
+          message: I18n.t('organization.error.unauthorized_user')
         }.to_json
         do_request()
         response_data = JSON.parse(response_body)
