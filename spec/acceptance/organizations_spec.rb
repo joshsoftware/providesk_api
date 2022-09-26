@@ -55,7 +55,7 @@ resource "Organizations" do
       
       example "User does not have access rights to the content" do
         expected_response = {
-          message: "User not registered to organization"
+          message: I18n.t('organization.error.unauthorized_user')
         }.to_json
         do_request()
         expect(status).to eq 403
