@@ -47,6 +47,7 @@ en:
   organization:
     error:
       unauthorized_user: "User not registered to organization"
+      invalid_organization_id: "Organization not found"
   tickets:
     success:
       create: "Ticket created successfully"
