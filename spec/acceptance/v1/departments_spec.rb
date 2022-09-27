@@ -62,8 +62,8 @@ resource 'Departments' do
             total: 1,
             users: [
               {
-                name: @user.name,
-                id: @user.id
+                id: @user.id,
+                name: @user.name
               }
             ]
           }
