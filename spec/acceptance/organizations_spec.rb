@@ -27,8 +27,8 @@ resource "Organizations" do
             total: 1,
             departments:[
               {
-                name: @department.name,
-                id: @department.id
+                id: @department.id,
+                name: @department.name
               } 
             ]
           }
