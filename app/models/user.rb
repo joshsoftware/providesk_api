@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   validates :name, presence: true
   validates :email,presence: true, uniqueness: true
-  validates_associated :tickets
+  # validates_associated :tickets
 
   before_validation(on: :create) do
     domain = email.split('@')[1]
@@ -19,7 +19,7 @@ class User < ApplicationRecord
     id_to_domain_map.each do |id, domain|
       return id if domain.include?(organization_domain)
     end
-
+    
     if !Role.find(self.role_id).name.eql?('super_admin')
       self.errors.add :organization, "can't be blank"
     end
