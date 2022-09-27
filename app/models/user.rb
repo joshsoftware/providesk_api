@@ -8,10 +8,14 @@ class User < ApplicationRecord
   validates :email,presence: true, uniqueness: true
   # validates_associated :tickets
 
-  before_validation(on: :create) do
-    domain = email.split('@')[1]
-    self.role_id = role_id || Role.find_by(name: 'employee').id
-    self.organization_id = get_organization(domain)
+  before_validation :assign_ids, on: [:create, :update]
+
+  def assign_ids
+    if email
+      domain = email.split('@')[1]
+      self.role_id = role_id || Role.find_by(name: 'employee').id
+      self.organization_id = get_organization(domain)
+    end
   end
 
   def get_organization(organization_domain)
