@@ -14,30 +14,17 @@ module Api::V1
         render json: { message: I18n.t('department.invalid_params')}, status: :unprocessable_entity
       end
     end
+
     def show_users
-      department = Department.where(id: params[:department_id]).last
-      render json: { message: I18n.t('department.error.invalid_department_id')}, status: :unprocessable_entity and return if department.nil?
-      if(current_user.organization_id.eql?(department.organization_id))
-        users = User.where(department_id: department.id)
-        users_list = []
-        users.each do |user|
-          users_list.push(
-            {
-              name: user.name,
-              id: user.id
-            }
-          )
-        end
-        render json:{
-          data:{
-            total: users_list.length,
-            users: users_list
-          }
-        }
+      result = Departments::V1::ShowUsers.new(params, current_user).call
+      if result["status"]
+        render json: { data: result["data"] }
       else
-        render json:{
-          message: I18n.t('organization.error.unauthorized_user')
-        }, status: 403
+        if result["error"].eql?("No department found")
+          render json: {message: I18n.t('department.error.invalid_department_id')}, status: :unprocessable_entity
+        elsif result["error"].eql?("Unauthorized user")
+          render json:{ message: I18n.t('organization.error.unauthorized_user')}, status: 403
+        end
       end
     end
   end
