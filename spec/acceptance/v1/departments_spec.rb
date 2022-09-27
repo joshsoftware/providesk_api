@@ -64,8 +64,8 @@ resource 'Departments' do
             total: 1,
             categories: [
               {
-                name: @category.name,
-                id: @category.id
+                id: @category.id,
+                name: @category.name
               }
             ]
           }
