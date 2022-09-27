@@ -2,32 +2,29 @@ require 'rails_helper'
 
 RSpec.describe Role, type: :model do
   describe 'validations' do
-    context 'when name contains data' do
+    context 'valid role' do
       before do
-        @role = Role.create(name: 'Admin')
+        @role = Role.new(name: 'Admin')
       end
       it 'should validate data with no errors' do
         @role.save
         expect(@role.errors.full_messages).to be_empty
       end
     end
-    context 'when name does not contain data' do
+    context 'invalid role' do
       before do
-        @role = Role.create(name: '')
+        @role = Role.new(name: 'Admin')
+        @duplicate_role = Role.new(name: 'Admin')
       end
-      it 'should validate data errors' do
+      it 'should validate for empty role' do
+        @role.name = nil
         @role.save
         expect(@role.errors.full_messages).to eq(["Name can't be blank"])
       end
-    end
-    context 'when name is not unique' do
-      before do
-        @role1 = Role.create(name: 'Admin')
-        @role2 = Role.create(name: 'Admin')
-      end
-      it 'should validate data with errors' do
+      it 'should validate for duplicate role' do
         @role.save
-        expect(@role.errors.full_messages).to eq(['Name has already been taken'])
+        @duplicate_role.save
+        expect(@duplicate_role.errors.full_messages).to eq(['Name has already been taken'])
       end
     end
   end
