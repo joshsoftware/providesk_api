@@ -1,7 +1,7 @@
 module Api::V1
   class OrganizationsController < ApplicationController
-    def show_departments
-      result = Organizations::V1::ShowDepartments.new(params, current_user).call
+    def departments
+      result = Organizations::V1::Departments.new(params, current_user).call
       if result["status"]
         render json: { data: result["data"] }
       else

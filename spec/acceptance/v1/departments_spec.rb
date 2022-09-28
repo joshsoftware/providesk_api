@@ -16,7 +16,6 @@ resource 'Departments' do
     header 'Authorization', token
   end
 
-
   post '/departments' do
     context '200' do
       example 'Create a department successfully ' do
@@ -52,9 +51,9 @@ resource 'Departments' do
     end
   end
 
-  get 'departments/:department_id/categories' do
+  get 'departments/:id/categories' do
     context '200' do
-      let!(:department_id){ @department.id }
+      let!(:id){ @department.id }
       before do
         @category = FactoryBot.create(:category, name: 'TAD1', priority:1, department_id: @department.id)
       end
@@ -77,7 +76,7 @@ resource 'Departments' do
       end
     end
     context '422' do
-      let!(:department_id){ 0 }
+      let!(:id){ 0 }
 
       example 'Pass invalid department id which does not exist on database' do
         expected_response = {
@@ -90,7 +89,7 @@ resource 'Departments' do
       end
     end
     context '403' do
-      let!(:department_id){ @some_other_department.id }
+      let!(:id){ @some_other_department.id }
 
       example 'Pass invalid department id of wrong organization to which user is not registered' do
         expected_response = {

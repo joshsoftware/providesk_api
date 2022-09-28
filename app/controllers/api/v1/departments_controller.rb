@@ -15,8 +15,8 @@ module Api::V1
       end
     end
 
-    def show_categories
-      result = Departments::V1::ShowCategories.new(params, current_user).call
+    def categories
+      result = Departments::V1::Categories.new(params, current_user).call
       if result["status"]
         render json: { data: result["data"] }
       else
