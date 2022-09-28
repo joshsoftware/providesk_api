@@ -36,7 +36,6 @@ resource "Organizations" do
       before do 
         @organization1 = FactoryBot.create(:organization, name: 'Josh3', domain: ["josh3.com"])
       end
-      
       example "User does not have access rights to the content" do
         expected_response = {
           message: I18n.t('organization.error.unauthorized_user')
