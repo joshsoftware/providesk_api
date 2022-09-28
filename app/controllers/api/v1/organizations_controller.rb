@@ -1,27 +1,16 @@
-class Api::V1::OrganizationsController < ApplicationController
-  def show_departments
-    if(current_user.organization_id.eql?(params[:id].to_i))
-      organization = Organization.find(params[:id])
-      departments = Department.where(organization_id: organization.id)
-      departments_list = []
-      departments.each do |department|
-        departments_list.push(
-          {
-            name: department.name,
-            id: department.id
-          }
-        )
+module Api::V1
+  class OrganizationsController < ApplicationController
+    def departments
+      result = Organizations::V1::Departments.new(params, current_user).call
+      if result["status"]
+        render json: { data: result["data"] }
+      else
+        if result["error"].eql?("No organization found")
+          render json: {message: I18n.t('organization.error.invalid_organization_id')}, status: :unprocessable_entity
+        elsif result["error"].eql?("Unauthorized user")
+          render json:{ message: I18n.t('organization.error.unauthorized_user')}, status: 403
+        end
       end
-      render json:{
-        data: {
-          total: departments_list.length,
-          departments: departments_list
-        }
-      }, status: 200
-    else
-      render json:{
-        message: "User not registered to organization"
-      }, status: 403
     end
   end
 end
