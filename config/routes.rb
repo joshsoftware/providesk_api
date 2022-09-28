@@ -7,6 +7,15 @@ Rails.application.routes.draw do
       resources :categories, only: :create
       resources :departments, only: :create
       resources :users, only: [:create, :update, :destroy, :show]
-      get '/organizations/:id/departments', to: 'organizations#show_departments' 
+      resources :departments do
+        member do 
+          get 'categories'
+        end
+      end
+      resources :organizations do
+        member do 
+          get 'departments'
+        end
+      end
   end
 end
