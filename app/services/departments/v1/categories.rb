@@ -9,7 +9,7 @@ module Departments::V1
       return show_categories if department_exists?
       { 
         status: false,
-        error: "No department found" 
+        error: "no_department_found" 
       }.as_json
     end
 
@@ -32,7 +32,7 @@ module Departments::V1
       else
         { 
           status: false,
-          error: "Unauthorized user"
+          error: "unauthorized_user"
         }.as_json
       end
     end
