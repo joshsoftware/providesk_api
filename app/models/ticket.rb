@@ -11,7 +11,7 @@ class Ticket < ApplicationRecord
   validates :title, presence: true
   validates :description, presence: true
   validates :ticket_type, presence: true
-  validates :ticket_number, presence: true
+  #validates :ticket_number, presence: true
 
   enum status: {
     "assigned": 0,
