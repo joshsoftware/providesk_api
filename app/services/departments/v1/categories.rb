@@ -1,8 +1,8 @@
 module Departments::V1
-  class ShowCategories
+  class Categories
     def initialize(params, current_user)
       @current_user = current_user
-      @department_id= params[:department_id]
+      @department_id= params[:id]
     end
 
     def call

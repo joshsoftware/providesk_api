@@ -1,5 +1,5 @@
 module Organizations::V1
-  class ShowDepartments
+  class Departments
     def initialize(params, current_user)
       @current_user = current_user
       @organization_id= params[:id]
