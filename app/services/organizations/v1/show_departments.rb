@@ -9,7 +9,7 @@ module Organizations::V1
       return show_departments if organization_exists?
       { 
         status: false,
-        error: "No organization found" 
+        error: "no_organization_found" 
       }.as_json
     end
 
@@ -32,7 +32,7 @@ module Organizations::V1
       else
         { 
           status: false,
-          error: "Unauthorized user"
+          error: "unauthorized_user"
         }.as_json
       end
     end
