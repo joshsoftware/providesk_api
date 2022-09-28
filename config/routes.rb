@@ -10,6 +10,10 @@ Rails.application.routes.draw do
           get 'categories'
         end
       end
-      get '/organizations/:id/departments', to: 'organizations#show_departments' 
+      resources :organizations do
+        member do 
+          get 'departments'
+        end
+      end
   end
 end
