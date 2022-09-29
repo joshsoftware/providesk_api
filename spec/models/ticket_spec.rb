@@ -109,16 +109,30 @@ RSpec.describe Ticket, type: :model do
         @ticket.start
         expect(@ticket.status).to eq('inprogress')
       end
-      it 'validate with no errors for ticket from assiged to inprogress to resolved' do
+      it 'validate with no errors for ticket from inprogress to resolved' do
         @ticket.start
         @ticket.resolve
         expect(@ticket.status).to eq('resolved')
       end
-      it 'validate with no errors for ticket from assiged to inprogress to resolved to close' do
+      it 'validate with no errors for ticket from resolved to close' do
         @ticket.start
         @ticket.resolve
         @ticket.close
         expect(@ticket.status).to eq('closed')
+      end
+      it 'validate with no errors for ticket from assiged to for_approval' do
+        @ticket.approve
+        expect(@ticket.status).to eq('for_approval')
+      end
+      it 'validate with no errors for ticket from for_approval to inprogress' do
+        @ticket.approve
+        @ticket.start
+        expect(@ticket.status).to eq('inprogress')
+      end
+      it 'validate with no errors for ticket from for_approval to rejected' do
+        @ticket.approve
+        @ticket.reject
+        expect(@ticket.status).to eq('rejected')
       end
       it 'validate with no errors for ticket from assiged to rejected' do
         @ticket.reject
