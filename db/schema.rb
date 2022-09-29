@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_16_203859) do
+ActiveRecord::Schema.define(version: 2022_09_26_113643) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -75,6 +75,9 @@ ActiveRecord::Schema.define(version: 2022_09_16_203859) do
     t.index ["department_id"], name: "index_tickets_on_department_id"
     t.index ["requester_id"], name: "index_tickets_on_requester_id"
     t.index ["resolver_id"], name: "index_tickets_on_resolver_id"
+    t.check_constraint "priority = ANY (ARRAY[0, 1, 2, 3])", name: "priority_check"
+    t.check_constraint "status = ANY (ARRAY[0, 1, 2, 3, 4, 5])", name: "status_check"
+    t.check_constraint "ticket_type = ANY (ARRAY[0, 1])", name: "type_check"
   end
 
   create_table "users", force: :cascade do |t|
