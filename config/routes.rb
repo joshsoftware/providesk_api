@@ -8,12 +8,8 @@ Rails.application.routes.draw do
       resources :departments, only: :create
       resources :departments do
         member do 
-          get 'users'
-        end
-      end
-      resources :departments do
-        member do 
           get 'categories'
+          get 'users'
         end
       end
       resources :organizations do
