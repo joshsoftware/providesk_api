@@ -1,6 +1,8 @@
 class Ticket < ApplicationRecord
   include AASM
 
+  after_create :set_ticket_number
+
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
   belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
@@ -68,5 +70,12 @@ class Ticket < ApplicationRecord
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
+  end
+
+  def set_ticket_number
+    ticket_number_id = id
+    ticket_number = ticket_type + "-" + ticket_number_id.to_s
+    current_ticket = Ticket.find(id)
+    current_ticket.update(ticket_number: ticket_number)
   end
 end
