@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       resources :departments do
         member do 
           get 'categories'
+          get 'users'
         end
       end
       resources :organizations do
