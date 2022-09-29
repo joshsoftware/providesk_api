@@ -54,7 +54,7 @@ class Ticket < ApplicationRecord
     end
 
     event :close do
-      transitions from: :resolve, to: :closed
+      transitions from: :resolved, to: :closed
     end
   end
 
