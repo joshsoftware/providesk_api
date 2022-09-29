@@ -94,5 +94,41 @@ RSpec.describe Ticket, type: :model do
         error
       end
     end
+    context 'test cases for events' do
+      before do
+        @ticket = Ticket.new(title: Faker::Lorem.sentence(word_count:2), 
+                            description: Faker::Lorem.paragraphs(number:1), 
+                            ticket_number: 1,
+                            ticket_type: 0,
+                            resolver_id: user.id,
+                            requester_id: user.id,
+                            department_id: department.id,
+                            category_id: category.id)
+      end
+      it 'validate with no errors for ticket from assiged to inprogress' do
+        @ticket.start
+        expect(@ticket.status).to eq('inprogress')
+      end
+      it 'validate with no errors for ticket from assiged to inprogress to resolved' do
+        @ticket.start
+        @ticket.resolve
+        expect(@ticket.status).to eq('resolved')
+      end
+      it 'validate with no errors for ticket from assiged to inprogress to resolved to close' do
+        @ticket.start
+        @ticket.resolve
+        @ticket.close
+        expect(@ticket.status).to eq('closed')
+      end
+      it 'validate with no errors for ticket from assiged to rejected' do
+        @ticket.reject
+        expect(@ticket.status).to eq('rejected')
+      end
+      it 'validate for giving invalid transition (start -> closed)' do
+        error = assert_raises AASM::InvalidTransition do
+          @ticket.close
+        end
+      end
+    end
   end
 end
