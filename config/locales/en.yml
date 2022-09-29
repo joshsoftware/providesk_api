@@ -61,3 +61,4 @@ en:
     resolved: "Your %{ticket_type} is resolved by %{resolver}"
     closed: "The complaint is closed by %{requester}"
     rejected: "The complaint is rejected by %{resolver}"
+    for_approval: "The complaint will go through a approval"
