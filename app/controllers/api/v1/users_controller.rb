@@ -1,11 +1,15 @@
 module Api::V1
   class UsersController < ApplicationController
     def create
-      user = Users::V1::Create.new(user_params).call
-      if user[:status]
-        render json: { message: I18n.t('users.success.create') }
-      else
-        render json: { message: I18n.t('users.error.create') }, status: :unprocessable_entity
+      begin
+        user = Users::V1::Create.new(user_params).call
+        if user[:status]
+          render json: { message: I18n.t('users.success.create') }
+        else
+          render json: { message: I18n.t('users.error.create') }, status: :unprocessable_entity
+        end
+      rescue ActionController::ParameterMissing
+        render json: { message: I18n.t('users.error.invalid_parameter') }, status: :unprocessable_entity
       end
     end
 

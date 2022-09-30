@@ -48,6 +48,7 @@ en:
       show: "User not exists"
       update: "You are not the user itself/User does not exists"
       destroy: "Cannot destroy user"
+      invalid_parameters: "Invalid params"
 
   department:
     success:
