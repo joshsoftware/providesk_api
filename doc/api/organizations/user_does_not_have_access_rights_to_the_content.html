@@ -110,7 +110,7 @@ table th, table td {
 
       <div class="article">
         <h2>User does not have access rights to the content</h2>
-        <h3>GET /organizations/:id</h3>
+        <h3>GET /organizations/:id/departments</h3>
 
 
 
@@ -119,12 +119,12 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNjIsIm5hbWUiOiJUYW1pIFdlaW1hbm4iLCJlbWFpbCI6InVzZXIzQGpvc2gzLmNvbSIsImdvb2dsZV91c2VyX2lkIjoyLCJleHAiOjE2NjM0OTM4MDF9.iZfuRKNPT6mrq-t3-oJrqoJNeiiIaDaASq8IoV-b0wY
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNzQsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImVyaWNAY3VtbWluZ3MuaW8iLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY0ODg0Nzg2fQ.3B9iJC-lT83NXzMcl7KX--SLZsEzMJ4APJ5Mj_VhsPU
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET /organizations/359</pre>
+          <pre class="request route highlight">GET /organizations/479/departments</pre>
 
 
 
@@ -140,15 +140,13 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: c5b4fed1-26eb-49f6-bc38-2ab8cdc01540
-X-Runtime: 0.090335
+X-Request-Id: 7ced3ac2-537b-493a-9c6b-36b7261ab51b
+X-Runtime: 0.007049
 Content-Length: 49</pre>
             <h4>Status</h4>
             <pre class="response status">403 Forbidden</pre>
               <h4>Body</h4>
-              <pre class="response body">{
-  &quot;message&quot;: &quot;User not registered to organization&quot;
-}</pre>
+              <pre class="response body">[binary data]</pre>
       </div>
     </div>
   </body>

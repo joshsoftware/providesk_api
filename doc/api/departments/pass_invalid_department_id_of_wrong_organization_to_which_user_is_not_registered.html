@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sessions API</title>
+    <title>Departments API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,47 +106,12 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Sessions API</h1>
+      <h1>Departments API</h1>
 
       <div class="article">
-        <h2>Login existing user</h2>
-        <h3>POST /sessions</h3>
+        <h2>Pass invalid department id of wrong organization to which user is not registered</h2>
+        <h3>GET departments/:id/categories</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                    <span class="name">email</span>
-                </td>
-                <td>
-                  <span class="description">Email id of user</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">name</span>
-                </td>
-                <td>
-                  <span class="description">Name of user</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">google_user_id</span>
-                </td>
-                <td>
-                  <span class="description">google_user_id of user</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
@@ -154,16 +119,14 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOTEsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImpvbGFuZGEuZ2xvdmVyQGNhcnJvbGwtZ2xlaWNobmVyLm5ldCIsImdvb2dsZV91c2VyX2lkIjoxLCJleHAiOjE2NjQ4ODQ3ODd9.nbvu_cDswF77R5tvxS4vRI6UpyVgukY138qjeyIdAGA
 Host: example.org
-Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /sessions</pre>
+          <pre class="request route highlight">GET departments/188/categories</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">user[email]=edythe%40jakubowski.co&user[name]=XYZ&user[google_user_id]=2</pre>
 
 
             <h3>Response</h3>
@@ -176,13 +139,12 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;4382fbad73295c44075c156abca051c9&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: cd794144-a63a-4109-8109-a78214e2fcf2
-X-Runtime: 0.007669
-Content-Length: 271</pre>
+Cache-Control: no-cache
+X-Request-Id: ba7e7e56-77be-48ea-8308-3074222b2a3d
+X-Runtime: 0.008801
+Content-Length: 49</pre>
             <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
+            <pre class="response status">403 Forbidden</pre>
               <h4>Body</h4>
               <pre class="response body">[binary data]</pre>
       </div>

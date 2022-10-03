@@ -110,7 +110,7 @@ table th, table td {
 
       <div class="article">
         <h2>Listing departments for organization with valid user</h2>
-        <h3>GET /organizations/:id</h3>
+        <h3>GET /organizations/:id/departments</h3>
 
 
 
@@ -119,12 +119,12 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNjEsIm5hbWUiOiJUaG9tYXMgR3JhaGFtIiwiZW1haWwiOiJ1c2VyM0Bqb3NoNC5jb20iLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjYzNDkzODAxfQ.LMsozEw_UluRbvO6xI6gK4QkFhlaIweKVSVPm2suSEQ
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyNzMsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1heWFfaGFuZEBhZGFtcy13dWNrZXJ0Lm5ldCIsImdvb2dsZV91c2VyX2lkIjoxLCJleHAiOjE2NjQ4ODQ3ODZ9.9FOn4oq7fHA-AE9eAreRrGBZwFQmlOKX_ed-u5j2e8w
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET /organizations/358</pre>
+          <pre class="request route highlight">GET /organizations/477/departments</pre>
 
 
 
@@ -139,25 +139,15 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;ebe62176734a8b5453fdca7d8b22d6f9&quot;
+ETag: W/&quot;ad7327a56c9ef284fd1430b156813fb7&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0ec4e96c-c49b-4125-846a-5ad52344a45f
-X-Runtime: 0.106106
-Content-Length: 59</pre>
+X-Request-Id: 020e7486-5d0c-4b48-8888-97657afbb7de
+X-Runtime: 0.021161
+Content-Length: 73</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body">{
-  &quot;data&quot;: {
-    &quot;total&quot;: 1,
-    &quot;departments&quot;: [
-      {
-        &quot;name&quot;: &quot;TAD&quot;,
-        &quot;id&quot;: 70
-      }
-    ]
-  }
-}</pre>
+              <pre class="response body">[binary data]</pre>
       </div>
     </div>
   </body>
