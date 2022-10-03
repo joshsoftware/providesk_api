@@ -43,6 +43,39 @@ resource 'Tickets' do
     end
   end
 
+	put 'tickets/:id' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
+			@ticket = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department.id, 
+															 ticket_type: 'request', 
+															 resolver_id: user1.id,
+															 requester_id: user1.id)
+		end
+		context '200' do
+			let(:id) {@ticket.id}
+      example 'Ticket Updated successfully ' do
+				@ticket.start
+				@ticket.resolve
+				@ticket.save
+        do_request({
+					"ticket_result": {
+						"is_customer_satisfied": false,
+						"rating": 2,
+						"state_action": "reopen",
+						"started_reason": "Not satisfied with your service"
+					}
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(response_data["message"]).to eq(I18n.t('tickets.success.reopen'))
+      end
+    end
+	end
+
 	private
 
 	def create_params(title, description, category_id, department_id, ticket_type, resolver_id)
