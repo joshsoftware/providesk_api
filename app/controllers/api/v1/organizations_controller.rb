@@ -1,11 +1,18 @@
 module Api::V1
   class OrganizationsController < ApplicationController
     def create
-      result = Organizations::V1::Create.new(organization_params, current_user).call
-      if result[:status]
-        render json: { message: I18n.t('organizations.success.create') }
-      else
-        render json: { message: I18n.t('organizations.error.create') }, status: :unprocessable_entity
+      begin
+        result = Organizations::V1::Create.new(organization_params, current_user).call
+        if result[:status]
+          render json: { message: I18n.t('organizations.success.create') }
+        else
+          render json: { message: I18n.t('organizations.error.create'), 
+                        errors: result[:error_message] }, 
+                status: :unprocessable_entity
+        end
+      rescue ActionController::ParameterMissing
+        render json: { message: I18n.t('organizations.error.invalid_params') }, 
+              status: :unprocessable_entity
       end
     end
 

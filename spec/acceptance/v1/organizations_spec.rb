@@ -18,7 +18,6 @@ resource 'Organizations' do
           "domain": ["joshsoftware.com", "joshdigital.com"]
           } 
 				})
-        byebug
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('organizations.success.create'))
@@ -26,7 +25,7 @@ resource 'Organizations' do
     end
 
     context '422' do
-      example 'Unable to create category' do
+      example 'Unable to create organization due to already existing name' do
         do_request({"organization": {
 					"name": "google",
           "domain": ["gmail.com"]
@@ -35,6 +34,27 @@ resource 'Organizations' do
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
         expect(response_data["message"]).to eq(I18n.t('organizations.error.create'))
+        expect(response_data["errors"]). to eq("This name has already been taken")
+      end
+
+      example 'Unable to create organization due to blank name' do
+        do_request({"organization": {
+          "domain": ["joshsoftware.com", "joshdigital.com"]
+          } 
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('organizations.error.create'))
+        expect(response_data["errors"]).to eq("Name can't be blank")
+      end
+
+      example 'Unable to create organization due to invalid params' do
+        do_request({"organization": {
+          } 
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('organizations.error.invalid_params'))
       end
     end
   end
