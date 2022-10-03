@@ -119,7 +119,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODEsImVtYWlsIjoiYmVydHJhbUBrb25vcGVsc2tpLmJpeiIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjQ4ODQ3ODZ9.WP0aDDcwHnokMpOaIHa6MeeuMAXymNlcMIdQrYcgX98
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMzYsImVtYWlsIjoiamFpbWVAYmFydG9sZXR0aS5vcmciLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY0ODg5ODQ0fQ.lzmJn1MvNYhMgwmzhBf5cetk2PIzMZanXlO0yr52CJQ
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
@@ -129,7 +129,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">categories[name]=Software&categories[priority]=0&categories[department_id]=156</pre>
+            <pre class="request body">categories[name]=Software&categories[priority]=0&categories[department_id]=267</pre>
 
 
             <h3>Response</h3>
@@ -144,13 +144,15 @@ Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 ETag: W/&quot;aaa2302679dd550c23491b6b39cf234f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 96730702-8549-48ad-9431-7301553473a4
-X-Runtime: 0.015321
+X-Request-Id: b7c57c9a-80e5-4aee-a2f4-a5ef09196663
+X-Runtime: 0.015339
 Content-Length: 45</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;message&quot;: &quot;Categories created successfully&quot;
+}</pre>
       </div>
     </div>
   </body>

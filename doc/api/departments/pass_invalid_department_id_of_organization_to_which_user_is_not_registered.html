@@ -119,12 +119,12 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODgsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1hcm5hX2hlcm1hbkBzcG9yZXIuY29tIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NDg4NDc4N30.NGAH_kUmosZoFu4KaNs7WZzyAbTcePGbkGxRGZ_ak9o
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNDUsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Imxhcmlzc2EuZ2VyaG9sZEB5b3N0Lm5hbWUiLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY0ODg5ODQ0fQ.KglaB619qJlUec8nWJPFUB4p4BCOsSrWF0_wsJfGOPY
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET departments/179/users</pre>
+          <pre class="request route highlight">GET departments/294/users</pre>
 
 
 
@@ -140,13 +140,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 1f9c037c-76d3-415b-85ff-6cf6be72149f
-X-Runtime: 0.008626
+X-Request-Id: cb184026-9a63-40c7-9f48-d89588ed2d1c
+X-Runtime: 0.007012
 Content-Length: 49</pre>
             <h4>Status</h4>
             <pre class="response status">403 Forbidden</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;message&quot;: &quot;User not registered to organization&quot;
+}</pre>
       </div>
     </div>
   </body>

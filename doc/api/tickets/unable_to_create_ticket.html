@@ -119,7 +119,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyOTQsImVtYWlsIjoidGFAdG93bmUuaW5mbyIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjQ4ODQ3ODd9.jhxA6h5ALlFapsH6x1V91eSPz6pJLHn5s0qCbUeRyk0
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNTQsImVtYWlsIjoiY2Fyb2xpbmFAZmVlbmV5LmluZm8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY0ODg5ODQ1fQ.DRPFBT_4EFEnLXSsg95yWnoN1cIaPX9_lytQ-c74dO8
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
@@ -129,7 +129,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">ticket[title]=Laptop&ticket[description]=Urgent+to+resolve&ticket[category_id]=66&ticket[department_id]=191&ticket[resolver_id]=294</pre>
+            <pre class="request body">ticket[title]=Laptop&ticket[description]=Urgent+to+resolve&ticket[category_id]=96&ticket[department_id]=309&ticket[resolver_id]=354</pre>
 
 
             <h3>Response</h3>
@@ -143,13 +143,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: dc9c6a8c-28ce-493b-8adc-d3caed94a66d
-X-Runtime: 0.012280
+X-Request-Id: 135dc554-9bcb-435f-a4d5-336d81dc7443
+X-Runtime: 0.012537
 Content-Length: 37</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;message&quot;: &quot;Unable to create ticket&quot;
+}</pre>
       </div>
     </div>
   </body>

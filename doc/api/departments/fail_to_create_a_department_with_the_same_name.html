@@ -119,7 +119,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODUsIm5hbWUiOiJYWVoiLCJlbWFpbCI6InNhbEBhYmVybmF0aHktdm9uLm5hbWUiLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY0ODg0Nzg3fQ.fQP8UMjpP2K91RjwbFSNNW2Cw_oDUxJ90YbzYWS-h0Y
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNDIsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1pY2hhbEBmcml0c2NoLWFiZXJuYXRoeS5iaXoiLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY0ODg5ODQ0fQ.91I6Hi_OQy2tKQ7xROLCS9m6717qd2hY-obsJUiH2BI
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
@@ -129,7 +129,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">name=My+Dept&organization_id=493</pre>
+            <pre class="request body">name=My+Dept&organization_id=591</pre>
 
 
             <h3>Response</h3>
@@ -144,19 +144,21 @@ Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 ETag: W/&quot;1c298cf03d6289f9519106e05b6f8255&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 2af2e232-79f6-433d-bb82-abc145b81325
-X-Runtime: 0.012284
+X-Request-Id: 8c0eba31-8c45-4fe8-8fdb-d2f66bc3b22f
+X-Runtime: 0.010353
 Content-Length: 45</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;message&quot;: &quot;Department created successfully&quot;
+}</pre>
           <h3>Request</h3>
 
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODUsIm5hbWUiOiJYWVoiLCJlbWFpbCI6InNhbEBhYmVybmF0aHktdm9uLm5hbWUiLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY0ODg0Nzg3fQ.fQP8UMjpP2K91RjwbFSNNW2Cw_oDUxJ90YbzYWS-h0Y
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNDIsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1pY2hhbEBmcml0c2NoLWFiZXJuYXRoeS5iaXoiLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY0ODg5ODQ0fQ.91I6Hi_OQy2tKQ7xROLCS9m6717qd2hY-obsJUiH2BI
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
@@ -166,7 +168,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">name=My+Dept&organization_id=493</pre>
+            <pre class="request body">name=My+Dept&organization_id=591</pre>
 
 
             <h3>Response</h3>
@@ -180,13 +182,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: d5c9ab4d-e53a-4086-bee1-689fa649f6ef
-X-Runtime: 0.011419
+X-Request-Id: c0c5d82a-5333-447f-8e96-9553d469a07a
+X-Runtime: 0.011810
 Content-Length: 41</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;message&quot;: &quot;Name has already been taken&quot;
+}</pre>
       </div>
     </div>
   </body>

@@ -119,12 +119,12 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODksIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImtlY2lhLmdvdHRsaWViQHdhbHRlci5pbyIsImdvb2dsZV91c2VyX2lkIjoxLCJleHAiOjE2NjQ4ODQ3ODd9.nuqNBU1owKoNDBcZQPHZmtdZD0l-lHZ86qWi4op-Xbs
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozNDYsIm5hbWUiOiJYWVoiLCJlbWFpbCI6InJ1YmluLm1lcnR6QGFic2hpcmUta3V0Y2guY29tIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NDg4OTg0NH0.cO_qEIZFgm3HLqo11PebXBUmXUIpYsZg9Q54-Y_Vbq8
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET departments/181/categories</pre>
+          <pre class="request route highlight">GET departments/296/categories</pre>
 
 
 
@@ -139,15 +139,25 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;d9f3cdc00e2a1547b17e74e03f76e153&quot;
+ETag: W/&quot;3b5f2c93685fe8dabb8ae9770d0385ba&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: a78dbb3c-65b1-4065-955a-6cb52ccebc25
-X-Runtime: 0.015963
+X-Request-Id: 88107073-f8bf-48d3-9989-2180bea1de0b
+X-Runtime: 0.008860
 Content-Length: 59</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;data&quot;: {
+    &quot;total&quot;: 1,
+    &quot;categories&quot;: [
+      {
+        &quot;id&quot;: 94,
+        &quot;name&quot;: &quot;TAD1&quot;
+      }
+    ]
+  }
+}</pre>
       </div>
     </div>
   </body>

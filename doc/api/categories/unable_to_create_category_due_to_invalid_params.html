@@ -109,7 +109,7 @@ table th, table td {
       <h1>Categories API</h1>
 
       <div class="article">
-        <h2>Unable to create category</h2>
+        <h2>Unable to create category due to invalid params</h2>
         <h3>POST /categories</h3>
 
 
@@ -119,7 +119,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyODIsImVtYWlsIjoiY29sZXR0YS5sYWJhZGllQGd1bGdvd3NraS5jbyIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjQ4ODQ3ODd9.I1-W7d4jsezS90R6bd8mY65VGW4YQx5RUF4UAO7rR38
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMzcsImVtYWlsIjoicnV0aGFubl9rbGVpbkBwb3Vyb3MuaW8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY0ODg5ODQ0fQ.zEm2wT2SwTpqQuSdpmaKy0klg05ODGLnj-Mo8F_XfAE
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
@@ -128,8 +128,6 @@ Cookie: </pre>
           <pre class="request route highlight">POST /categories</pre>
 
 
-            <h4>Body</h4>
-            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=158</pre>
 
 
             <h3>Response</h3>
@@ -143,13 +141,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 819247c9-1215-4e53-b141-0080969e0994
-X-Runtime: 0.009127
-Content-Length: 41</pre>
+X-Request-Id: 409daccd-5ae6-4602-8ef8-ac1abc66b788
+X-Runtime: 0.006217
+Content-Length: 36</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
-              <pre class="response body">[binary data]</pre>
+              <pre class="response body">{
+  &quot;message&quot;: &quot;Enter valid parameters&quot;
+}</pre>
       </div>
     </div>
   </body>
