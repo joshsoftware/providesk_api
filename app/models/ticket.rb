@@ -62,6 +62,10 @@ class Ticket < ApplicationRecord
     event :close do
       transitions from: :resolved, to: :closed
     end
+
+    event :reopen do
+      transitions from: :resolved, to: :for_approval
+    end
   end
 
   def add_activity
