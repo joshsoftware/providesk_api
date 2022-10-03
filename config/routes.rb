@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :sessions, only: :create
       resources :categories, only: :create
       resources :departments, only: :create
+      resources :users, only: [:create, :update, :destroy, :show]
       resources :departments do
         member do 
           get 'categories'
