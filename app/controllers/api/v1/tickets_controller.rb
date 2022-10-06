@@ -10,5 +10,14 @@ module Api::V1
         render json: { message: I18n.t('tickets.error.create') }, status: :unprocessable_entity
       end
     end
+
+    def show
+      result = Tickets::V1::Show.new(params).call
+      if result
+        render json: result
+      else
+        render json: { message: I18n.t('tickets.error.show') }, status: :unprocessable_entity
+      end
+    end
   end
 end
