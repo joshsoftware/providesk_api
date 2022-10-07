@@ -1,5 +1,5 @@
 module Tickets::V1
- class Index
+ class Index < ApplicationController
   def initialize(filters)
     @department = filters[:department].split(',') if filters[:department]
     @category = filters[:category].split(',') if filters[:category]
@@ -31,13 +31,14 @@ module Tickets::V1
                 status_code: 422 }.as_json
       end
     end
-    tickets = Ticket.where(where_hash).to_a
+    tickets = Ticket.where(where_hash)
+              .order(created_at: :desc).to_a
     if tickets == []
       { status: false, 
         message: I18n.t('tickets.show.not_available'),
         status_code: 404 }.as_json
     else
-      { status: true, tickets: tickets }.as_json
+      { status: true, tickets: serialize_resource(tickets, TicketSerializer) }.as_json  
     end
   end
 
