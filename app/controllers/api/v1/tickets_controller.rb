@@ -21,5 +21,14 @@ module Api::V1
       end
     end
 
+    def index
+      result = Tickets::V1::Index.new(params).call
+      if result["status"]
+        render json: result["tickets"], status: 200
+      else
+        render json: {message: result["message"]}, status: result["status_code"]
+      end
+    end
+
   end
 end
