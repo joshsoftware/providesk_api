@@ -69,7 +69,7 @@ class Ticket < ApplicationRecord
   end
 
   def add_activity
-    Activity.create( assigned_from: "", assigned_to: "", current_ticket_status: status, ticket_id: id, 
+    Activity.create( assigned_from: resolver.name, assigned_to: resolver.name, current_ticket_status: status, ticket_id: id, 
                      description: I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
                    )
   end
