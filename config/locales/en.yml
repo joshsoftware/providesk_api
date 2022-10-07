@@ -61,6 +61,9 @@ en:
     error:
       create: "Unable to create ticket"
       update: "Could not update the ticket"
+    show:
+      not_available: "No ticket with this filter"
+      invalid_filter: "Filter in_valid"
 
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"
