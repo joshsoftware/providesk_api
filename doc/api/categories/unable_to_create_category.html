@@ -109,7 +109,7 @@ table th, table td {
       <h1>Categories API</h1>
 
       <div class="article">
-        <h2>Unable to create category due to already existing name</h2>
+        <h2>Unable to create category</h2>
         <h3>POST /categories</h3>
 
 
@@ -119,7 +119,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMzgsImVtYWlsIjoiYWxlYy5yZW1wZWxAb2Nvbm5lci1oZXJtaXN0b24uYml6IiwibmFtZSI6IlhZWiIsImV4cCI6MTY2NDg4OTg0NH0.A4HTxSvNW3ETHRxXFZAHMdolyj22MHWFBdl1EmdLXJM
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDksImVtYWlsIjoiYXVndXN0dXNAa2VydHptYW5uLmluZm8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY1NDg5NDk4fQ.GD6cJLSecU6xfD_O6TgbdUie87fOVgAxzocg-6xeEEI
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
@@ -129,7 +129,7 @@ Cookie: </pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=271</pre>
+            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=459</pre>
 
 
             <h3>Response</h3>
@@ -143,15 +143,14 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 46a07c22-e3b9-4e2a-9ed4-a14100b32f55
-X-Runtime: 0.007467
-Content-Length: 85</pre>
+X-Request-Id: 96a29f81-41d3-4cf8-a30f-7c2475f0e251
+X-Runtime: 0.008490
+Content-Length: 41</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Unable to create categories&quot;,
-  &quot;errors&quot;: &quot;This name has already been taken&quot;
+  &quot;message&quot;: &quot;Unable to create categories&quot;
 }</pre>
       </div>
     </div>

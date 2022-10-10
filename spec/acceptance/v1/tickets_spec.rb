@@ -28,17 +28,36 @@ resource 'Tickets' do
     end
 
     context '422' do
-      example 'Unable to create ticket' do
-        do_request({"ticket": {
-					"title": "Laptop",
-					"description": "Urgent to resolve",
-					"category_id": category.id,
-					"department_id": department.id,
-					"resolver_id": user.id }
-				})
+      example 'Unable to create ticket - Title must exist' do
+        do_request({ "ticket": ticket_params.except(:title) })
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
         expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
+				expect(response_data["errors"]).to eq("Title can't be blank")
+      end
+
+			example 'Unable to create ticket - Description not provided' do
+        do_request({ "ticket": ticket_params.except(:description) })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
+				expect(response_data["errors"]).to eq("Description can't be blank")
+      end
+
+			example 'Unable to create ticket - Ticket type blank' do
+        do_request({ "ticket": ticket_params.except(:ticket_type) })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
+				expect(response_data["errors"]).to eq("Ticket type can't be blank")
+      end
+
+			example 'Unable to create ticket - Department does not exist' do
+        do_request({ "ticket": ticket_params.except(:department_id) })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
+				expect(response_data["errors"]).to eq("Resolver must exist")
       end
     end
   end
@@ -56,6 +75,17 @@ resource 'Tickets' do
 					"ticket_type": ticket_type,
 					"resolver_id": resolver_id
 			}
+		}
+	end
+
+	def ticket_params
+		{
+			"title": "Laptop issue",
+			"description": "Urgent to resolve",
+			"category_id": category.id,
+			"department_id": department.id,
+			"ticket_type": "request",
+			"resolver_id": user.id
 		}
 	end
 end

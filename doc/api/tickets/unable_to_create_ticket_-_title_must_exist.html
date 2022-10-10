@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Categories API</title>
+    <title>Tickets API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Categories API</h1>
+      <h1>Tickets API</h1>
 
       <div class="article">
-        <h2>Unable to create category due to invalid params</h2>
-        <h3>POST /categories</h3>
+        <h2>Unable to create ticket - Title must exist</h2>
+        <h3>POST /tickets</h3>
 
 
 
@@ -119,15 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMzcsImVtYWlsIjoicnV0aGFubl9rbGVpbkBwb3Vyb3MuaW8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY0ODg5ODQ0fQ.zEm2wT2SwTpqQuSdpmaKy0klg05ODGLnj-Mo8F_XfAE
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjQsImVtYWlsIjoia2lyYnlfaGlsbGxAcmF0aC5pbyIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjU0ODk0OTl9.nXzzgJ75MRJM8Pfh8PV6-vCl2oo6ubX2mgidwPtEinw
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /categories</pre>
+          <pre class="request route highlight">POST /tickets</pre>
 
 
+            <h4>Body</h4>
+            <pre class="request body">ticket[description]=Urgent+to+resolve&ticket[category_id]=193&ticket[department_id]=495&ticket[ticket_type]=request&ticket[resolver_id]=464</pre>
 
 
             <h3>Response</h3>
@@ -141,14 +143,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 409daccd-5ae6-4602-8ef8-ac1abc66b788
-X-Runtime: 0.006217
-Content-Length: 36</pre>
+X-Request-Id: c40eb889-478f-455f-9f16-e439c146bacc
+X-Runtime: 0.015833
+Content-Length: 69</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Enter valid parameters&quot;
+  &quot;message&quot;: &quot;Unable to create ticket&quot;,
+  &quot;errors&quot;: &quot;Title can&#39;t be blank&quot;
 }</pre>
       </div>
     </div>
