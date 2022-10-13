@@ -47,6 +47,7 @@ module Api::V1
         organization_list = Organization.all.select(:id, :name).order(id: :asc)
       elsif @user.is_admin?
         organization_list = Organization.select(:id, :name).find @user.organization_id
+        [organization_list]
       else
         organization_list = []
       end
