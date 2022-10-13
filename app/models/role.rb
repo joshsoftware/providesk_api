@@ -3,4 +3,7 @@ class Role < ApplicationRecord
 
   validates_associated :users
   validates :name, presence: true, uniqueness: true
+
+  SUPER_ADMIN = 'super_admin'
+  ADMIN = 'admin'
 end

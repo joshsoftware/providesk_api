@@ -10,12 +10,13 @@ module Api::V1
                   email: permitted_params[:email],
                   google_user_id: permitted_params[:google_user_id]
                 }
-      token = JsonWebToken.encode(payload)
+      token = JsonWebToken.encode(payload) 
       render json: {
           message: I18n.t('login.success'),
-          data: { 
+          data: {
             auth_token: token,
-            role: @user.role.name
+            role: @user.role.name,
+            organization_list: get_organization_list
           }
       }, status: :ok
     end
@@ -38,6 +39,16 @@ module Api::V1
         render json: {
           errors: @user.errors.full_messages.join(", ")
         }, status: 422
+      end
+    end
+
+    def get_organization_list
+      if @user.is_super_admin?
+        organization_list = Organization.all.select(:id, :name).order(id: :asc)
+      elsif @user.is_admin?
+        organization_list = Organization.select(:id, :name).find @user.organization_id
+      else
+        organization_list = []
       end
     end
   end
