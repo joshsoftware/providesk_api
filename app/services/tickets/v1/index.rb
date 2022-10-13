@@ -17,7 +17,7 @@ module Tickets::V1
     if @category
       categories = Category.select(:id).where(name: @category)
       categories_list = []
-      categories.each {|category_obj| categories_list.append(categories_obj.id) }
+      categories.each {|category_obj| categories_list.append(category_obj.id) }
       where_hash["category_id"] = categories_list if categories_list != []
     end
     if @type
