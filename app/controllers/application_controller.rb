@@ -35,4 +35,9 @@ class ApplicationController < ActionController::API
   def load_current_user
     @current_user = User.find_by(id: payload['user_id'])
   end
+
+  def serialize_resource(resources, serializer, root = nil, extra = {} )
+    opts = { each_serializer: serializer, root: root }.merge(extra)
+    ActiveModelSerializers::SerializableResource.new(resources, opts) if resources
+  end
 end
