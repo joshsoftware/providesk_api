@@ -16,7 +16,7 @@ module Api::V1
           data: {
             auth_token: token,
             role: @user.role.name,
-            organization_list: get_organization_list
+            organizations: get_organization_list
           }
       }, status: :ok
     end
