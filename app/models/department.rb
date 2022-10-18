@@ -3,6 +3,8 @@ class Department < ApplicationRecord
   has_many :categories, dependent: :destroy
   has_many :users, dependent: :destroy
 
+  before_validation :downcase_name, only: [:create, :update]
+
   validates_associated :categories
   validates_associated :users
   validates_presence_of :organization
