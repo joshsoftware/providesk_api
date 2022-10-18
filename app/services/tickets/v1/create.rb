@@ -18,12 +18,13 @@ module Tickets::V1
       @resolver_id = User.find_by(department_id: @department_id)&.id
       @priority = Category.find_by(id: @category_id).priority
       @requester_id = @current_user.id
+      @organization_id = @current_user.organization_id
     end
 
     def save_ticket
       @ticket = Ticket.new(title: @title, description: @description, priority: @priority,
          department_id: @department_id, category_id: @category_id, resolver_id: @resolver_id,
-         requester_id: @requester_id, ticket_type: @ticket_type)
+         requester_id: @requester_id, ticket_type: @ticket_type, organization_id: @organization_id)
       if @ticket.save
         { status: true }.as_json
       else
