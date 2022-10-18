@@ -7,6 +7,8 @@ class Ticket < ApplicationRecord
   belongs_to :department
   belongs_to :category
 
+  before_validation :downcase_ticket_type, only: [:create, :update]
+
   validates_associated :activities
   validates :title, presence: true
   validates :description, presence: true
@@ -78,5 +80,9 @@ class Ticket < ApplicationRecord
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
+  end
+
+  def downcase_ticket_type
+    self.ticket_type.downcase!
   end
 end
