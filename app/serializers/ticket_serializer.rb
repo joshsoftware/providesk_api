@@ -1,6 +1,6 @@
 class TicketSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :ticket_number, :status, :priority, 
-             :ticket_type, :resolved_at, :created_at, :updated_at, :category, :department, 
+             :ticket_type, :resolved_at, :created_at, :category, :department, 
              :resolver, :requester, :permited_events
             
 

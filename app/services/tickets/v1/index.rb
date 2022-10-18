@@ -11,26 +11,25 @@ module Tickets::V1
     where_hash = {}
     error_message = []
     if @department
-      departments = Department.select(:id).where(name: @department, organization_id: @organization_id)
-      if departments.count != @department.count
+      @department.map!(&:downcase)
+      departments_list = (Department.select(:id).where(name: @department, organization_id: @organization_id)).pluck(:id)
+      if departments_list.count != @department.count
         error_message.append("Department Invalid")
       else
-        departments_list = []
-        departments.each {|department_obj| departments_list.append(department_obj.id) }
         where_hash["department_id"] = departments_list if departments_list != []
       end
     end
     if @category
-      categories = Category.select(:id).where(name: @category)
-      if categories.count != @category.count
+      @category.map!(&:downcase)
+      category_list = (Category.select(:id).where(name: @category)).pluck(:id)
+      if category_list.count != @category.count
         error_message.append("Category Invalid")
       else
-        categories_list = []
-        categories.each {|category_obj| categories_list.append(category_obj.id) }
-        where_hash["category_id"] = categories_list if categories_list != []
+        where_hash["category_id"] = category_list if category_list != []
       end
     end
     if @type
+      @type.map!(&:downcase)
       @type.select!{ |x| (x == "complaint" || x == "request") }
       where_hash["ticket_type"] = @type
     end
