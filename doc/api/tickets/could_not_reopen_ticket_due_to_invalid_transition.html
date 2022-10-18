@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Categories API</title>
+    <title>Tickets API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Categories API</h1>
+      <h1>Tickets API</h1>
 
       <div class="article">
-        <h2>Unable to create category due to invalid params</h2>
-        <h3>POST /categories</h3>
+        <h2>Could not reopen ticket due to invalid transition</h2>
+        <h3>PUT tickets/:id</h3>
 
 
 
@@ -119,15 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMzcsImVtYWlsIjoicnV0aGFubl9rbGVpbkBwb3Vyb3MuaW8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY0ODg5ODQ0fQ.zEm2wT2SwTpqQuSdpmaKy0klg05ODGLnj-Mo8F_XfAE
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MzMsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.iv0G77f-RHSGZGik_mEZmcATDjUONxruQvuTyg1fV6A
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /categories</pre>
+          <pre class="request route highlight">PUT tickets/256</pre>
 
 
+            <h4>Body</h4>
+            <pre class="request body">ticket_result[is_customer_satisfied]=false&ticket_result[rating]=2&ticket_result[state_action]=reopen&ticket_result[started_reason]=Not+satisfied+with+your+service</pre>
 
 
             <h3>Response</h3>
@@ -141,14 +143,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 409daccd-5ae6-4602-8ef8-ac1abc66b788
-X-Runtime: 0.006217
-Content-Length: 36</pre>
+X-Request-Id: 384287f6-fd5e-4827-9020-0c573f58b608
+X-Runtime: 0.007148
+Content-Length: 95</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Enter valid parameters&quot;
+  &quot;message&quot;: &quot;Could not update the ticket&quot;,
+  &quot;errors&quot;: &quot;Invalid transition from assigned to reopen&quot;
 }</pre>
       </div>
     </div>

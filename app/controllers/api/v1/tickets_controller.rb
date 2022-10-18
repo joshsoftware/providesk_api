@@ -17,12 +17,12 @@ module Api::V1
       if result["status"]
         render json: { message: result["success_message"]  }
       else
-        render json: { message: I18n.t('ticket.error.update')}, status: :unprocessable_entity
+        render json: { message: I18n.t('tickets.error.update'), errors: result["error_message"] }, status: :unprocessable_entity
       end
     end
 
     def index
-      result = Tickets::V1::Index.new(params).call
+      result = Tickets::V1::Index.new(params, current_user).call
       if result["status"]
         render json: result["tickets"], status: 200
       else

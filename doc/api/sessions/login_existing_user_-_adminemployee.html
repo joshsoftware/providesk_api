@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Departments API</title>
+    <title>Sessions API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,12 +106,47 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Departments API</h1>
+      <h1>Sessions API</h1>
 
       <div class="article">
-        <h2>Pass invalid department id of organization to which user is not registered</h2>
-        <h3>GET departments/:id/users</h3>
+        <h2>Login existing user - admin/employee</h2>
+        <h3>POST /sessions</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">email</span>
+                </td>
+                <td>
+                  <span class="description">Email id of user</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">name</span>
+                </td>
+                <td>
+                  <span class="description">Name of user</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">google_user_id</span>
+                </td>
+                <td>
+                  <span class="description">google_user_id of user</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -119,14 +154,16 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MjEsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1pcmFuZGFfbGl0dGxlQHRyb21wLXBhZGJlcmcub3JnIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NjE3MTc1N30.kOYpuHhr6CIXKZrv5_jmXLPyv69AkIvoB6HMDq1rVH0
 Host: example.org
+Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET departments/1181/users</pre>
+          <pre class="request route highlight">POST /sessions</pre>
 
 
+            <h4>Body</h4>
+            <pre class="request body">user[email]=test%40gmail.com&user[name]=XYZ&user[google_user_id]=2</pre>
 
 
             <h3>Response</h3>
@@ -139,15 +176,26 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-Cache-Control: no-cache
-X-Request-Id: 21214f5d-4b0c-477a-b4e3-3ca96cf35dc3
-X-Runtime: 0.006815
-Content-Length: 49</pre>
+ETag: W/&quot;71a7d0369c8b74f0c235449d913d4856&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 0b6136e5-3809-4461-9753-e9c1021b6ffd
+X-Runtime: 0.009069
+Content-Length: 309</pre>
             <h4>Status</h4>
-            <pre class="response status">403 Forbidden</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;User not registered to organization&quot;
+  &quot;message&quot;: &quot;Logged in successfully&quot;,
+  &quot;data&quot;: {
+    &quot;auth_token&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MDcsIm5hbWUiOiJYWVoiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZ29vZ2xlX3VzZXJfaWQiOiIyIiwiZXhwIjoxNjY2MTcxNzU3fQ.2vDzSa-zpWak3jeGFrvA1cLpKOo8go_XsUjrf0HeVRU&quot;,
+    &quot;role&quot;: &quot;admin&quot;,
+    &quot;organizations&quot;: [
+      {
+        &quot;id&quot;: 1071,
+        &quot;name&quot;: &quot;google&quot;
+      }
+    ]
+  }
 }</pre>
       </div>
     </div>

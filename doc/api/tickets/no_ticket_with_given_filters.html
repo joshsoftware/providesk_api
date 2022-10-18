@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Departments API</title>
+    <title>Tickets API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,12 +106,31 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Departments API</h1>
+      <h1>Tickets API</h1>
 
       <div class="article">
-        <h2>Pass invalid department id of organization to which user is not registered</h2>
-        <h3>GET departments/:id/users</h3>
+        <h2>no ticket with given filters</h2>
+        <h3>GET tickets</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">department</span>
+                </td>
+                <td>
+                  <span class="description"> department</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -119,13 +138,15 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MjEsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1pcmFuZGFfbGl0dGxlQHRyb21wLXBhZGJlcmcub3JnIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NjE3MTc1N30.kOYpuHhr6CIXKZrv5_jmXLPyv69AkIvoB6HMDq1rVH0
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4NDUsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.uevI-hytS7SYeaafEVb7Z6toyBHOrHnrBBOkl_H0b2o
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET departments/1181/users</pre>
+          <pre class="request route highlight">GET tickets?department=HR</pre>
 
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">department: HR</pre>
 
 
 
@@ -140,14 +161,14 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 21214f5d-4b0c-477a-b4e3-3ca96cf35dc3
-X-Runtime: 0.006815
-Content-Length: 49</pre>
+X-Request-Id: 9cabe024-4409-4c6f-a825-9071f86f9e91
+X-Runtime: 0.008457
+Content-Length: 40</pre>
             <h4>Status</h4>
-            <pre class="response status">403 Forbidden</pre>
+            <pre class="response status">404 Not Found</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;User not registered to organization&quot;
+  &quot;message&quot;: &quot;No ticket with this filter&quot;
 }</pre>
       </div>
     </div>

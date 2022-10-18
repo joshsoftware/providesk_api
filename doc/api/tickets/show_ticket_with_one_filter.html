@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Categories API</title>
+    <title>Tickets API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Categories API</h1>
+      <h1>Tickets API</h1>
 
       <div class="article">
-        <h2>Unable to create category - Department/Name can&#39;t be blank</h2>
-        <h3>POST /categories</h3>
+        <h2>show ticket with one filter</h2>
+        <h3>GET tickets</h3>
 
 
 
@@ -119,17 +119,16 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozMzksImVtYWlsIjoiZGFubmV0dGVAd2lsbGlhbXNvbi5pbyIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjQ4ODk4NDR9.Uek1HkEoOopAbuGqXqagnmLql2slBd0LpYsjE2pswBc
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MzcsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.Uoll36onnBaPse7eBfMYUXRHnrm5cr462ALZPTeiA48
 Host: example.org
-Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /categories</pre>
+          <pre class="request route highlight">GET tickets?department=Dalton+Labadie</pre>
 
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">department: Dalton Labadie</pre>
 
-            <h4>Body</h4>
-            <pre class="request body">categories[priority]=0</pre>
 
 
             <h3>Response</h3>
@@ -142,17 +141,37 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-Cache-Control: no-cache
-X-Request-Id: d2434978-512b-4170-8d5f-8c49947a8a28
-X-Runtime: 0.011106
-Content-Length: 95</pre>
+ETag: W/&quot;f95860e5fc6776e8bcddf0e6d1c876cf&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: 4f59070a-d785-4d1f-aee6-9191af3ef8c9
+X-Runtime: 0.014129
+Content-Length: 377</pre>
             <h4>Status</h4>
-            <pre class="response status">422 Unprocessable Entity</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body">{
-  &quot;message&quot;: &quot;Unable to create categories&quot;,
-  &quot;errors&quot;: &quot;Department must exist, Name can&#39;t be blank&quot;
-}</pre>
+              <pre class="response body">[
+  {
+    &quot;id&quot;: 258,
+    &quot;title&quot;: &quot;Laptop Issue&quot;,
+    &quot;description&quot;: &quot;RAM Issue&quot;,
+    &quot;ticket_number&quot;: null,
+    &quot;status&quot;: &quot;assigned&quot;,
+    &quot;priority&quot;: &quot;High&quot;,
+    &quot;ticket_type&quot;: &quot;request&quot;,
+    &quot;resolved_at&quot;: null,
+    &quot;created_at&quot;: &quot;2022-10-18T09:29:18.702Z&quot;,
+    &quot;updated_at&quot;: &quot;2022-10-18T09:29:18.702Z&quot;,
+    &quot;category&quot;: &quot;Hardware&quot;,
+    &quot;department&quot;: &quot;Dalton Labadie&quot;,
+    &quot;resolver&quot;: &quot;XYZ&quot;,
+    &quot;requester&quot;: &quot;XYZ&quot;,
+    &quot;permited_events&quot;: [
+      &quot;start&quot;,
+      &quot;approve&quot;,
+      &quot;reject&quot;
+    ]
+  }
+]</pre>
       </div>
     </div>
   </body>

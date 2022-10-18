@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Departments API</title>
+    <title>Sessions API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,12 +106,47 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Departments API</h1>
+      <h1>Sessions API</h1>
 
       <div class="article">
-        <h2>Fail to create a department with the same name</h2>
-        <h3>POST /departments</h3>
+        <h2>Login existing user - super admin</h2>
+        <h3>POST /sessions</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">email</span>
+                </td>
+                <td>
+                  <span class="description">Email id of user</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">name</span>
+                </td>
+                <td>
+                  <span class="description">Name of user</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                    <span class="name">google_user_id</span>
+                </td>
+                <td>
+                  <span class="description">google_user_id of user</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -119,17 +154,16 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MTgsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImNyeXN0YWxAZ3JhbnQub3JnIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NjE3MTc1N30.DMbPIG5BqrNo0ZUHVW6yCtkpT_7GbSosseUnbI_gJx8
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /departments</pre>
+          <pre class="request route highlight">POST /sessions</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">name=My+Dept&organization_id=1090</pre>
+            <pre class="request body">user[email]=van%40herzog.co&user[name]=XYZ&user[google_user_id]=2</pre>
 
 
             <h3>Response</h3>
@@ -142,54 +176,38 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;1c298cf03d6289f9519106e05b6f8255&quot;
+ETag: W/&quot;aea85fe783d8363d763ddf1b3409e90a&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: f52ac6b7-715e-4d3e-9e69-fe1759897789
-X-Runtime: 0.010664
-Content-Length: 45</pre>
+X-Request-Id: f061cf9e-dd9b-477a-ae7d-286245ba9ccd
+X-Runtime: 0.009466
+Content-Length: 409</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Department created successfully&quot;
-}</pre>
-          <h3>Request</h3>
-
-            <h4>Headers</h4>
-            <pre class="request headers">Version: HTTP/1.0
-Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MTgsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImNyeXN0YWxAZ3JhbnQub3JnIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NjE3MTc1N30.DMbPIG5BqrNo0ZUHVW6yCtkpT_7GbSosseUnbI_gJx8
-Host: example.org
-Content-Type: application/x-www-form-urlencoded
-Cookie: </pre>
-
-          <h4>Route</h4>
-          <pre class="request route highlight">POST /departments</pre>
-
-
-            <h4>Body</h4>
-            <pre class="request body">name=My+Dept&organization_id=1090</pre>
-
-
-            <h3>Response</h3>
-              <h4>Headers</h4>
-              <pre class="response headers">X-Frame-Options: SAMEORIGIN
-X-XSS-Protection: 1; mode=block
-X-Content-Type-Options: nosniff
-X-Download-Options: noopen
-X-Permitted-Cross-Domain-Policies: none
-Referrer-Policy: strict-origin-when-cross-origin
-Content-Type: application/json; charset=utf-8
-Vary: Accept, Origin
-Cache-Control: no-cache
-X-Request-Id: f13866f8-e943-40b1-a7c5-b406c7edce48
-X-Runtime: 0.010182
-Content-Length: 41</pre>
-            <h4>Status</h4>
-            <pre class="response status">422 Unprocessable Entity</pre>
-              <h4>Body</h4>
-              <pre class="response body">{
-  &quot;message&quot;: &quot;Name has already been taken&quot;
+  &quot;message&quot;: &quot;Logged in successfully&quot;,
+  &quot;data&quot;: {
+    &quot;auth_token&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MDMsIm5hbWUiOiJYWVoiLCJlbWFpbCI6InZhbkBoZXJ6b2cuY28iLCJnb29nbGVfdXNlcl9pZCI6IjIiLCJleHAiOjE2NjYxNzE3NTd9.jE6uHpuyycFecaz7Jkv824Va9vU1NBtqB731LhYs0-A&quot;,
+    &quot;role&quot;: &quot;super_admin&quot;,
+    &quot;organizations&quot;: [
+      {
+        &quot;id&quot;: 1066,
+        &quot;name&quot;: &quot;josh&quot;
+      },
+      {
+        &quot;id&quot;: 1067,
+        &quot;name&quot;: &quot;google&quot;
+      },
+      {
+        &quot;id&quot;: 1068,
+        &quot;name&quot;: &quot;Genie Johns CPA&quot;
+      },
+      {
+        &quot;id&quot;: 1069,
+        &quot;name&quot;: &quot;Keiko Olson&quot;
+      }
+    ]
+  }
 }</pre>
       </div>
     </div>

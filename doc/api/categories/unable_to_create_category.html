@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Departments API</title>
+    <title>Categories API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Departments API</h1>
+      <h1>Categories API</h1>
 
       <div class="article">
-        <h2>Pass invalid department id of organization to which user is not registered</h2>
-        <h3>GET departments/:id/users</h3>
+        <h2>Unable to create category</h2>
+        <h3>POST /categories</h3>
 
 
 
@@ -119,14 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MjEsIm5hbWUiOiJYWVoiLCJlbWFpbCI6Im1pcmFuZGFfbGl0dGxlQHRyb21wLXBhZGJlcmcub3JnIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NjE3MTc1N30.kOYpuHhr6CIXKZrv5_jmXLPyv69AkIvoB6HMDq1rVH0
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MTUsImVtYWlsIjoiZ3JhaGFtQHNjaGltbWVsLXdlYmVyLm5hbWUiLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY2MTcxNzU3fQ.irTsnQDB9jQPWP6rWCQGAWNFfOfvJabaznaFkfQqQ6I
 Host: example.org
+Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET departments/1181/users</pre>
+          <pre class="request route highlight">POST /categories</pre>
 
 
+            <h4>Body</h4>
+            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=1160</pre>
 
 
             <h3>Response</h3>
@@ -140,14 +143,14 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 21214f5d-4b0c-477a-b4e3-3ca96cf35dc3
-X-Runtime: 0.006815
-Content-Length: 49</pre>
+X-Request-Id: 28af59ab-57b6-4681-9cec-ec0906449ae2
+X-Runtime: 0.007569
+Content-Length: 41</pre>
             <h4>Status</h4>
-            <pre class="response status">403 Forbidden</pre>
+            <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;User not registered to organization&quot;
+  &quot;message&quot;: &quot;Unable to create categories&quot;
 }</pre>
       </div>
     </div>

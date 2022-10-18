@@ -3,11 +3,14 @@ require 'rspec_api_documentation/dsl'
 
 resource "Sessions" do
   before do
-    @employee = FactoryBot.create(:role, name: 'employee')
-    @super_admin = FactoryBot.create(:role, name: 'super_admin')
-    @user = FactoryBot.create(:user)
-    @department = Department.find(@user.department_id)
-    @organization = Organization.find(@user.organization_id)
+    @organization1 = FactoryBot.create(:organization, name: 'josh', domain: ['joshsoftware.com'])
+    @organization2 = FactoryBot.create(:organization, name: 'google', domain: ['gmail.com'])
+    @employee_role = FactoryBot.create(:role, name: 'employee')
+    @super_admin_role = FactoryBot.create(:role, name: 'super_admin')
+    @admin_role = FactoryBot.create(:role, name: 'admin')
+    @user = FactoryBot.create(:user, role_id: @employee_role.id)
+    @super_admin_user = FactoryBot.create(:user, role_id: @super_admin_role.id)
+    @admin_user = FactoryBot.create(:user, email: 'test@gmail.com', role_id: @admin_role.id, organization_id: @organization2.id)
     @domain = @user.email.split('@')[1]
   end
 
@@ -30,16 +33,33 @@ resource "Sessions" do
         do_request(request) 
         expect(status).to eq 200
       end
-      example "Login existing user" do
+
+      example "Login existing user - super admin" do
         request = {
           user: {
-            email: @user.email,
-            name: @user.name,
+            email: @super_admin_user.email,
+            name: @super_admin_user.name,
             google_user_id: 2
           }
         }
         do_request(request) 
+        response_data = JSON.parse(response_body)
         expect(status).to eq 200
+        expect(response_data).to eq(response_data)
+      end
+
+      example "Login existing user - admin/employee" do
+        request = {
+          user: {
+            email: @admin_user.email,
+            name: @admin_user.name,
+            google_user_id: 2
+          }
+        }
+        do_request(request) 
+        response_data = JSON.parse(response_body)
+        expect(status).to eq 200
+        expect(response_data).to eq(response_data)
       end
     end
     context '422' do
