@@ -21,7 +21,7 @@ resource 'Tickets' do
 		end
 		context '200' do
       example 'Ticket created successfully ' do
-        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "request", user1.id))
+        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "request", user.id))
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
@@ -53,13 +53,36 @@ resource 'Tickets' do
 				expect(response_data["errors"]).to eq("Ticket type can't be blank")
       end
 
-			example 'Unable to create ticket - Department does not exist' do
+			example 'Unable to create ticket - Department must exist' do
         do_request({ "ticket": ticket_params.except(:department_id) })
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
         expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
-				expect(response_data["errors"]).to eq("Resolver must exist")
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.department'))
       end
+
+			example 'Unable to create ticket - Resolver must exist' do
+        do_request({ "ticket": ticket_params.except(:resolver_id) })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.resolver'))
+      end
+
+			example 'Unable to create ticket - Category must exist' do
+        do_request({ "ticket": ticket_params.except(:category_id) })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('tickets.error.create'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.category'))
+      end
+
+			example 'Unable to create ticket - invalid params' do
+				do_request({})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.invalid_params'))
+			end
     end
   end
 
@@ -182,7 +205,7 @@ resource 'Tickets' do
 															 category_id: category.id, 
 															 department_id: department_obj.id, 
 															 ticket_type: 'request', 
-															 resolver_id: user1.id,
+															 resolver_id: user.id,
 															 requester_id: user1.id)
 		end
 
@@ -238,7 +261,7 @@ resource 'Tickets' do
 			"title": "Laptop issue",
 			"description": "Urgent to resolve",
 			"category_id": category.id,
-			"department_id": department.id,
+			"department_id": department_obj.id,
 			"ticket_type": "request",
 			"resolver_id": user.id
 		}

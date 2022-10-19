@@ -64,8 +64,9 @@ en:
       reopen: "Ticket reopened successfully"
     error:
       create: "Unable to create ticket"
-      category: "Category must exist"
-      resolver: "Resolver must exist"
+      category: "Category must exist in department"
+      resolver: "Resolver must exist in department"
+      department: "Department must exist"
       invalid_params: "Invalid parameters"
       update: "Could not update the ticket"
   ticket:
