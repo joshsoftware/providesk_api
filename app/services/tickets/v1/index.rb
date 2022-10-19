@@ -12,7 +12,6 @@ module Tickets::V1
     error_message = []
     if @department
       @department = change_case(@department)
-      byebug
       departments_list = (Department.select(:id).where(name: @department, organization_id: @organization_id)).pluck(:id)
       if departments_list.count != @department.count
         error_message.append("Department Invalid")
