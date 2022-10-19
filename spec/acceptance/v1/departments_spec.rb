@@ -33,7 +33,7 @@ resource 'Departments' do
         do_request(request)
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
-        expect(response_data["message"]).to eq(I18n.t('department.invalid_params'))
+        expect(response_data["message"]).to eq(I18n.t('department.error.invalid_params'))
       end
 
 

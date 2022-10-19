@@ -6,6 +6,9 @@ Rails.application.routes.draw do
       resources :sessions, only: :create
       resources :categories, only: :create
       resources :departments, only: :create
+
+      resources :organizations, only: :create
+      
       resources :departments do
         member do 
           get 'categories'
