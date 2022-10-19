@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tickets API</title>
+    <title>Organizations API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Tickets API</h1>
+      <h1>Organizations API</h1>
 
       <div class="article">
-        <h2>Unable to create ticket</h2>
-        <h3>POST /tickets</h3>
+        <h2>Organization created successfully</h2>
+        <h3>POST /organizations</h3>
 
 
 
@@ -119,17 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MzAsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.iMBifa9FjkqYO98iw38NH7Jx5DJjmQ7h8C-HNPthDnM
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MDksImVtYWlsIjoibWl0Y2hAamVua2lucy1ib3Njby5iaXoiLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY2MjYyODI3fQ.nhryJdVMCiWKQhorkmme_JCw_TJ-CmF_Aaw44_1X160
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /tickets</pre>
+          <pre class="request route highlight">POST /organizations</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">ticket[title]=Laptop&ticket[description]=Urgent+to+resolve&ticket[category_id]=309&ticket[department_id]=1197&ticket[resolver_id]=830</pre>
+            <pre class="request body">organization[name]=Josh&organization[domain][]=joshsoftware.com&organization[domain][]=joshdigital.com</pre>
 
 
             <h3>Response</h3>
@@ -142,15 +142,16 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-Cache-Control: no-cache
-X-Request-Id: eaeea201-71a0-4508-bce0-6b8a7d8313b1
-X-Runtime: 0.012002
-Content-Length: 37</pre>
+ETag: W/&quot;bbf175749d656df436e99c11fec5e42e&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: c8a80b97-6b97-4de2-8328-afa62a96afc2
+X-Runtime: 0.011828
+Content-Length: 47</pre>
             <h4>Status</h4>
-            <pre class="response status">422 Unprocessable Entity</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Unable to create ticket&quot;
+  &quot;message&quot;: &quot;Organization created successfully&quot;
 }</pre>
       </div>
     </div>

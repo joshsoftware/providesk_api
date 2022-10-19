@@ -40,6 +40,15 @@ en:
 
   hello: "Hello world"
 
+
+  organizations:
+    success: 
+      create: "Organization created successfully"
+    error:
+      create: "Unable to create organization"
+      invalid_params: "Enter valid parameters"
+      exists: "This name has already been taken"
+
   department:
     success:
       create: "Department created successfully"
@@ -56,6 +65,8 @@ en:
       create: "Categories created successfully"
     error:
       create: "Unable to create categories"
+      invalid_params: "Enter valid parameters"
+      exists: "This name has already been taken"
   
   tickets:
     success:
@@ -64,11 +75,13 @@ en:
       reopen: "Ticket reopened successfully"
     error:
       create: "Unable to create ticket"
+      category: "Category must exist in department"
+      resolver: "Resolver must exist in department"
+      department: "Department must exist"
+      invalid_params: "Invalid parameters"
       update: "Could not update the ticket"
     show:
-      not_available: "No ticket with this filter"
-      invalid_filter: "Filter in_valid"
-
+      invalid_filter: "Filter invalid"
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"
     inprogress: "The work has been started on the %{ticket_type}"

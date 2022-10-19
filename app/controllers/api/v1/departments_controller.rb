@@ -11,7 +11,7 @@ module Api::V1
           render json: { message: result["error_message"] } , status: :unprocessable_entity
         end
       else
-        render json: { message: I18n.t('department.invalid_params')}, status: :unprocessable_entity
+        render json: { message: I18n.t('department.error.invalid_params')}, status: :unprocessable_entity
       end
     end
 

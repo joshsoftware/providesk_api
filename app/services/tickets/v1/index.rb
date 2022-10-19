@@ -29,7 +29,6 @@ module Tickets::V1
       end
     end
     if @type
-      @type.map!(&:downcase)
       @type.select!{ |x| (x == "complaint" || x == "request") }
       where_hash["ticket_type"] = @type
     end

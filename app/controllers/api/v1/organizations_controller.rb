@@ -1,5 +1,22 @@
 module Api::V1
   class OrganizationsController < ApplicationController
+
+    def create
+      begin
+        result = Organizations::V1::Create.new(organization_params, current_user).call
+        if result[:status]
+          render json: { message: I18n.t('organizations.success.create') }
+        else
+          render json: { message: I18n.t('organizations.error.create'), 
+                        errors: result[:error_message] }, 
+                status: :unprocessable_entity
+        end
+      rescue ActionController::ParameterMissing
+        render json: { message: I18n.t('organizations.error.invalid_params') }, 
+              status: :unprocessable_entity
+      end
+    end
+
     def departments
       result = Organizations::V1::Departments.new(params, current_user).call
       if result["status"]
@@ -12,5 +29,11 @@ module Api::V1
         end
       end
     end
+    private
+
+    def organization_params
+      params.require(:organization).permit(:name, domain: [])
+    end
+     
   end
 end
