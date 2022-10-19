@@ -4,7 +4,7 @@ class Role < ApplicationRecord
   validates_associated :users
   validates :name, presence: true, uniqueness: true
 
-  before_validation :downcase_name, only: [:create, :update]
+  before_validation :change_case_name, only: [:create, :update]
 
   ROLE = { super_admin: "super_admin", admin: "admin" }
 end
