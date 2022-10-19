@@ -49,7 +49,8 @@ module Api::V1
         organization_list = Organization.select(:id, :name).find @user.organization_id
         [organization_list]
       else
-        organization_list = []
+        organization_list = Organization.select(:id, :name).find @user.organization_id
+        [organization_list]
       end
     end
   end
