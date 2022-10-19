@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Sessions API</title>
+    <title>Tickets API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,47 +106,12 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Sessions API</h1>
+      <h1>Tickets API</h1>
 
       <div class="article">
-        <h2>Login existing user</h2>
-        <h3>POST /sessions</h3>
+        <h2>Could not reopen ticket due to invalid transition</h2>
+        <h3>PUT tickets/:id</h3>
 
-          <h3>Parameters</h3>
-          <table class="parameters table table-striped table-bordered table-condensed">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>
-                    <span class="name">email</span>
-                </td>
-                <td>
-                  <span class="description">Email id of user</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">name</span>
-                </td>
-                <td>
-                  <span class="description">Name of user</span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                    <span class="name">google_user_id</span>
-                </td>
-                <td>
-                  <span class="description">google_user_id of user</span>
-                </td>
-              </tr>
-            </tbody>
-          </table>
 
 
           <h3>Request</h3>
@@ -154,16 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MzMsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.iv0G77f-RHSGZGik_mEZmcATDjUONxruQvuTyg1fV6A
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /sessions</pre>
+          <pre class="request route highlight">PUT tickets/256</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">user[email]=user1%40josh.com&user[name]=Aditya&user[google_user_id]=2</pre>
+            <pre class="request body">ticket_result[is_customer_satisfied]=false&ticket_result[rating]=2&ticket_result[state_action]=reopen&ticket_result[started_reason]=Not+satisfied+with+your+service</pre>
 
 
             <h3>Response</h3>
@@ -176,20 +142,16 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;4c1fe56cb501694d5d3700e94ae26003&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 0b6e7030-8f6d-4435-adcd-a4fbe9a90870
-X-Runtime: 0.079737
-Content-Length: 270</pre>
+Cache-Control: no-cache
+X-Request-Id: 384287f6-fd5e-4827-9020-0c573f58b608
+X-Runtime: 0.007148
+Content-Length: 95</pre>
             <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
+            <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Logged in successfully&quot;,
-  &quot;data&quot;: {
-    &quot;auth_token&quot;: &quot;eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxNjUsIm5hbWUiOiJBZGl0eWEiLCJlbWFpbCI6InVzZXIxQGpvc2guY29tIiwiZ29vZ2xlX3VzZXJfaWQiOiIyIiwiZXhwIjoxNjYzNDkzODAyfQ.ixRp1H2wdDB8uWdPzpgTk1cGcQHAKwKSfNU4N-g9pn4&quot;,
-    &quot;role&quot;: &quot;employee&quot;
-  }
+  &quot;message&quot;: &quot;Could not update the ticket&quot;,
+  &quot;errors&quot;: &quot;Invalid transition from assigned to reopen&quot;
 }</pre>
       </div>
     </div>

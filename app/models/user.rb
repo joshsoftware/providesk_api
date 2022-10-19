@@ -10,6 +10,14 @@ class User < ApplicationRecord
 
   before_validation :assign_ids, on: [:create, :update]
 
+  def is_super_admin?
+    Role.find(self.role_id).name.eql?(Role::ROLE[:super_admin])
+  end
+
+  def is_admin?
+    Role.find(self.role_id).name.eql?(Role::ROLE[:admin])
+  end
+
   def assign_ids
     if email
       domain = email.split('@')[1]

@@ -29,6 +29,9 @@ gem 'rack-cors'
 #Use versionist for handling headers based api versioning
 gem 'versionist'
 
+# Use Serializers to generate JSON in an object-oriented and convention-driven manner.
+gem 'active_model_serializers'
+
 #Use aasm for state machine management
 gem 'aasm', '~> 5.3'
 

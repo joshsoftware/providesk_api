@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Organizations API</title>
+    <title>Departments API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Organizations API</h1>
+      <h1>Departments API</h1>
 
       <div class="article">
-        <h2>Listing departments for organization with valid user</h2>
-        <h3>GET /organizations/:id/departments</h3>
+        <h2>Pass invalid department id which does not exist on database</h2>
+        <h3>GET departments/:id/categories</h3>
 
 
 
@@ -119,12 +119,12 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MjUsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImxpemV0aEBhdWZkZXJoYXIuaW8iLCJnb29nbGVfdXNlcl9pZCI6MSwiZXhwIjoxNjY2MTcxNzU4fQ.efooSy68JPHOho1EqjYqw_gsMTdrD7JH6sPPCdXcPvE
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MjMsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImR1c3RpQHlvc3QuY29tIiwiZ29vZ2xlX3VzZXJfaWQiOjEsImV4cCI6MTY2NjE3MTc1OH0.utGSi3E0Cgwl4iBwhAVaNb4Zr7OjB451B4skGHudNbY
 Host: example.org
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET /organizations/1104/departments</pre>
+          <pre class="request route highlight">GET departments/0/categories</pre>
 
 
 
@@ -139,24 +139,15 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;8e8f41370c27ce1492f1f4636007261e&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 1b851227-a76e-48fc-aefc-8f62a5e1d7d6
-X-Runtime: 0.009601
-Content-Length: 76</pre>
+Cache-Control: no-cache
+X-Request-Id: 5c59be4e-8c1a-435a-8f5c-dc55718ea149
+X-Runtime: 0.007050
+Content-Length: 34</pre>
             <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
+            <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;data&quot;: {
-    &quot;total&quot;: 1,
-    &quot;departments&quot;: [
-      {
-        &quot;id&quot;: 1191,
-        &quot;name&quot;: &quot;Guillermo Green MD&quot;
-      }
-    ]
-  }
+  &quot;message&quot;: &quot;Department not found&quot;
 }</pre>
       </div>
     </div>
