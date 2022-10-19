@@ -65,6 +65,8 @@ en:
       create: "Categories created successfully"
     error:
       create: "Unable to create categories"
+      invalid_params: "Enter valid parameters"
+      exists: "This name has already been taken"
   
   tickets:
     success:

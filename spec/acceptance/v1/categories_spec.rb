@@ -29,7 +29,16 @@ resource 'Categories' do
     end
 
     context '422' do
-      example 'Unable to create category' do
+      example 'Unable to create category due to invalid params' do
+        do_request({"categories": {
+          } 
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('categories.error.invalid_params'))
+      end
+
+      example 'Unable to create category due to already existing name' do
         do_request({"categories": {
 					"name": "Hardware",
           "priority": 0,
@@ -39,6 +48,31 @@ resource 'Categories' do
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
         expect(response_data["message"]).to eq(I18n.t('categories.error.create'))
+        expect(response_data["errors"]).to eq(I18n.t('categories.error.exists'))
+      end
+
+      example "Unable to create category when name is blank" do
+        do_request({"categories": {
+          "priority": 0,
+          "department_id": department.id
+          } 
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('categories.error.create'))
+        expect(response_data["errors"]).to eq("Name can't be blank")
+      end
+
+      example "Unable to create category when department is blank" do
+        do_request({"categories": {
+          "name": "Software",
+          "priority": 0
+          } 
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data["message"]).to eq(I18n.t('categories.error.create'))
+        expect(response_data["errors"]).to eq("Department must exist")
       end
     end
   end
