@@ -112,6 +112,25 @@ table th, table td {
         <h2>invalid filters</h2>
         <h3>GET tickets</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">department</span>
+                </td>
+                <td>
+                  <span class="description"> department</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -119,7 +138,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4NDEsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.Cta2YBlPVnKAXbQHHiQ4cov9QyqYzKufN0TbrPAWdws
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDksImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYyNjI4Mjl9.v7r4ow86wJ3Dm5Nc0XJuOg6U744yIRMMJTiOHp_onbQ
 Host: example.org
 Cookie: </pre>
 
@@ -142,14 +161,14 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: c4fb99e4-ab85-4668-950f-a2f00f419352
-X-Runtime: 0.006942
-Content-Length: 49</pre>
+X-Request-Id: 044eaec5-3675-4c6c-a52e-35a4ddd57f12
+X-Runtime: 0.006731
+Content-Length: 48</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Filter in_valid, Department Invalid&quot;
+  &quot;message&quot;: &quot;Filter invalid, Department Invalid&quot;
 }</pre>
       </div>
     </div>

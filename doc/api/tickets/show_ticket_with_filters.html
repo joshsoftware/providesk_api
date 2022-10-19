@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Departments API</title>
+    <title>Tickets API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,12 +106,31 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Departments API</h1>
+      <h1>Tickets API</h1>
 
       <div class="article">
-        <h2>Create a department successfully </h2>
-        <h3>POST /departments</h3>
+        <h2>show ticket with filters</h2>
+        <h3>GET tickets</h3>
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">department</span>
+                </td>
+                <td>
+                  <span class="description"> department</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -119,17 +138,16 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MDAsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImdyYW52aWxsZUBicnVlbi5pbyIsImdvb2dsZV91c2VyX2lkIjoxLCJleHAiOjE2NjYyNjI4Mjd9.RyYBrJ9Vdjev2reM1y9BWUeKrHrweU5104SJYGl4UpM
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDcsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYyNjI4Mjl9.Y68rjk1DEwBf1VjZaBoq8_MVjOYrkIxYceoqWKWXWoc
 Host: example.org
-Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /departments</pre>
+          <pre class="request route highlight">GET tickets?department=Scarlet+Considine</pre>
 
+            <h4>Query Parameters</h4>
+            <pre class="request query_parameters highlight">department: Scarlet Considine</pre>
 
-            <h4>Body</h4>
-            <pre class="request body">name=Casey+Ruecker&organization_id=488</pre>
 
 
             <h3>Response</h3>
@@ -142,17 +160,36 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;1c298cf03d6289f9519106e05b6f8255&quot;
+ETag: W/&quot;87a1024c092852c2b6fbaf3ef8f1705f&quot;
 Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5742c43f-27f3-4df4-924d-5660c9db7567
-X-Runtime: 0.011658
-Content-Length: 45</pre>
+X-Request-Id: e70ac9d8-743c-4238-8faf-faa02a2e6d3c
+X-Runtime: 0.012874
+Content-Length: 340</pre>
             <h4>Status</h4>
             <pre class="response status">200 OK</pre>
               <h4>Body</h4>
-              <pre class="response body">{
-  &quot;message&quot;: &quot;Department created successfully&quot;
-}</pre>
+              <pre class="response body">[
+  {
+    &quot;id&quot;: 116,
+    &quot;title&quot;: &quot;Laptop Issue&quot;,
+    &quot;description&quot;: &quot;RAM Issue&quot;,
+    &quot;ticket_number&quot;: null,
+    &quot;status&quot;: &quot;assigned&quot;,
+    &quot;priority&quot;: &quot;High&quot;,
+    &quot;ticket_type&quot;: &quot;request&quot;,
+    &quot;resolved_at&quot;: null,
+    &quot;created_at&quot;: &quot;2022-10-19T10:47:09.233Z&quot;,
+    &quot;category&quot;: &quot;Hardware&quot;,
+    &quot;department&quot;: &quot;Scarlet Considine&quot;,
+    &quot;resolver&quot;: &quot;XYZ&quot;,
+    &quot;requester&quot;: &quot;XYZ&quot;,
+    &quot;permited_events&quot;: [
+      &quot;start&quot;,
+      &quot;approve&quot;,
+      &quot;reject&quot;
+    ]
+  }
+]</pre>
       </div>
     </div>
   </body>

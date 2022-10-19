@@ -75,11 +75,13 @@ en:
       reopen: "Ticket reopened successfully"
     error:
       create: "Unable to create ticket"
+      category: "Category must exist in department"
+      resolver: "Resolver must exist in department"
+      department: "Department must exist"
+      invalid_params: "Invalid parameters"
       update: "Could not update the ticket"
     show:
-      not_available: "No ticket with this filter"
-      invalid_filter: "Filter in_valid"
-
+      invalid_filter: "Filter invalid"
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"
     inprogress: "The work has been started on the %{ticket_type}"
