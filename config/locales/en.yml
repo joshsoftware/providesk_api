@@ -69,6 +69,8 @@ en:
       department: "Department must exist"
       invalid_params: "Invalid parameters"
       update: "Could not update the ticket"
+    show:
+      invalid_filter: "Filter invalid"
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"
     inprogress: "The work has been started on the %{ticket_type}"

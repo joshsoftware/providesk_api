@@ -11,7 +11,6 @@ module Tickets::V1
     where_hash = {}
     error_message = []
     if @department
-      @department.map!(&:downcase)
       departments_list = (Department.select(:id).where(name: @department, organization_id: @organization_id)).pluck(:id)
       if departments_list.count != @department.count
         error_message.append("Department Invalid")
@@ -20,7 +19,6 @@ module Tickets::V1
       end
     end
     if @category
-      @category.map!(&:downcase)
       category_list = (Category.select(:id).where(name: @category)).pluck(:id)
       if category_list.count != @category.count
         error_message.append("Category Invalid")
@@ -29,7 +27,6 @@ module Tickets::V1
       end
     end
     if @type
-      @type.map!(&:downcase)
       @type.select!{ |x| (x == "complaint" || x == "request") }
       where_hash["ticket_type"] = @type
     end
