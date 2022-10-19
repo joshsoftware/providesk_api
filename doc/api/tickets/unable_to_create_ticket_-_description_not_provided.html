@@ -109,13 +109,8 @@ table th, table td {
       <h1>Tickets API</h1>
 
       <div class="article">
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_description_not_provided.html
         <h2>Unable to create ticket - Description not provided</h2>
         <h3>POST /tickets</h3>
-=======
-        <h2>Could not reopen ticket due to invalid transition</h2>
-        <h3>PUT tickets/:id</h3>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/could_not_reopen_ticket_due_to_invalid_transition.html
 
 
 
@@ -124,29 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_description_not_provided.html
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjUsImVtYWlsIjoiamF5LnJlaWxseUBibGljay5jbyIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjU0ODk0OTl9.b6RBVbfQKfz80yoP1aYAbYSJ1AIoV0i_BDupYmueJBg
-=======
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MzMsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.iv0G77f-RHSGZGik_mEZmcATDjUONxruQvuTyg1fV6A
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/could_not_reopen_ticket_due_to_invalid_transition.html
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MjEsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYyNjI4Mjh9.1qDe5dPnTGWiAfJ6VfyWqj52FmB_RsMrqMKSBdwm5rg
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_description_not_provided.html
           <pre class="request route highlight">POST /tickets</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">ticket[title]=Laptop+issue&ticket[category_id]=194&ticket[department_id]=496&ticket[ticket_type]=request&ticket[resolver_id]=465</pre>
-=======
-          <pre class="request route highlight">PUT tickets/256</pre>
-
-
-            <h4>Body</h4>
-            <pre class="request body">ticket_result[is_customer_satisfied]=false&ticket_result[rating]=2&ticket_result[state_action]=reopen&ticket_result[started_reason]=Not+satisfied+with+your+service</pre>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/could_not_reopen_ticket_due_to_invalid_transition.html
+            <pre class="request body">ticket[title]=Laptop+issue&ticket[category_id]=201&ticket[department_id]=688&ticket[ticket_type]=request&ticket[resolver_id]=421</pre>
 
 
             <h3>Response</h3>
@@ -160,26 +143,15 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_description_not_provided.html
-X-Request-Id: 4ad75cd5-36e8-4516-8239-b1f1af97daba
-X-Runtime: 0.014554
+X-Request-Id: 05c8f7e9-e001-4f28-8e02-ced0a775ee05
+X-Runtime: 0.012315
 Content-Length: 75</pre>
-=======
-X-Request-Id: 384287f6-fd5e-4827-9020-0c573f58b608
-X-Runtime: 0.007148
-Content-Length: 95</pre>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/could_not_reopen_ticket_due_to_invalid_transition.html
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_description_not_provided.html
   &quot;message&quot;: &quot;Unable to create ticket&quot;,
   &quot;errors&quot;: &quot;Description can&#39;t be blank&quot;
-=======
-  &quot;message&quot;: &quot;Could not update the ticket&quot;,
-  &quot;errors&quot;: &quot;Invalid transition from assigned to reopen&quot;
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/could_not_reopen_ticket_due_to_invalid_transition.html
 }</pre>
       </div>
     </div>

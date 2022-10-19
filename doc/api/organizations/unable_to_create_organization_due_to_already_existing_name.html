@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Departments API</title>
+    <title>Organizations API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,11 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Departments API</h1>
+      <h1>Organizations API</h1>
 
       <div class="article">
-        <h2>Create a department successfully </h2>
-        <h3>POST /departments</h3>
+        <h2>Unable to create organization due to already existing name</h2>
+        <h3>POST /organizations</h3>
 
 
 
@@ -119,17 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MDAsIm5hbWUiOiJYWVoiLCJlbWFpbCI6ImdyYW52aWxsZUBicnVlbi5pbyIsImdvb2dsZV91c2VyX2lkIjoxLCJleHAiOjE2NjYyNjI4Mjd9.RyYBrJ9Vdjev2reM1y9BWUeKrHrweU5104SJYGl4UpM
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MTAsImVtYWlsIjoib2N0YXZpb0BraWVobi5vcmciLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY2MjYyODI3fQ.lau2vBdWnerbYlWyeD9Hn59zDxHPZUbuG-xu1YDixAk
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /departments</pre>
+          <pre class="request route highlight">POST /organizations</pre>
 
 
             <h4>Body</h4>
-            <pre class="request body">name=Casey+Ruecker&organization_id=488</pre>
+            <pre class="request body">organization[name]=google&organization[domain][]=gmail.com</pre>
 
 
             <h3>Response</h3>
@@ -142,16 +142,16 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-ETag: W/&quot;1c298cf03d6289f9519106e05b6f8255&quot;
-Cache-Control: max-age=0, private, must-revalidate
-X-Request-Id: 5742c43f-27f3-4df4-924d-5660c9db7567
-X-Runtime: 0.011658
-Content-Length: 45</pre>
+Cache-Control: no-cache
+X-Request-Id: 6a52873c-62bb-4b3e-88bb-202f44d8e899
+X-Runtime: 0.006436
+Content-Length: 87</pre>
             <h4>Status</h4>
-            <pre class="response status">200 OK</pre>
+            <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-  &quot;message&quot;: &quot;Department created successfully&quot;
+  &quot;message&quot;: &quot;Unable to create organization&quot;,
+  &quot;errors&quot;: &quot;This name has already been taken&quot;
 }</pre>
       </div>
     </div>

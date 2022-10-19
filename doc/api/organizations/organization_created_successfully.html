@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tickets API</title>
+    <title>Organizations API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,16 +106,11 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Tickets API</h1>
+      <h1>Organizations API</h1>
 
       <div class="article">
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_department_does_not_exist.html
-        <h2>Unable to create ticket - Department does not exist</h2>
-        <h3>POST /tickets</h3>
-=======
-        <h2>Unable to create category</h2>
-        <h3>POST /categories</h3>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/categories/unable_to_create_category.html
+        <h2>Organization created successfully</h2>
+        <h3>POST /organizations</h3>
 
 
 
@@ -124,25 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_department_does_not_exist.html
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NjcsImVtYWlsIjoiZGlvbl93aWxraW5zb25AYm9zY28ubmFtZSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjU0ODk0OTl9.S-UUNyXQUdTTi9l50Oh0elMbGdQw2qa7m9wdiEAofH8
-=======
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4MTUsImVtYWlsIjoiZ3JhaGFtQHNjaGltbWVsLXdlYmVyLm5hbWUiLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY2MTcxNzU3fQ.irTsnQDB9jQPWP6rWCQGAWNFfOfvJabaznaFkfQqQ6I
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/categories/unable_to_create_category.html
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0MDksImVtYWlsIjoibWl0Y2hAamVua2lucy1ib3Njby5iaXoiLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY2MjYyODI3fQ.nhryJdVMCiWKQhorkmme_JCw_TJ-CmF_Aaw44_1X160
 Host: example.org
 Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">POST /tickets</pre>
+          <pre class="request route highlight">POST /organizations</pre>
 
 
             <h4>Body</h4>
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_department_does_not_exist.html
-            <pre class="request body">ticket[title]=Laptop+issue&ticket[description]=Urgent+to+resolve&ticket[category_id]=196&ticket[ticket_type]=request&ticket[resolver_id]=467</pre>
-=======
-            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=1160</pre>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/categories/unable_to_create_category.html
+            <pre class="request body">organization[name]=Josh&organization[domain][]=joshsoftware.com&organization[domain][]=joshdigital.com</pre>
 
 
             <h3>Response</h3>
@@ -155,26 +142,16 @@ X-Permitted-Cross-Domain-Policies: none
 Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
-Cache-Control: no-cache
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_department_does_not_exist.html
-X-Request-Id: 018a9ca3-86d1-4bd6-a0c0-6bdb3500eb02
-X-Runtime: 0.008080
-Content-Length: 68</pre>
-=======
-X-Request-Id: 28af59ab-57b6-4681-9cec-ec0906449ae2
-X-Runtime: 0.007569
-Content-Length: 41</pre>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/categories/unable_to_create_category.html
+ETag: W/&quot;bbf175749d656df436e99c11fec5e42e&quot;
+Cache-Control: max-age=0, private, must-revalidate
+X-Request-Id: c8a80b97-6b97-4de2-8328-afa62a96afc2
+X-Runtime: 0.011828
+Content-Length: 47</pre>
             <h4>Status</h4>
-            <pre class="response status">422 Unprocessable Entity</pre>
+            <pre class="response status">200 OK</pre>
               <h4>Body</h4>
               <pre class="response body">{
-<<<<<<< HEAD:doc/api/tickets/unable_to_create_ticket_-_department_does_not_exist.html
-  &quot;message&quot;: &quot;Unable to create ticket&quot;,
-  &quot;errors&quot;: &quot;Resolver must exist&quot;
-=======
-  &quot;message&quot;: &quot;Unable to create categories&quot;
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/categories/unable_to_create_category.html
+  &quot;message&quot;: &quot;Organization created successfully&quot;
 }</pre>
       </div>
     </div>

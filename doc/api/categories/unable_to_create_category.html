@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tickets API</title>
+    <title>Categories API</title>
     <meta charset="utf-8">
     <style>
       
@@ -106,7 +106,7 @@ table th, table td {
   </head>
   <body>
     <div class="container">
-      <h1>Tickets API</h1>
+      <h1>Categories API</h1>
 
       <div class="article">
         <h2>Unable to create category</h2>
@@ -119,18 +119,17 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDksImVtYWlsIjoiYXVndXN0dXNAa2VydHptYW5uLmluZm8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY1NDg5NDk4fQ.GD6cJLSecU6xfD_O6TgbdUie87fOVgAxzocg-6xeEEI
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjozOTksImVtYWlsIjoic2hpcmxlZW5AZnJhbWkuaW8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY2MjYyODI3fQ.ilG7oVqjdj2-HT10AV9oZKC6b4gqRQQNkcjHJYcuYi4
 Host: example.org
+Content-Type: application/x-www-form-urlencoded
 Cookie: </pre>
 
           <h4>Route</h4>
-          <pre class="request route highlight">GET tickets?department=NonExistingDepartment</pre>
+          <pre class="request route highlight">POST /categories</pre>
 
-            <h4>Query Parameters</h4>
-            <pre class="request query_parameters highlight">department: NonExistingDepartment</pre>
 
             <h4>Body</h4>
-            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=459</pre>
+            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=643</pre>
 
 
             <h3>Response</h3>
@@ -144,8 +143,8 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-X-Request-Id: 96a29f81-41d3-4cf8-a30f-7c2475f0e251
-X-Runtime: 0.008490
+X-Request-Id: 1450ac08-8a70-4cf5-9539-dca1a4fc6658
+X-Runtime: 0.006467
 Content-Length: 41</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>

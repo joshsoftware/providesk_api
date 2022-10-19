@@ -109,14 +109,28 @@ table th, table td {
       <h1>Tickets API</h1>
 
       <div class="article">
-<<<<<<< HEAD:doc/api/categories/unable_to_create_category.html
-        <h2>Unable to create category</h2>
-        <h3>POST /categories</h3>
-=======
         <h2>invalid filters</h2>
         <h3>GET tickets</h3>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/invalid_filters.html
 
+          <h3>Parameters</h3>
+          <table class="parameters table table-striped table-bordered table-condensed">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                    <span class="name">department</span>
+                </td>
+                <td>
+                  <span class="description"> department</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
 
 
           <h3>Request</h3>
@@ -124,11 +138,7 @@ table th, table td {
             <h4>Headers</h4>
             <pre class="request headers">Version: HTTP/1.0
 Accept: application/vnd.providesk; version=1
-<<<<<<< HEAD:doc/api/categories/unable_to_create_category.html
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDksImVtYWlsIjoiYXVndXN0dXNAa2VydHptYW5uLmluZm8iLCJuYW1lIjoiWFlaIiwiZXhwIjoxNjY1NDg5NDk4fQ.GD6cJLSecU6xfD_O6TgbdUie87fOVgAxzocg-6xeEEI
-=======
-Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo4NDEsImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYxNzE3NTh9.Cta2YBlPVnKAXbQHHiQ4cov9QyqYzKufN0TbrPAWdws
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/invalid_filters.html
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDksImVtYWlsIjoiZmFrZXJAam9zaHNvZnR3YXJlLmNvbSIsIm5hbWUiOiJYWVoiLCJleHAiOjE2NjYyNjI4Mjl9.v7r4ow86wJ3Dm5Nc0XJuOg6U744yIRMMJTiOHp_onbQ
 Host: example.org
 Cookie: </pre>
 
@@ -138,8 +148,6 @@ Cookie: </pre>
             <h4>Query Parameters</h4>
             <pre class="request query_parameters highlight">department: NonExistingDepartment</pre>
 
-            <h4>Body</h4>
-            <pre class="request body">categories[name]=Hardware&categories[priority]=0&categories[department_id]=459</pre>
 
 
             <h3>Response</h3>
@@ -153,24 +161,14 @@ Referrer-Policy: strict-origin-when-cross-origin
 Content-Type: application/json; charset=utf-8
 Vary: Accept, Origin
 Cache-Control: no-cache
-<<<<<<< HEAD:doc/api/categories/unable_to_create_category.html
-X-Request-Id: 96a29f81-41d3-4cf8-a30f-7c2475f0e251
-X-Runtime: 0.008490
-Content-Length: 41</pre>
-=======
-X-Request-Id: c4fb99e4-ab85-4668-950f-a2f00f419352
-X-Runtime: 0.006942
-Content-Length: 49</pre>
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/invalid_filters.html
+X-Request-Id: 044eaec5-3675-4c6c-a52e-35a4ddd57f12
+X-Runtime: 0.006731
+Content-Length: 48</pre>
             <h4>Status</h4>
             <pre class="response status">422 Unprocessable Entity</pre>
               <h4>Body</h4>
               <pre class="response body">{
-<<<<<<< HEAD:doc/api/categories/unable_to_create_category.html
-  &quot;message&quot;: &quot;Unable to create categories&quot;
-=======
-  &quot;message&quot;: &quot;Filter in_valid, Department Invalid&quot;
->>>>>>> a19c62dfc3b362e44c55f391d563d043240df3c4:doc/api/tickets/invalid_filters.html
+  &quot;message&quot;: &quot;Filter invalid, Department Invalid&quot;
 }</pre>
       </div>
     </div>
