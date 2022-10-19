@@ -40,7 +40,6 @@ module Tickets::V1
     end
 
     def save_ticket
-      byebug
       return @response if @response
       @requester_id = @current_user.id
       @ticket = Ticket.new(title: @title, description: @description, priority: @priority,
