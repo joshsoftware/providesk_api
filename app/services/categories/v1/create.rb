@@ -9,8 +9,8 @@ module Categories::V1
     end
 
     def call
-      not_exits = !check_existing_category_name && save_category
-      not_exits ? { status: true } : { status: false } 
+      not_exists = !check_existing_category_name && save_category
+      not_exists ? { status: true } : { status: false } 
     end
 
     def check_existing_category_name
