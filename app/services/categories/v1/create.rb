@@ -1,6 +1,5 @@
 module Categories::V1
   class Create
-    
     def initialize(categories, current_user)
       @name = categories[:name]
       @priority = categories[:priority].to_i
@@ -16,7 +15,7 @@ module Categories::V1
     end
 
     def check_existing_category_name
-      if Category.find_by(name: @name)
+      if Category.find_by(name: @name, department_id: @department_id)
         return { status: false, error_message: I18n.t('categories.error.exists') }
       else
         return { status: true }
