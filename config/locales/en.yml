@@ -33,10 +33,13 @@ en:
   session:
     expired: "The session has expired."
     invalid: "Token is invalid"
+
   login:
     success: "Logged in successfully"
     failure: "Invalid Credentials"
+
   hello: "Hello world"
+
 
   organizations:
     success: 
@@ -45,13 +48,18 @@ en:
       create: "Unable to create organization"
       invalid_params: "Enter valid parameters"
       exists: "This name has already been taken"
+
   department:
     success:
       create: "Department created successfully"
     error:
       create: "Unable to create department"
       invalid_params: "Invalid params."
-
+      invalid_department_id: "Department not found"
+  organization:
+    error:
+      unauthorized_user: "User not registered to organization"
+      invalid_organization_id: "Organization not found"
   categories:
     success:
       create: "Categories created successfully"
@@ -61,11 +69,19 @@ en:
   tickets:
     success:
       create: "Ticket created successfully"
+      close: "Ticket closed successfully"
+      reopen: "Ticket reopened successfully"
     error:
       create: "Unable to create ticket"
+      update: "Could not update the ticket"
+    show:
+      not_available: "No ticket with this filter"
+      invalid_filter: "Filter in_valid"
+
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver}"
     inprogress: "The work has been started on the %{ticket_type}"
     resolved: "Your %{ticket_type} is resolved by %{resolver}"
     closed: "The complaint is closed by %{requester}"
     rejected: "The complaint is rejected by %{resolver}"
+    for_approval: "The complaint will go through a approval"

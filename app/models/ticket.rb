@@ -11,13 +11,15 @@ class Ticket < ApplicationRecord
   validates :title, presence: true
   validates :description, presence: true
   validates :ticket_type, presence: true
+  #validates :ticket_number, presence: true
 
   enum status: {
     "assigned": 0,
     "inprogress": 1,
-    "resolved": 2,
-    "closed": 3,
-    "rejected": 4
+    "for_approval": 2,
+    "resolved": 3,
+    "closed": 4,
+    "rejected": 5
   }
 
   enum priority: {
@@ -35,6 +37,7 @@ class Ticket < ApplicationRecord
   aasm column: :status, whiny_persistence: true do
     state :assigned, initial: true
     state :inprogress
+    state :for_approval
     state :resolved
     state :closed
     state :rejected
@@ -42,11 +45,15 @@ class Ticket < ApplicationRecord
     after_all_events :add_activity, :send_notification
 
     event :start do
-      transitions from: :assigned, to: :inprogress
+      transitions from: [:assigned, :for_approval], to: :inprogress
+    end
+
+    event :approve do 
+      transitions from: :assigned, to: :for_approval
     end
 
     event :reject do
-      transitions from: :assigned, to: :rejected
+      transitions from: [:assigned, :for_approval], to: :rejected
     end
 
     event :resolve do
@@ -54,12 +61,16 @@ class Ticket < ApplicationRecord
     end
 
     event :close do
-      transitions from: :resolve, to: :closed
+      transitions from: :resolved, to: :closed
+    end
+
+    event :reopen do
+      transitions from: :resolved, to: :for_approval
     end
   end
 
   def add_activity
-    Activity.create( assigned_from: "", assigned_to: "", current_ticket_status: status, ticket_id: id, 
+    Activity.create( assigned_from: resolver.name, assigned_to: resolver.name, current_ticket_status: status, ticket_id: id, 
                      description: I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
                    )
   end
