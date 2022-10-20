@@ -11,6 +11,7 @@ module Tickets::V1
     where_hash = {}
     error_message = []
     if @department
+      @department = change_case(@department)
       departments_list = (Department.select(:id).where(name: @department, organization_id: @organization_id)).pluck(:id)
       if departments_list.count != @department.count
         error_message.append("Department Invalid")
@@ -19,6 +20,7 @@ module Tickets::V1
       end
     end
     if @category
+      @category = change_case(@category)
       category_list = (Category.select(:id).where(name: @category)).pluck(:id)
       if category_list.count != @category.count
         error_message.append("Category Invalid")
@@ -44,6 +46,17 @@ module Tickets::V1
     else
       { status: true, tickets: serialize_resource(tickets, TicketSerializer) }.as_json  
     end
+  end
+
+  def change_case(list)
+    list.each do |ele|
+      if ele.length <= 3
+        ele.upcase!
+      else
+        ele.capitalize!
+      end
+    end
+    list
   end
 
  end
