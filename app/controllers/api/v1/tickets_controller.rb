@@ -33,14 +33,10 @@ module Api::V1
         render json: {message: result["message"]}, status: result["status_code"]
       end
     end
-    
-    private
-
 
     def update
       begin
         result = Tickets::V1::Update.new(update_params, current_user).call
-        byebug
         if result["status"]
           render json: { message: I18n.t('tickets.success.update') }
         else
@@ -54,8 +50,7 @@ module Api::V1
     private
 
     def update_params
-      byebug
-      params.require(:ticket).permit(:id, :status, :category_id, :department_id, :resolver_id)
+      params.require(:ticket).permit(:status, :category_id, :department_id, :resolver_id).merge(id: params[:id])
     end
 
     def ticket_params

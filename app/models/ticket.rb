@@ -7,7 +7,8 @@ class Ticket < ApplicationRecord
   belongs_to :department
   belongs_to :category
 
-  before_validation :downcase_ticket_type, only: [:create, :update]
+  # before_validation :downcase_ticket_type, only: [:create, :update]
+  after_save :create_activity
 
   validates_associated :activities
   validates :title, presence: true
@@ -32,8 +33,8 @@ class Ticket < ApplicationRecord
   }
 
   enum ticket_type: {
-    "complaint": 0,
-    "request": 1
+    "Complaint": 0,
+    "Request": 1
   }
 
   aasm column: :status, whiny_persistence: true do
@@ -81,6 +82,19 @@ class Ticket < ApplicationRecord
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
   end
+
+  def create_activity
+    activity_attr = {current_ticket_status: status, ticket_id: id, 
+                     description: I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name,
+                       requester: requester.name)}
+    if self.resolver_id_changed?
+      activity_attr.merge!(assigned_from: self.resolver_was.name, assigned_to: resolver.name)
+    else
+      activity_attr.merge!(assigned_from: resolver.name, assigned_to: resolver.name)
+    end
+    Activity.create(activity_attr)
+  end
+
 
   def downcase_ticket_type
     self.ticket_type.downcase!

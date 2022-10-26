@@ -13,6 +13,7 @@ resource 'Tickets' do
 	let!(:role1) { FactoryBot.create(:role, name: 'employee')}
 	let(:user) { FactoryBot.create(:user, role_id: role.id, email: "faker@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id) }
 	let(:user1) { FactoryBot.create(:user, role_id: role.id) }
+	let(:ticket1) { FactoryBot.create(:ticket, )}
 
   post '/tickets' do
 		before do
@@ -21,7 +22,7 @@ resource 'Tickets' do
 		end
 		context '200' do
       example 'Ticket created successfully ' do
-        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "request", user.id))
+        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id))
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
@@ -86,7 +87,7 @@ resource 'Tickets' do
     end
   end
 
-	put 'tickets/:id' do
+	put 'tickets/:id/reopen' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
 			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
@@ -94,7 +95,7 @@ resource 'Tickets' do
 															 description: 'RAM Issue', 
 															 category_id: category.id, 
 															 department_id: department_obj.id, 
-															 ticket_type: 'request', 
+															 ticket_type: 'Request', 
 															 resolver_id: user1.id,
 															 requester_id: user1.id)
 		end
@@ -146,7 +147,7 @@ resource 'Tickets' do
 															 description: 'RAM Issue', 
 															 category_id: category.id, 
 															 department_id: department_obj.id, 
-															 ticket_type: 'request', 
+															 ticket_type: 'Request', 
 															 resolver_id: user1.id,
 															 requester_id: user1.id)
 		end
@@ -202,7 +203,7 @@ resource 'Tickets' do
 		end
 	end
 
-	put 'tickets/:id' do
+	put 'tickets/:id/reopen' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
 			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
@@ -210,13 +211,13 @@ resource 'Tickets' do
 															 description: 'RAM Issue', 
 															 category_id: category.id, 
 															 department_id: department_obj.id, 
-															 ticket_type: 'request', 
+															 ticket_type: 'Request', 
 															 resolver_id: user1.id,
 															 requester_id: user1.id)
 		end
 		context '200' do
 			let(:id) {@ticket.id}
-      example 'Ticket Updated successfully ' do
+      example 'Ticket reopened successfully ' do
 				@ticket.start
 				@ticket.resolve
 				@ticket.save
@@ -235,6 +236,92 @@ resource 'Tickets' do
     end
 	end
 
+	put 'tickets/:id' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
+			@ticket = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department_obj.id, 
+															 ticket_type: 'Request', 
+															 resolver_id: user.id,
+															 requester_id: user1.id,
+															 organization_id: user.organization_id)
+			@department = Department.create!(name: "Test Department", organization_id: user.organization_id)
+			@category = Category.create!(name: "Category for Test Department", department_id: @department.id)
+			@resolver = User.create!(name: "testuser", role_id: role.id, email: "shefali@joshsoftware.com", 
+															 department_id: @department.id, organization_id: user.organization_id)
+		end
+		context '200' do
+			let(:id) {@ticket.id}
+			example 'Ticket updated succesfully - changing department_id' do
+				do_request({ticket: { department_id: @department.id }})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated succesfully - changing department and category_id' do
+				do_request({ticket: { department_id: @department.id, category_id: @category.id}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated succesfully - changing department and resolver_id' do
+				byebug
+				do_request({ticket: { department_id: @department.id, resolver_id: @resolver.id}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated succesfully - changing status' do
+				do_request({ticket: { status: "inprogress"}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+		end
+
+		context '422' do
+			let(:id) {@ticket.id}
+			example 'Could not update ticket - Invalid department_id' do
+				do_request({ticket: { department_id: 0}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.department'))
+			end
+
+			example 'Could not update ticket - Invalid transition for status' do
+				do_request({ticket: { status: "closed"}})
+				response_data = JSON.parse(response_body)
+				byebug
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(response_data["errors"])
+			end
+
+			example 'Could not update ticket - Invalid category_id' do
+				do_request({ticket: { category_id: 0}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.category'))
+			end
+
+			example 'Could not update ticket - Invalid resolver_id' do
+				do_request({ticket: { resolver_id: 0}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.resolver'))
+			end
+		end
+	end
+
 	get 'tickets' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
@@ -243,7 +330,7 @@ resource 'Tickets' do
 															 description: 'RAM Issue', 
 															 category_id: category.id, 
 															 department_id: department_obj.id, 
-															 ticket_type: 'request', 
+															 ticket_type: 'Request', 
 															 resolver_id: user.id,
 															 requester_id: user1.id)
 		end
@@ -301,7 +388,7 @@ resource 'Tickets' do
 			"description": "Urgent to resolve",
 			"category_id": category.id,
 			"department_id": department_obj.id,
-			"ticket_type": "request",
+			"ticket_type": "Request",
 			"resolver_id": user.id
 		}
 	end

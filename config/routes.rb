@@ -20,5 +20,10 @@ Rails.application.routes.draw do
           get 'departments'
         end
       end
+      resources :tickets do
+        member do 
+          put 'reopen'
+        end
+      end
   end
 end
