@@ -73,12 +73,14 @@ en:
       create: "Ticket created successfully"
       close: "Ticket closed successfully"
       reopen: "Ticket reopened successfully"
+      update: "Ticket updated successfully"
     error:
       create: "Unable to create ticket"
       category: "Category must exist in department"
       resolver: "Resolver must exist in department"
-      department: "Department must exist"
+      department: "Department must exist in organization"
       invalid_params: "Invalid parameters"
+      not_exists: "Could not find ticket"
       update: "Could not update the ticket"
     show:
       invalid_filter: "Filter invalid"
