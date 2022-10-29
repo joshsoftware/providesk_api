@@ -64,6 +64,20 @@ Rails.application.configure do
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
 
-  config.action_mailer.delivery_method = :letter_opener
+
+  # Point to SendGrid Server for delivering mails
+  config.action_mailer.delivery_method = :smtp
+
+  ActionMailer::Base.smtp_settings = {
+    user_name: Rails.application.credentials[:sendgrid][:username],
+    password: Rails.application.credentials[:sendgrid][:password], 
+    domain: 'providesk.herokuapp.com',
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
+
+  # config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
 end
