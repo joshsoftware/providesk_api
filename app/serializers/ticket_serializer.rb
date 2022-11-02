@@ -1,7 +1,7 @@
 class TicketSerializer < ActiveModel::Serializer
   attributes :id, :title, :description, :ticket_number, :status, :priority, 
-             :ticket_type, :resolved_at, :created_at, :category, :department, 
-             :resolver, :requester, :permited_events
+             :ticket_type, :resolved_at, :created_at, :category, :category_id, :department, :department_id,
+             :resolver, :resolver_id, :requester, :requester_id, :permited_transitions
             
 
   def category
@@ -20,17 +20,17 @@ class TicketSerializer < ActiveModel::Serializer
     object.resolver.name
   end
 
-  def permited_events
+  def permited_transitions
     status = object.status
     case status
     when "assigned"
-      ["start", "approve", "reject"]
+      ["inprogress", "for_approval", "rejected"]
     when "for_approval"
-      ["start", "reject"]
+      ["inprogress", "rejected"]
     when "inprogress"
-      ["resolve"]
+      ["resolved"]
     when "resolved"
-      ["close", "reopen"]
+      ["closed"]
     else
       []
     end
