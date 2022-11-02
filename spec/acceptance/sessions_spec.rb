@@ -95,4 +95,21 @@ resource "Sessions" do
       end
     end
   end
+
+  get "/tickets/:id" do
+    context '401' do
+      before do
+        header "Accept", "application/vnd.providesk; version=1"
+        header 'Authorization', JsonWebToken.encode({user_id: @admin_user.id, email: @admin_user.email, name: @admin_user.name},
+          {exp: Time.current})
+      end
+      let(:id) {0}
+      example "Login Token Expired" do
+        do_request()
+        response_data = JSON.parse(response_body)
+        expect(status).to eq(401)
+        expect(response_data["message"]).to eq(I18n.t('session.expired'))
+      end
+    end
+  end
 end

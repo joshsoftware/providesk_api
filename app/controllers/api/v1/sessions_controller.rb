@@ -10,7 +10,7 @@ module Api::V1
                   email: permitted_params[:email],
                   google_user_id: permitted_params[:google_user_id]
                 }
-      token = JsonWebToken.encode(payload) 
+      token = JsonWebToken.encode(payload)
       render json: {
           message: I18n.t('login.success'),
           data: {
