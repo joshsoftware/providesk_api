@@ -13,6 +13,7 @@ resource 'Tickets' do
 	let!(:role1) { FactoryBot.create(:role, name: 'employee')}
 	let(:user) { FactoryBot.create(:user, role_id: role.id, email: "faker@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id) }
 	let(:user1) { FactoryBot.create(:user, role_id: role.id) }
+	let(:employee) { FactoryBot.create(:user, role_id: role1.id, email: "employee@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id)}
 	let(:ticket1) { FactoryBot.create(:ticket, )}
 
   post '/tickets' do
@@ -361,6 +362,42 @@ resource 'Tickets' do
 				do_request()
 				expect(response_status).to eq(404)
 			end
+		end
+	end
+
+	get 'tickets/:id' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: employee.id, email: employee.email, name: employee.name})
+			@ticket = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department_obj.id, 
+															 ticket_type: 'Request', 
+															 resolver_id: user.id,
+															 requester_id: employee.id)
+		end
+
+		context '200' do
+			let(:id) {@ticket.id}
+			example 'Show ticket' do
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["data"]).to eq(response_data["data"])
+				expect(response_data["activities"]).to eq(response_data["activities"])
+			end	
+		end
+
+		context '422' do
+			let(:id) {@ticket.id}
+			example 'Could not find ticket' do
+				@ticket.update(requester_id: user1.id)
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.not_exists'))
+			end	
 		end
 	end
 
