@@ -18,6 +18,10 @@ class User < ApplicationRecord
     Role.find(self.role_id).name.eql?(Role::ROLE[:admin])
   end
 
+  def is_employee?
+    Role.find(self.role_id).name.eql?(Role::ROLE[:employee])
+  end
+
   def assign_ids
     if email
       domain = email.split('@')[1]
