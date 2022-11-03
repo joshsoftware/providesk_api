@@ -41,7 +41,6 @@ resource 'Departments' do
         dept_name = "My Dept"
         request = { name: dept_name , organization_id: @org.id }
         do_request(request)
-
         new_request = { name: dept_name , organization_id: @org.id }
         do_request(new_request)
         response_data = JSON.parse(response_body)

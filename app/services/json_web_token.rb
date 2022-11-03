@@ -12,20 +12,10 @@ class JsonWebToken
     def decode(token)
       body = JWT.decode(token, secret_key_base)[0]
       HashWithIndifferentAccess.new body
+    rescue JWT::ExpiredSignature
+      false
     rescue StandardError
       nil
-    end
-
-    def valid_payload(payload)
-      if expired(payload)
-        false
-      else
-        true
-      end
-    end
-
-    def expired(payload)
-      Time.zone.at(payload[:exp]) < Time.zone.now
     end
 
     def secret_key_base

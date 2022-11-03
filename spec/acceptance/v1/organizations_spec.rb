@@ -34,7 +34,7 @@ resource 'Organizations' do
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
         expect(response_data["message"]).to eq(I18n.t('organizations.error.create'))
-        expect(response_data["errors"]). to eq("This name has already been taken")
+        expect(response_data["errors"]). to eq("Name has already been taken")
       end
 
       example 'Unable to create organization due to blank name' do

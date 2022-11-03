@@ -47,7 +47,7 @@ en:
     error:
       create: "Unable to create organization"
       invalid_params: "Enter valid parameters"
-      exists: "This name has already been taken"
+      exists: "Name has already been taken"
 
   department:
     success:
