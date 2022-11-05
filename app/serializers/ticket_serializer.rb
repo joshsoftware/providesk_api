@@ -1,5 +1,5 @@
 class TicketSerializer < ActiveModel::Serializer
-  attributes :id, :title, :description, :ticket_number, :status, :priority, 
+  attributes :id, :title, :description, :ticket_number, :status, :priority, :reason_for_update,
              :ticket_type, :resolved_at, :created_at, :category, :category_id, :department, :department_id,
              :resolver, :resolver_id, :requester, :requester_id, :permited_transitions
             
@@ -30,7 +30,7 @@ class TicketSerializer < ActiveModel::Serializer
     when "inprogress"
       ["resolved"]
     when "resolved"
-      ["closed"]
+      ["closed", "reopen"]
     else
       []
     end

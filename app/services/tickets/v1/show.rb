@@ -34,7 +34,7 @@ module Tickets::V1
     def show_ticket
       return @error if @error
       { status: true, data: serialize_resource(@ticket, TicketSerializer), 
-                      activities: serialize_resource(@ticket.activities, ActivitySerializer) }.as_json
+                      activities: serialize_resource(@ticket.activities.order(created_at: :desc), ActivitySerializer) }.as_json
     end
   end
 end
