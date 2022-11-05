@@ -69,6 +69,8 @@ GEM
       zeitwerk (~> 2.3)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
+    audited (5.0.2)
+      activerecord (>= 5.0, < 7.1)
     bootsnap (1.13.0)
       msgpack (~> 1.2)
     builder (3.2.4)
@@ -215,6 +217,7 @@ PLATFORMS
 DEPENDENCIES
   aasm (~> 5.3)
   active_model_serializers
+  audited (~> 5.0)
   bootsnap (>= 1.4.4)
   byebug
   factory_bot_rails (~> 6.2)
