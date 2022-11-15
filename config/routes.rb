@@ -1,5 +1,11 @@
+require 'sidekiq/web'
+
+Sidekiq::Web.use ActionDispatch::Cookies
+Sidekiq::Web.use ActionDispatch::Session::CookieStore, key: "_interslice_session"
+
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  mount Sidekiq::Web => '/sidekiq'
+  
   api_version(:module => "Api::V1", :header => {
     name: "Accept", :value => "application/vnd.providesk; version=1"}) do
       resources :tickets, only: [:create, :update, :index]
