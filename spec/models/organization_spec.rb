@@ -1,9 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  Organization.destroy_all
-  Organization.create!(name: "JoshSoftware",domain:["joshsoftware.com"])
-  context 'valid organisation' do
+  before do
+    Organization.destroy_all
+    Organization.create!(name: "JoshSoftware",domain:["joshsoftware.com"])
+  end
+  context 'valid organization' do
     before do
       @organization = Organization.new(name: Faker::Company.name)
     end
@@ -15,7 +17,7 @@ RSpec.describe Organization, type: :model do
       expect(@organization.valid?).to eq(true)
     end
   end
-  context 'invalid organisation' do
+  context 'invalid organization' do
     before do
       @organization = Organization.new()
     end

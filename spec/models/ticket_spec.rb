@@ -145,21 +145,7 @@ RSpec.describe Ticket, type: :model do
       end
     end
   end
-  Organization.destroy_all
-  Role.destroy_all
-  Department.destroy_all
-  User.destroy_all
-  let(:organization) {Organization.create!(name: 'JoshSoftware',domain:['joshsoftware.com'])}
-  let(:role) {Role.create!(name:'admin')}
-  let(:department) {Department.create!(name: 'HR',organization_id: organization.id)}
-  let(:role_super_admin) {Role.create!(name:'super_admin')}
-  let(:category) {Category.create!(name: 'Payroll', department_id: department.id)}
-  fake_name = Faker::Name.unique.name
-  let(:user) {User.create(name: fake_name, 
-                        email: fake_name.downcase.split().join('.')+'@joshsoftware.com', 
-                        role_id: role.id, 
-                        department_id: department.id, 
-                        organization_id: organization.id)}
+
   describe 'Set unique ticket_number on creation of new ticket' do
     context '200' do
       before do
@@ -174,7 +160,7 @@ RSpec.describe Ticket, type: :model do
         @ticket = Ticket.first
       end
       it 'should validate data with no errors' do
-        expect(@ticket.ticket_number).to eq("request-#{@ticket.id}")
+        expect(@ticket.ticket_number).to eq("Request-#{@ticket.id}")
       end
     end
   end
