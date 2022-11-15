@@ -9,30 +9,31 @@ class ApplicationController < ActionController::API
   end
 
   def validate_jwt_token
-    if request.headers['Authorization'].present?
-      token = request.headers['Authorization']
-      @payload = JsonWebToken.decode(token)
-      return token_invalid unless JsonWebToken.valid_payload(@payload)
-      true
-    else
-      render_json(message: I18n.t('session.invalid'), status_code: :unauthorized)
-    end
+    false unless request.headers['Authorization'].present?
+    token = request.headers['Authorization']
+    JsonWebToken.decode(token)
   end
 
   def authenticate
-    validate_jwt_token && load_current_user
-    invalid_authentication unless @current_user
+    is_valid_jwt = validate_jwt_token
+    if(is_valid_jwt)
+      load_current_user(is_valid_jwt)
+    else
+      return token_invalid
+    end
+    token_invalid unless @current_user
   end
 
   def token_invalid
     render_json(message: I18n.t('session.expired'), status_code: :unauthorized)
   end
 
-  def invalid_authentication
-    render_json(message: I18n.t('session.invalid'), status_code: :unauthorized)
+  def load_current_user(payload)
+    @current_user = User.find_by(id: payload['user_id'])
   end
 
-  def load_current_user
-    @current_user = User.find_by(id: payload['user_id'])
+  def serialize_resource(resources, serializer, root = nil, extra = {} )
+    opts = { each_serializer: serializer, root: root }.merge(extra)
+    ActiveModelSerializers::SerializableResource.new(resources, opts) if resources
   end
 end

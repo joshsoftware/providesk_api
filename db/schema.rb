@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_16_203859) do
+ActiveRecord::Schema.define(version: 2022_11_04_101355) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,7 +24,30 @@ ActiveRecord::Schema.define(version: 2022_09_16_203859) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "ticket_id"
+    t.string "reason_for_update"
     t.index ["ticket_id"], name: "index_activities_on_ticket_id"
+  end
+
+  create_table "audits", force: :cascade do |t|
+    t.integer "auditable_id"
+    t.string "auditable_type"
+    t.integer "associated_id"
+    t.string "associated_type"
+    t.integer "user_id"
+    t.string "user_type"
+    t.string "username"
+    t.string "action"
+    t.json "audited_changes"
+    t.integer "version", default: 0
+    t.string "comment"
+    t.string "remote_address"
+    t.string "request_uuid"
+    t.datetime "created_at"
+    t.index ["associated_type", "associated_id"], name: "associated_index"
+    t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
+    t.index ["created_at"], name: "index_audits_on_created_at"
+    t.index ["request_uuid"], name: "index_audits_on_request_uuid"
+    t.index ["user_id", "user_type"], name: "user_index"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -71,10 +94,15 @@ ActiveRecord::Schema.define(version: 2022_09_16_203859) do
     t.bigint "category_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "organization_id"
+    t.string "reason_for_update"
     t.index ["category_id"], name: "index_tickets_on_category_id"
     t.index ["department_id"], name: "index_tickets_on_department_id"
     t.index ["requester_id"], name: "index_tickets_on_requester_id"
     t.index ["resolver_id"], name: "index_tickets_on_resolver_id"
+    t.check_constraint "priority = ANY (ARRAY[0, 1, 2, 3])", name: "priority_check"
+    t.check_constraint "status = ANY (ARRAY[0, 1, 2, 3, 4, 5])", name: "status_check"
+    t.check_constraint "ticket_type = ANY (ARRAY[0, 1])", name: "type_check"
   end
 
   create_table "users", force: :cascade do |t|

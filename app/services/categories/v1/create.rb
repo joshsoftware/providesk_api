@@ -1,6 +1,5 @@
 module Categories::V1
   class Create
-    
     def initialize(categories, current_user)
       @name = categories[:name]
       @priority = categories[:priority].to_i
@@ -9,20 +8,26 @@ module Categories::V1
     end
 
     def call
-      not_exits = !check_existing_category_name && save_category
-      not_exits ? { status: true } : { status: false } 
+      not_exists = check_existing_category_name
+      return not_exists unless not_exists[:status]
+      not_exists = save_category
+      not_exists[:status] ? { status: true } : not_exists
     end
 
     def check_existing_category_name
-      Category.find_by(name: @name)
+      if Category.find_by(name: @name, department_id: @department_id)
+        return { status: false, error_message: I18n.t('categories.error.exists') }
+      else
+        return { status: true }
+      end
     end
 
     def save_category
       @new_category = Category.new(name: @name, priority: @priority, department_id: @department_id)
       if @new_category.save
-        { status: true }.as_json
+        { status: true }
       else
-        { status: false, error_message: @new_category.errors.full_messages.join(", ") }.as_json
+        { status: false, error_message: @new_category.errors.full_messages.join(", ") }
       end
     end
   end

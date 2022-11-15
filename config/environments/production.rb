@@ -56,6 +56,7 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "providesk_api_production"
 
   config.action_mailer.perform_caching = false
+  # config.action_mailer.perform_deliveries = true
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
@@ -89,6 +90,19 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Point to SendGrid Server for delivering mails
+  config.action_mailer.delivery_method = :smtp
+
+  ActionMailer::Base.smtp_settings = {
+    user_name: Rails.application.credentials[:sendgrid][:username],
+    password: Rails.application.credentials[:sendgrid][:password], 
+    domain: 'providesk.herokuapp.com',
+    address: 'smtp.sendgrid.net',
+    port: 587,
+    authentication: :plain,
+    enable_starttls_auto: true
+  }
 
   # Inserts middleware to perform automatic connection switching.
   # The `database_selector` hash is used to pass options to the DatabaseSelector

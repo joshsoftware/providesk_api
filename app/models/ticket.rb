@@ -1,13 +1,17 @@
 class Ticket < ApplicationRecord
   include AASM
+  audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
   after_create :set_ticket_number
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
   belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
-  belongs_to :department
+  belongs_to :department, :class_name => 'Department', :foreign_key => 'department_id'
   belongs_to :category
+
+  # before_validation :downcase_ticket_type, only: [:create, :update]
+  after_save :create_activity
 
   validates_associated :activities
   validates :title, presence: true
@@ -18,9 +22,10 @@ class Ticket < ApplicationRecord
   enum status: {
     "assigned": 0,
     "inprogress": 1,
-    "resolved": 2,
-    "closed": 3,
-    "rejected": 4
+    "for_approval": 2,
+    "resolved": 3,
+    "closed": 4,
+    "rejected": 5
   }
 
   enum priority: {
@@ -31,25 +36,30 @@ class Ticket < ApplicationRecord
   }
 
   enum ticket_type: {
-    "complaint": 0,
-    "request": 1
+    "Complaint": 0,
+    "Request": 1
   }
 
   aasm column: :status, whiny_persistence: true do
     state :assigned, initial: true
     state :inprogress
+    state :for_approval
     state :resolved
     state :closed
     state :rejected
 
-    after_all_events :add_activity, :send_notification
+    after_all_events :send_notification
 
     event :start do
-      transitions from: :assigned, to: :inprogress
+      transitions from: [:assigned, :for_approval], to: :inprogress
+    end
+
+    event :approve do 
+      transitions from: :assigned, to: :for_approval
     end
 
     event :reject do
-      transitions from: :assigned, to: :rejected
+      transitions from: [:assigned, :for_approval], to: :rejected
     end
 
     event :resolve do
@@ -57,18 +67,17 @@ class Ticket < ApplicationRecord
     end
 
     event :close do
-      transitions from: :resolve, to: :closed
+      transitions from: :resolved, to: :closed
+    end
+
+    event :reopen do
+      transitions from: :resolved, to: :for_approval
     end
   end
 
-  def add_activity
-    Activity.create( assigned_from: "", assigned_to: "", current_ticket_status: status, ticket_id: id, 
-                     description: I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
-                   )
-  end
-
   def send_notification
-    description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, requester: requester.name)
+    description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, 
+                         requester: requester.name, department: department.name)
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
   end
 
@@ -77,5 +86,46 @@ class Ticket < ApplicationRecord
     ticket_number = ticket_type + "-" + ticket_number_id.to_s
     current_ticket = Ticket.find(id)
     current_ticket.update(ticket_number: ticket_number)
+  end
+  
+  def create_activity
+    activity_attr = {current_ticket_status: status, ticket_id: id, 
+                     description: get_description_of_update, reason_for_update: reason_for_update}
+    if @previous_resolver != @new_resolver
+      activity_attr.merge!(assigned_from: @previous_resolver, assigned_to: @new_resolver)
+    else
+      activity_attr.merge!(assigned_from: resolver.name, assigned_to: resolver.name)
+    end
+    Activity.create!(activity_attr)
+  end
+
+  def get_description_of_update
+    changes = Audited::Audit.where(auditable_id: self.id).pluck(:audited_changes)[-1]
+    message = []
+    changes.each do |key, val|
+      case key
+      when "category_id"
+        previous_category = Category.where(id: val[0]).pluck(:name)[0]
+        new_category = Category.where(id: val[1]).pluck(:name)[0]
+        message.append(I18n.t('ticket.description.category', previous_category: previous_category, new_category: new_category))
+      when "status"
+        message.append(I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, 
+                       requester: requester.name, department: department.name))
+      when "resolver_id"
+        @previous_resolver = User.where(id: val[0]).pluck(:name)[0]
+        @new_resolver = User.where(id: val[1]).pluck(:name)[0]
+        message.append(I18n.t('ticket.description.resolver', previous_resolver: @previous_resolver, new_resolver: @new_resolver))
+      when "department_id"
+        previous_department = Department.where(id: val[0]).pluck(:name)[0]
+        new_department = Department.where(id: val[1]).pluck(:name)[0]
+        message.append(I18n.t('ticket.description.department'), previous_department: previous_department, 
+                       new_department: new_department)
+      end
+    end
+    message
+  end
+
+  def downcase_ticket_type
+    self.ticket_type.downcase!
   end
 end

@@ -29,8 +29,14 @@ gem 'rack-cors'
 #Use versionist for handling headers based api versioning
 gem 'versionist'
 
+# Use Serializers to generate JSON in an object-oriented and convention-driven manner.
+gem 'active_model_serializers'
+
 #Use aasm for state machine management
 gem 'aasm', '~> 5.3'
+
+# Use audited to log changes of models
+gem 'audited', '~> 5.0'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
