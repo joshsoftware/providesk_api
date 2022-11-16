@@ -82,10 +82,8 @@ class Ticket < ApplicationRecord
   end
 
   def set_ticket_number
-    ticket_number_id = id
-    ticket_number = ticket_type + "-" + ticket_number_id.to_s
-    current_ticket = Ticket.find(id)
-    current_ticket.update(ticket_number: ticket_number)
+    ticket_number = ticket_type + "-" + id.to_s
+    Ticket.find(id).update(ticket_number: ticket_number)
   end
 
   def create_activity
