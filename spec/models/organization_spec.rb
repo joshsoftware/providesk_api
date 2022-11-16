@@ -1,8 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe Organization, type: :model do
-  Organization.destroy_all
-  Organization.create!(name: "JoshSoftware",domain:["joshsoftware.com"])
+  before do
+    Organization.destroy_all
+    Organization.create!(name: "JoshSoftware",domain:["joshsoftware.com"])
+  end
+  
   context 'valid organisation' do
     before do
       @organization = Organization.new(name: Faker::Company.name)
