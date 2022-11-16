@@ -19,6 +19,8 @@ class Ticket < ApplicationRecord
   validates :ticket_type, presence: true
   #validates :ticket_number, presence: true
 
+  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2} # Time in days
+
   enum status: {
     "assigned": 0,
     "inprogress": 1,
@@ -85,10 +87,26 @@ class Ticket < ApplicationRecord
     ticket_number = ticket_type + "-" + id.to_s
     Ticket.find(id).update(ticket_number: ticket_number)
   end
+  
+  def send_email_to_department_head
+    department_head_id = Role.find_by(name: "department_head").id
+    department_head = User.find_by(department_id: department_id, role_id: department_head_id)
+    if !department_head
+      department_head = User.find_by(role_id: Role.find_by(name: "admin").id, organization_id: self.organization_id)
+    end
+    description = I18n.t('ticket.description.ticket_escalation', id: id)
+    NotifyMailer.notify_status_escalate(department_head, requester, description, id).deliver_now
+  end
 
   def create_activity
-    activity_attr = {current_ticket_status: status, ticket_id: id, 
+    activity_attr = {current_ticket_status: status, ticket_id: id,
                      description: get_description_of_update, reason_for_update: reason_for_update}
+    if @previous_status
+      activity_attr.merge!(previous_ticket_status: @previous_status)
+    else 
+      activity_attr.merge!(previous_ticket_status: status)
+    end
+
     if @previous_resolver != @new_resolver
       activity_attr.merge!(assigned_from: @previous_resolver, assigned_to: @new_resolver)
     else

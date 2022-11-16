@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_04_101355) do
+ActiveRecord::Schema.define(version: 2022_11_10_074726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2022_11_04_101355) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "ticket_id"
     t.string "reason_for_update"
+    t.integer "previous_ticket_status"
     t.index ["ticket_id"], name: "index_activities_on_ticket_id"
   end
 
