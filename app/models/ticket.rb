@@ -120,31 +120,6 @@ class Ticket < ApplicationRecord
         when "department_id"
           previous_department = Department.where(id: val[0]).pluck(:name)[0]
           new_department = Department.where(id: val[1]).pluck(:name)[0]
-          message.append(I18n.t('ticket.description.department'), previous_department: previous_department, 
-                        new_department: new_department)
-        end
-    if Audited::Audit.where(auditable_id: self.id) == []
-      message = I18n.t('ticket.description.new_ticket', id: id)
-    else
-      changes = Audited::Audit.where(auditable_id: self.id).order(:created_at).pluck(:audited_changes).last
-      message = []
-      changes.each do |key, val|
-        case key
-        when "category_id"
-          previous_category = Category.where(id: val[0]).pluck(:name)[0]
-          new_category = Category.where(id: val[1]).pluck(:name)[0]
-          message.append(I18n.t('ticket.description.category', previous_category: previous_category, new_category: new_category))
-        when "status"
-          @previous_status = Ticket.statuses.key(val[0])
-          message.append(I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, 
-                        requester: requester.name, department: department.name))
-        when "resolver_id"
-          @previous_resolver = User.where(id: val[0]).pluck(:name)[0]
-          @new_resolver = User.where(id: val[1]).pluck(:name)[0]
-          message.append(I18n.t('ticket.description.resolver', previous_resolver: @previous_resolver, new_resolver: @new_resolver))
-        when "department_id"
-          previous_department = Department.where(id: val[0]).pluck(:name)[0]
-          new_department = Department.where(id: val[1]).pluck(:name)[0]
           message.append(I18n.t('ticket.description.department', previous_department: previous_department, 
                         new_department: new_department))
         end
