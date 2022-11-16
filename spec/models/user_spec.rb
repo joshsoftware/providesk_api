@@ -39,9 +39,10 @@ RSpec.describe User, type: :model do
                         department_id: department.id, 
                         organization_id: organization.id)
     end
+
     it 'should validate presence of existing role' do
       user.role_id = 0
-      expect(user.valid?).to eq(false)
+      expect { user.save! }.to raise_exception
     end
 
     it 'should validate data for presence of name' do

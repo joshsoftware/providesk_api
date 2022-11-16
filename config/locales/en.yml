@@ -51,7 +51,7 @@ en:
 
   department:
     success:
-      create: "Department created successfully"
+      create: "Department created successfully. Please associate a department head with this department."
     error:
       create: "Unable to create department"
       invalid_params: "Invalid params."
@@ -92,8 +92,7 @@ en:
     rejected: "The complaint is rejected by %{resolver} from department %{department}"
     for_approval: "The complaint will go through a approval"
     description:
-      new_ticket: "Ticket-%{id} has been created"
-      category: "Category has been changed from %{previous_category} to %{new_category}"
+      category: "Category has been changed from %{previous_category} to %{new_catgeory}"
       department: "Department has been changed from %{previous_department} to %{new_department}"
       resolver: "Resolver has been changed from %{previous_resolver} to %{new_resolver}"
       status: "Status has been updated from %{old_status} to %{updated_status}"

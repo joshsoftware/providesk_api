@@ -34,6 +34,17 @@ resource "Sessions" do
         expect(status).to eq 200
       end
 
+      example "Creating super admin which may or may not exist to an organization" do
+        request = {
+          user: { email: "superadmin@superadmin.com", 
+                  name: "Super Admin", 
+                  role_id: @super_admin_role.id 
+                }
+        }
+        do_request(request)
+        expect(status).to eq 200
+      end
+
       example "Login existing user - super admin" do
         request = {
           user: {
