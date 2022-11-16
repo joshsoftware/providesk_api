@@ -22,6 +22,7 @@ module Api::V1
     end
 
     private
+
     def permitted_params
       params.require(:user).permit(:email, :name, :google_user_id)
     end
@@ -30,8 +31,9 @@ module Api::V1
       @user = User.find_or_initialize_by(email: permitted_params[:email])
       @user.assign_attributes({
         name: permitted_params[:name],
-        email: permitted_params[:email],
+        email: permitted_params[:email]
       })
+      @user.role_id = params[:user][:role_id] if params[:user][:role_id].present?
 
       begin
         @user.save! if @user.changed?
