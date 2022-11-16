@@ -2,6 +2,8 @@ class Ticket < ApplicationRecord
   include AASM
   audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
+  after_create :set_ticket_number
+
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
   belongs_to :requester, :class_name => 'User', :foreign_key => 'requester_id'
@@ -81,6 +83,11 @@ class Ticket < ApplicationRecord
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
   end
 
+  def set_ticket_number
+    ticket_number = ticket_type + "-" + id.to_s
+    Ticket.find(id).update(ticket_number: ticket_number)
+  end
+  
   def send_email_to_department_head
     department_head_id = Role.find_by(name: "department_head").id
     department_head = User.find_by(department_id: department_id, role_id: department_head_id)
@@ -131,8 +138,8 @@ class Ticket < ApplicationRecord
         when "department_id"
           previous_department = Department.where(id: val[0]).pluck(:name)[0]
           new_department = Department.where(id: val[1]).pluck(:name)[0]
-          message.append(I18n.t('ticket.description.department'), previous_department: previous_department, 
-                        new_department: new_department)
+          message.append(I18n.t('ticket.description.department', previous_department: previous_department, 
+                        new_department: new_department))
         end
       end
     end

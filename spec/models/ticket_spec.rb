@@ -145,4 +145,23 @@ RSpec.describe Ticket, type: :model do
       end
     end
   end
+
+  describe 'Set unique ticket_number on creation of new ticket' do
+    context '200' do
+      before do
+        Ticket.create(title: Faker::Lorem.sentence(word_count:2), 
+                            description: Faker::Lorem.paragraphs(number:1), 
+                            ticket_number: 1,
+                            ticket_type: 1,
+                            resolver_id: user.id,
+                            requester_id: user.id,
+                            department_id: department.id,
+                            category_id: category.id)
+        @ticket = Ticket.first
+      end
+      it 'should validate data with no errors' do
+        expect(@ticket.ticket_number).to eq("Request-#{@ticket.id}")
+      end
+    end
+  end
 end
