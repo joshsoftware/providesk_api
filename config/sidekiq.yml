@@ -1,0 +1,29 @@
+# development:
+#   :concurrency: 1
+:pidfile: tmp/pids/sidekiq.pid
+production:
+  :concurrency: 1
+:queues:
+  - default
+
+:verbose: false
+:concurrency: 1
+:timeout: 30
+
+:schedule:  
+  EscalateStatusAssignedJob:
+    cron: '* * 12 * * *' # seconds minutes hours days month
+    enabled: true
+    active_job: true
+  EscalateStatusForApprovalJob:
+    cron: '* * 12 * * *' # will run  everyday at 12AM
+    enabled: true
+    active_job: true
+  EscalateStatusInprogressJob: 
+    cron: '* * 12 * * *'
+    enabled: true
+    active_job: true
+  EscalateStatusResolvedJob:
+    cron: '* * 12 * * *'
+    enabled: true
+    active_job: true
