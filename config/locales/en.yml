@@ -51,7 +51,7 @@ en:
 
   department:
     success:
-      create: "Department created successfully"
+      create: "Department created successfully. Please associate a department head with this department."
     error:
       create: "Unable to create department"
       invalid_params: "Invalid params."

@@ -4,5 +4,5 @@ class Role < ApplicationRecord
   validates_associated :users
   validates :name, presence: true, uniqueness: true
 
-  ROLE = { super_admin: "super_admin", admin: "admin", employee: "employee"}
+  ROLE = { super_admin: "super_admin", admin: "admin", employee: "employee", department_head: "department_head"}
 end

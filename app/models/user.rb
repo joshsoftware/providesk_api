@@ -32,11 +32,11 @@ class User < ApplicationRecord
 
   def get_organization(organization_domain)
     id_to_domain_map = Organization.all.pluck(:id, :domain)
-    id_to_domain_map.each do |id, domain|
-      return id if domain.include?(organization_domain)
+    id_to_domain_map.each do |id, domain| 
+      return nil if domain == nil && is_super_admin?
+      return id if domain.include?(organization_domain) 
     end
-    
-    if !Role.find(self.role_id).name.eql?('super_admin')
+    if !is_super_admin?
       self.errors.add :organization, "can't be blank"
     end
   end
