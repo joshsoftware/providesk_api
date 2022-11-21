@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
   def get_organization(organization_domain)
     id_to_domain_map = Organization.all.pluck(:id, :domain)
-    id_to_domain_map.each do |id, domain| 
+    id_to_domain_map.each do |id, domain|
       return nil if domain == nil && is_super_admin?
       return id if domain.include?(organization_domain) 
     end
