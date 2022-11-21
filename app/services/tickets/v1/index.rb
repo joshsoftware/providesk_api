@@ -4,6 +4,7 @@ module Tickets::V1
     @department = filters[:department].split(',') if filters[:department]
     @category = filters[:category].split(',') if filters[:category]
     @type = filters[:type].split(',') if filters[:type]
+    @status = filters[:status].split(',') if filters[:status]
     @organization_id = current_user.organization_id
   end
 
@@ -29,8 +30,13 @@ module Tickets::V1
       end
     end
     if @type
-      @type.select!{ |x| (x == "complaint" || x == "request") }
+      byebug
+      @type.select!{ |x| (x == "Complaint" || x == "Request") }
       where_hash["ticket_type"] = @type
+    end
+    if @status
+      @status.select!{ |x| (x == "assigned" || x == "inprogress" || x == "resolved" || x == "closed" || x == "for_approval") }
+      where_hash["status"] = @status
     end
     if error_message != []
       return { status: false, 
