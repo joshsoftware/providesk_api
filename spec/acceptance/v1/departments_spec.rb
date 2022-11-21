@@ -52,26 +52,50 @@ resource 'Departments' do
 
   get 'departments/:id/users' do
     context '200' do
-      let!(:id){ @user.department_id }
       before do
+        @employee_id = Role.create(name: 'employee').id
         @category = FactoryBot.create(:category, name: 'TAD1', priority:1, department_id: @department.id)
+        @user_with_no_department = FactoryBot.create(:user, name: "NoDeptUser", email: "nodeptuser@#{@org.domain[0]}", organization_id: @org.id, role_id: @employee_id )
       end
-      example 'List users of department successfully' do
-        expected_response = {
-          data:{
-            total: 1,
-            users: [
-              {
-                id: @user.id,
-                name: @user.name
-              }
-            ]
-          }
-        }.to_json
-        do_request()
-        response_data = JSON.parse(response_body)
-        expect(response_status).to eq(200)
-        response_body.should eq(expected_response)
+      context 'user with department' do
+        let!(:id){ @user.department_id }
+        example 'List users of department successfully' do
+          expected_response = {
+            data:{
+              total: 1,
+              users: [
+                {
+                  id: @user.id,
+                  name: @user.name
+                }
+              ]
+            }
+          }.to_json
+          do_request()
+          response_data = JSON.parse(response_body)
+          expect(response_status).to eq(200)
+          response_body.should eq(expected_response)
+        end
+      end
+      context 'user with no department' do
+        let!(:id){ @user_with_no_department.department_id }
+        example 'List users of with unassigned department' do
+          expected_response = {
+            data:{
+              total: 1,
+              users: [
+                {
+                  id: @user_with_no_department.id,
+                  name: @user_with_no_department.name
+                }
+              ]
+            }
+          }.to_json
+          do_request()
+          response_data = JSON.parse(response_body)
+          expect(response_status).to eq(200)
+          response_body.should eq(expected_response)
+        end
       end
     end
     context '422' do
