@@ -48,11 +48,14 @@ module Api::V1
       if @user.is_super_admin?
         organization_list = Organization.all.select(:id, :name).order(id: :asc)
       elsif @user.is_admin?
-        organization_list = Organization.select(:id, :name).find @user.organization_id
-        [organization_list]
+        organization_list = ["id": @user.organization_id, "name": @user.organization.name]
+      elsif @user.is_department_head?
+        organization_list = [{ "id": @user.organization.id,
+                               "name": @user.organization.name, 
+                               "department_id": @user.department.id, 
+                               "department_name": @user.department.name }]
       else
-        organization_list = Organization.select(:id, :name).find @user.organization_id
-        [organization_list]
+        organization_list = ["id": @user.organization_id, "name": @user.organization.name]
       end
     end
   end
