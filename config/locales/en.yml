@@ -67,6 +67,13 @@ en:
       create: "Unable to create categories"
       invalid_params: "Enter valid parameters"
       exists: "This name has already been taken"
+  users: 
+    success: 
+      update: "User updated successfully"
+    error:
+      not_exists: "Could not find user"
+      role: "Your role is invalid for updating user"
+      update: "Unable to update user"
   
   tickets:
     success:
@@ -83,6 +90,7 @@ en:
       not_exists: "Could not find ticket"
       update: "Could not update the ticket"
     show:
+      not_available: "No such tickets availaible"
       invalid_filter: "Filter invalid"
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver} from department %{department}"
