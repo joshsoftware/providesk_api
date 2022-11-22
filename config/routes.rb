@@ -14,7 +14,7 @@ Rails.application.routes.draw do
       resources :departments, only: :create
 
       resources :organizations, only: :create
-      
+      resources :users, only: :update
       resources :departments do
         member do 
           get 'categories'

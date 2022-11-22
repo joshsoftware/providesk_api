@@ -5,7 +5,7 @@ Organization.create!([
   { name: "Josh Software", domain: ["joshsoftware.com"] },
   { name: "Google", domain: ["gmail.com"] },
   { name: "Accenture", domain: ["accenture.com"]},
-  { name: "Admin", domain: ["admin.com"]} #this will work for allowing admin.com domain
+  # { name: "Admin", domain: ["admin.com"]} #this will work for allowing admin.com domain
 ])
 
 p "Created 3 organizations"
@@ -62,7 +62,7 @@ User.create!([
   { name: "HR Head", email: "hr.head@joshsoftware.com", role_id: 4, department_id: 2},
   { name: "Srenidhi Bendre", email: "srenidhi.bendre@joshsoftware.com", role_id: 1},
   {name: "Mayur Hole", email: "mayur.hole@joshsoftware.com", role_id: 1, department_id: 3}, 
-  {name: "Raghunandan Jhanwar", email: "raghunandan@joshsoftware.com", department_id: 2}
+  {name: "Raghunandan Jhanwar", email: "raghunandan@joshsoftware.com", department_id: 2},
   { name: "Pratham Goel", email: "pratham.goel16@gmail.com", role_id: 2},
   { name: "Marketing Head", email: "marketing.head@gmail.com", role_id: 4, department_id: 4},
   {name: "Arpan Rathi", email: "arpan.rathi@gmail.com", role_id: 1, department_id: 5}, 
@@ -72,7 +72,7 @@ User.create!([
   { name: "Shefali Geel", email: "shefaligeel@accenture.com", role_id: 2},
   { name: "Reserach Head", email: "research.head@accenture.com", role_id: 4, department_id: 8},
   { name: "Sales Head", email: "sales.head@accenture.com", role_id: 4, department_id: 9},
-  { name: "Nutan Hiwale", email: "nutan.hiwale@accenture", role_id: 1} 
+  { name: "Nutan Hiwale", email: "nutan.hiwale@accenture", role_id: 1},
   {name: "Unnati Dodiya", email: "unnati.dodiya@accenture.com", role_id: 1, department_id: 7}, 
   {name: "Nidhi Dhanwariya", email: "nidhi546@accenture.com", role_id: 1, department_id: 8}, 
   {name: "Saurabh Singh", email: "singhsaurabh@accenture.com", role_id: 1, department_id: 9}

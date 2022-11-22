@@ -72,8 +72,9 @@ en:
       update: "User updated successfully"
     error:
       not_exists: "Could not find user"
+      update: "Could not update user"
       role: "Your role is invalid for updating user"
-      update: "Unable to update user"
+      organization: "You does not belong to this department or organization"
   
   tickets:
     success:
