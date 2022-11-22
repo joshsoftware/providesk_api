@@ -21,14 +21,12 @@ module Departments::V1
     end
 
     def show_users
-      byebug
       if @department_id == 'none'
         users = User.where(department_id: nil, organization_id: @current_user.organization_id)
       elsif(@department.organization_id.eql?(@current_user.organization_id))
         users = User.where(department_id: @department.id)
       end
       if users
-        byebug
         { 
           status: true,
           data: {
