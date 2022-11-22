@@ -30,11 +30,12 @@ module Tickets::V1
       end
     end
     if @type
-      @type.select!{ |x| (x == "Complaint" || x == "Request") }
+      byebug
+      @type.select!{ |x| x if Ticket.ticket_types.include? x}
       where_hash["ticket_type"] = @type
     end
     if @status
-      @status.select!{ |x| (x == "assigned" || x == "inprogress" || x == "resolved" || x == "closed" || x == "for_approval") }
+      @status.select!{ |x| x if Ticket.statuses.include? x }
       where_hash["status"] = @status
     end
     if error_message != []
