@@ -1,5 +1,5 @@
 module Departments::V1
-  class Users
+  class Users < ApplicationController
     def initialize(params, current_user)
       @current_user = current_user
       @department_id = params[:id]
@@ -21,17 +21,19 @@ module Departments::V1
     end
 
     def show_users
+      byebug
       if @department_id == 'none'
-        users = User.select(:id, :name).where(department_id: nil, organization_id: @current_user.organization_id)
+        users = User.where(department_id: nil, organization_id: @current_user.organization_id)
       elsif(@department.organization_id.eql?(@current_user.organization_id))
-        users = User.select(:id, :name).where(department_id: @department.id)
+        users = User.where(department_id: @department.id)
       end
       if users
+        byebug
         { 
           status: true,
           data: {
             total: users.length,
-            users: users
+            users: serialize_resource(users.order(created_at: :desc), UserSerializer)
           }
         }.as_json
       else
