@@ -2,7 +2,7 @@ class Ticket < ApplicationRecord
   include AASM
   audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
-  after_create :set_ticket_number
+  after_create :set_ticket_number, :send_notification
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
