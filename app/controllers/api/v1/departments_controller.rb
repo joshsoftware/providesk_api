@@ -2,9 +2,11 @@
 
 module Api::V1
   class DepartmentsController < ApplicationController
+    load_and_authorize_resource
+
     def create
-      if params[:name].present? && params[:organization_id].present?
-        result = Departments::V1::Create.new(params, current_user).call
+      if department_params[:name].present? && department_params[:organization_id].present?
+        result = Departments::V1::Create.new(department_params).call
         if result["status"]
           render json: { message: I18n.t('department.success.create') }
         else
@@ -16,7 +18,7 @@ module Api::V1
     end
 
     def users
-      result = Departments::V1::Users.new(params, current_user).call
+      result = Departments::V1::Users.new(params).call
       if result["status"]
         render json: { data: result["data"] }
       else
@@ -29,7 +31,7 @@ module Api::V1
     end
     
     def categories
-      result = Departments::V1::Categories.new(params, current_user).call
+      result = Departments::V1::Categories.new(params).call
       if result["status"]
         render json: { data: result["data"] }
       else
@@ -39,6 +41,12 @@ module Api::V1
           render json:{ message: I18n.t('organization.error.unauthorized_user')}, status: 403
         end
       end
+    end
+
+    private
+
+    def department_params
+      params.require(:department).permit(:name, :organization_id)
     end
   end
 end

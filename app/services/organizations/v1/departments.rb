@@ -1,27 +1,15 @@
 module Organizations::V1
   class Departments
-    def initialize(params, current_user)
-      @current_user = current_user
-      @organization_id= params[:id]
+    def initialize(params)
+      @organization_id = params[:id]
     end
 
     def call
-      return show_departments if organization_exists?
-      { 
-        status: false,
-        error: "no_organization_found" 
-      }.as_json
-    end
-
-    def organization_exists?
-      @organization = Organization.where(id: @organization_id).last
-      return false if @organization.nil?
-      @organization
+      show_departments
     end
 
     def show_departments
-      if(@organization.id.eql?(@current_user.organization_id))
-        departments = Department.select(:id, :name).where(organization_id: @organization.id)
+      departments = Department.select(:id, :name).where(organization_id: @organization.id)
         { 
           status: true,
           data: {
@@ -29,12 +17,6 @@ module Organizations::V1
             departments: departments
           }
         }.as_json
-      else
-        { 
-          status: false,
-          error: "unauthorized_user"
-        }.as_json
-      end
     end
   end
 end

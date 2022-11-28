@@ -1,7 +1,7 @@
 module Departments::V1
   class Categories
-    def initialize(params, current_user)
-      @current_user = current_user
+    def initialize(params)   ##need your help
+      # @current_user = current_user
       @department_id= params[:id]
     end
 
@@ -20,7 +20,7 @@ module Departments::V1
     end
 
     def show_categories
-      if(@department.organization_id.eql?(@current_user.organization_id))
+      # if(@department.organization_id.eql?(@current_user.organization_id))
         categories = Category.select(:id, :name).where(department_id: @department.id)
         { 
           status: true,
@@ -29,12 +29,12 @@ module Departments::V1
             categories: categories
           }
         }.as_json
-      else
-        { 
-          status: false,
-          error: "unauthorized_user"
-        }.as_json
-      end
+      # else``
+      #   { 
+      #     status: false,
+      #     error: "unauthorized_user"
+      #   }.as_json
+      # end
     end
   end
 end

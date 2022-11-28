@@ -40,14 +40,15 @@ en:
 
   hello: "Hello world"
 
+  missing_params: 'Required parameters are missing'
+  record_not_found: 'Record not found'
 
-  organizations:
+  organization:
     success: 
       create: "Organization created successfully"
     error:
       create: "Unable to create organization"
-      invalid_params: "Enter valid parameters"
-      exists: "Name has already been taken"
+      exists: "Organization does not exists"
 
   department:
     success:
@@ -56,10 +57,8 @@ en:
       create: "Unable to create department"
       invalid_params: "Invalid params."
       invalid_department_id: "Department not found"
-  organization:
-    error:
-      unauthorized_user: "User not registered to organization"
-      invalid_organization_id: "Organization not found"
+      role: "You are unauthorized to this organization or have invalid role"
+  
   categories:
     success:
       create: "Categories created successfully"
@@ -67,14 +66,14 @@ en:
       create: "Unable to create categories"
       invalid_params: "Enter valid parameters"
       exists: "This name has already been taken"
+
   users: 
     success: 
       update: "User updated successfully"
     error:
       not_exists: "Could not find user"
       update: "Could not update user"
-      role: "Your role is invalid for updating user"
-      organization: "You does not belong to this department or organization"
+      role: "Role must exist"
   
   tickets:
     success:

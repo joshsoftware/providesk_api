@@ -1,9 +1,8 @@
 module Organizations::V1
   class Create
-    def initialize(organization, current_user)
+    def initialize(organization)
       @name = organization[:name]
       @domain = organization[:domain]
-      @current_user = current_user
     end
 
     def call

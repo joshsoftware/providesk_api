@@ -1,7 +1,9 @@
 module Api::V1
   class UsersController < ApplicationController
+    load_and_authorize_resource
+
     def update
-      result = Users::V1::Update.new(user_update_params, current_user, params[:id]).call
+      result = Users::V1::Update.new(user_update_params, params[:id]).call
       if result["status"]
         render json: { message: I18n.t('users.success.update') }
       else

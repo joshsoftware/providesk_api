@@ -22,6 +22,8 @@ module Tickets::V1
       return @error if @error
       if @current_user.is_admin?
         @ticket
+      elsif @current_user.is_department_head? && @ticket.department_id == @current_user.department_id
+        @ticket
       elsif @current_user.is_employee?
         if @ticket.resolver_id == @current_user.id || @ticket.requester_id == @current_user.id
           @ticket

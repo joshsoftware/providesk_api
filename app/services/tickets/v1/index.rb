@@ -30,7 +30,6 @@ module Tickets::V1
       end
     end
     if @type
-      byebug
       @type.select!{ |x| x if Ticket.ticket_types.include? x}
       where_hash["ticket_type"] = @type
     end

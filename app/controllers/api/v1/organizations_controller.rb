@@ -1,34 +1,38 @@
 module Api::V1
   class OrganizationsController < ApplicationController
+    load_and_authorize_resource
 
     def create
-      begin
-        result = Organizations::V1::Create.new(organization_params, current_user).call
-        if result[:status]
-          render json: { message: I18n.t('organizations.success.create') }
-        else
-          render json: { message: I18n.t('organizations.error.create'), 
-                        errors: result[:error_message] }, 
-                status: :unprocessable_entity
-        end
-      rescue ActionController::ParameterMissing
-        render json: { message: I18n.t('organizations.error.invalid_params') }, 
+      result = Organizations::V1::Create.new(organization_params).call
+      if result[:status]
+        render json: { message: I18n.t('organizations.success.create') }
+      else
+        render json: { message: I18n.t('organizations.error.create'), 
+                      errors: result[:error_message] }, 
               status: :unprocessable_entity
       end
     end
 
+    # To list users without department
+    def users
+      result = Organizations::V1::Users.new(params).call
+      if result["status"]
+        render json: { data: result["data"] }
+      else # For now, below code is not running for any scenario but future errors can
+           # be handled in the given format
+        render json: { error: result["error_message"] }, status: :unprocessable_entity
+      end
+    end
+
     def departments
-      result = Organizations::V1::Departments.new(params, current_user).call
+      result = Organizations::V1::Departments.new(params).call
       if result["status"]
         render json: { data: result["data"] }
       else
-        if result["error"].eql?("no_organization_found")
-          render json: {message: I18n.t('organization.error.invalid_organization_id')}, status: :unprocessable_entity
-        elsif result["error"].eql?("unauthorized_user")
-          render json:{ message: I18n.t('organization.error.unauthorized_user')}, status: 403
-        end
+        render json: { error: result["error_message"] }, status: :unprocessable_entity
       end
     end
+
     private
 
     def organization_params
