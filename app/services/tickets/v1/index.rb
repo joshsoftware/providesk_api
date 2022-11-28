@@ -1,10 +1,13 @@
 module Tickets::V1
  class Index < ApplicationController
   def initialize(filters, current_user)
+    @current_user = current_user
     @department = filters[:department].split(',') if filters[:department]
     @category = filters[:category].split(',') if filters[:category]
     @type = filters[:type].split(',') if filters[:type]
     @status = filters[:status].split(',') if filters[:status]
+    @created_by_me = filters[:created_by_me] if filters[:created_by_me]
+    @assigned_to_me = filters[:assigned_to_me] if filters[:assigned_to_me]
     @organization_id = current_user.organization_id
   end
 
@@ -30,7 +33,6 @@ module Tickets::V1
       end
     end
     if @type
-      byebug
       @type.select!{ |x| x if Ticket.ticket_types.include? x}
       where_hash["ticket_type"] = @type
     end
@@ -38,6 +40,8 @@ module Tickets::V1
       @status.select!{ |x| x if Ticket.statuses.include? x }
       where_hash["status"] = @status
     end
+    where_hash["requester_id"] = @current_user.id if @created_by_me
+    where_hash["resolver_id"] = @current_user.id if @assigned_to_me
     if error_message != []
       return { status: false, 
               message: I18n.t('tickets.show.invalid_filter') + ", " + error_message.join(", "), 
