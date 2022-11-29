@@ -20,7 +20,7 @@ module Tickets::V1
 
     def check_role
       return @error if @error
-      if @current_user.is_admin?
+      if @current_user.is_admin? || (@current_user.is_department_head? && @current_user.department_id == @ticket.department_id)
         @ticket
       elsif @current_user.is_employee?
         if @ticket.resolver_id == @current_user.id || @ticket.requester_id == @current_user.id
