@@ -1,7 +1,5 @@
 module Api::V1
   class OrganizationsController < ApplicationController
-    load_and_authorize_resource
-
     def create
       result = Organizations::V1::Create.new(organization_params).call
       if result[:status]

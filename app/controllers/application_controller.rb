@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  load_and_authorize_resource
   before_action :authenticate
 
   attr_reader :current_user, :payload

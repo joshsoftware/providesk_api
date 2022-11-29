@@ -19,7 +19,6 @@ module Departments::V1
     end
 
     def show_users
-      # if (@department.organization_id.eql?(@current_user.organization_id))
         users = User.where(department_id: @department.id)
         { 
           status: true,
@@ -28,12 +27,6 @@ module Departments::V1
             users: serialize_resource(users.order(created_at: :desc), UserSerializer)
           }
         }.as_json
-      # else
-      #   { 
-      #     status: false,
-      #     error: "unauthorized_user"
-      #   }.as_json
-      # end
     end
   end
 end

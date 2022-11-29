@@ -2,8 +2,6 @@
 
 module Api::V1
   class TicketsController < ApplicationController
-    load_and_authorize_resource
-
     def create
       result = Tickets::V1::Create.new(ticket_params, current_user).call
       if result[:status]

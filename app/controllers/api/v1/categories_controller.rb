@@ -2,8 +2,6 @@
 
 module Api::V1
   class CategoriesController < ApplicationController
-    load_and_authorize_resource
-    
     def create
       result = Categories::V1::Create.new(category_params).call
       if result[:status]

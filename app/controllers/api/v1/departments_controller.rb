@@ -2,8 +2,6 @@
 
 module Api::V1
   class DepartmentsController < ApplicationController
-    load_and_authorize_resource
-
     def create
       if department_params[:name].present? && department_params[:organization_id].present?
         result = Departments::V1::Create.new(department_params).call
