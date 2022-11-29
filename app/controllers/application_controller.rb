@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
-  load_and_authorize_resource
   before_action :authenticate
-
+  load_and_authorize_resource
+  
   attr_reader :current_user, :payload
-
-  # rescue_from ActionController::ParameterMissing, with: :params_missing
 
   rescue_from ActionController::ParameterMissing do |exception|
     render json: { errors: I18n.t('missing_params') }, status: :unprocessable_entity

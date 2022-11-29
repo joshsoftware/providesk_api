@@ -2,6 +2,8 @@
 module Api::V1
   class SessionsController < ApplicationController
     skip_before_action :authenticate
+    skip_load_and_authorize_resource
+    
     before_action :find_or_create_user, only: [:create]
 
     def create
