@@ -9,7 +9,7 @@ module Organizations::V1
     end
 
     def show_departments
-      departments = Department.select(:id, :name).where(organization_id: @organization.id)
+      departments = Department.select(:id, :name).where(organization_id: @organization_id)
         { 
           status: true,
           data: {

@@ -23,7 +23,7 @@ class Ability
     can [:create], Category do |category|
       @user.organization_id == category.department.organization_id
     end
-    can [:read, :show, :update, :reopen], Ticket, organization_id: @user.organization_id
+    can [:read, :show, :update, :index, :reopen], Ticket, organization_id: @user.organization_id
     can [:update], User do |user|
       user.organization_id == @user.organization_id
     end
@@ -34,14 +34,14 @@ class Ability
       @user.department_id == department.id
     end
     can [:create], Category, department_id: @user.department_id
-    can [:create, :show, :reopen, :update], Ticket, department_id: @user.department_id
+    can [:create, :show, :index, :reopen, :update], Ticket, department_id: @user.department_id
     can [:update], User do |user|
       (user.department_id == @user.department_id) || (user.department_id.nil? && user.organization_id == @user.organization_id)
     end
   end
 
   def employee_abilities
-    can [:create], Ticket, department_id: @user.department_id
+    can [:create, :index], Ticket
     can [:show, :reopen], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
     end

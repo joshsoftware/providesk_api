@@ -2,7 +2,7 @@ class Ticket < ApplicationRecord
   include AASM
   audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
-  after_create :set_ticket_number, :send_notification
+  after_create :set_ticket_number, :send_notification, :create_activity
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
@@ -11,7 +11,8 @@ class Ticket < ApplicationRecord
   belongs_to :category
 
   # before_validation :downcase_ticket_type, only: [:create, :update]
-  after_save :create_activity
+  after_save :create_activity, if: :status_changed? or :resolver_changed? or 
+             :department_id_changed? or :cactegory_id_changed?
 
   validates_associated :activities
   validates :title, presence: true

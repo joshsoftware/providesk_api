@@ -6,7 +6,7 @@ module Tickets::V1
     end
 
     def call
-      find_ticket && check_role && show_ticket
+      find_ticket && show_ticket
     end
 
     def find_ticket
@@ -15,21 +15,6 @@ module Tickets::V1
         @ticket
       else
         @error = { status: false }.as_json
-      end
-    end
-
-    def check_role
-      return @error if @error
-      if @current_user.is_admin?
-        @ticket
-      elsif @current_user.is_department_head? && @ticket.department_id == @current_user.department_id
-        @ticket
-      elsif @current_user.is_employee?
-        if @ticket.resolver_id == @current_user.id || @ticket.requester_id == @current_user.id
-          @ticket
-        else
-          @error = { status: false }.as_json
-        end
       end
     end
 

@@ -43,12 +43,12 @@ en:
   missing_params: 'Required parameters are missing'
   record_not_found: 'Record not found'
 
-  organization:
+  organizations:
     success: 
       create: "Organization created successfully"
     error:
       create: "Unable to create organization"
-      exists: "Organization does not exists"
+      exists: "Organization already exists"
 
   department:
     success:
@@ -90,8 +90,9 @@ en:
       not_exists: "Could not find ticket"
       update: "Could not update the ticket"
     show:
-      not_available: "No such tickets availaible"
+      not_availaible: "No such tickets availaible"
       invalid_filter: "Filter invalid"
+      access: 'You cannot access tickets of another department'
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver} from department %{department}"
     inprogress: "The work has been started on the %{ticket_type}"

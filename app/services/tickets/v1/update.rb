@@ -84,7 +84,7 @@ module Tickets::V1
 
     def update
       return @error if @error
-
+      
       return { status: true }.as_json if @ticket.update(@update_params.except(:id))
     end
 

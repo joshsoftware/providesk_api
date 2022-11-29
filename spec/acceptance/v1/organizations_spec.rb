@@ -4,7 +4,7 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Organizations' do
   let!(:organization) { FactoryBot.create(:organization, name: "google", domain: ["gmail.com"]) }
-  let!(:role) { FactoryBot.create(:role, name: 'super admin')}
+  let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:super_admin])}
 	let!(:user) { FactoryBot.create(:user, role_id: role.id) }
   post '/organizations' do
 		before do
@@ -48,13 +48,11 @@ resource 'Organizations' do
         expect(response_data["errors"]).to eq("Name can't be blank")
       end
 
-      example 'Unable to create organization due to invalid params' do
-        do_request({"organization": {
-          } 
-				})
+      example 'Unable to create organization due to invalid parameters' do
+        do_request({"organization": {}})
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
-        expect(response_data["message"]).to eq(I18n.t('organizations.error.invalid_params'))
+        expect(response_data["errors"]).to eq(I18n.t('missing_params'))
       end
     end
   end
@@ -88,29 +86,23 @@ resource 'Organizations' do
         response_body.should eq(expected_response)
       end
     end
-    context '403' do
-      let(:id) { @organization1.id }
+    context '401' do
       before do 
         @organization1 = FactoryBot.create(:organization, name: 'Josh3', domain: ["josh3.com"])
       end
-      example "User does not have access rights to the content" do
-        expected_response = {
-          message: I18n.t('organization.error.unauthorized_user')
-        }.to_json
+      let(:id) { @organization1.id }
+      example "Unauthorized user" do
         do_request()
-        expect(status).to eq 403
-        response_body.should eq(expected_response)
+        expect(status).to eq 401
       end
     end
-    context '422' do
+    context '404' do
       let(:id) { 0 }
       example "Pass invalid organization id which does not exist in database" do
-        expected_response = {
-          message: I18n.t('organization.error.invalid_organization_id')
-        }.to_json
         do_request()
-        expect(status).to eq 422
-        response_body.should eq(expected_response)
+        response_data = JSON.parse(response_body)
+        expect(status).to eq(404)
+        expect(response_data["errors"]).to eq(I18n.t('record_not_found'))
       end
     end
   end
