@@ -1,8 +1,8 @@
 module Tickets::V1
   class Create
 
-    def initialize(params, user)
-      @current_user = user
+    def initialize(params, current_user)
+      @current_user = current_user
       @title = params[:title]
       @description = params[:description]
       @category_id = params[:category_id]

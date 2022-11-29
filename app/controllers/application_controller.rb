@@ -1,8 +1,27 @@
-class ApplicationController < ActionController::API
 # frozen_string_literal: true
-  before_action :authenticate
 
+class ApplicationController < ActionController::API
+  before_action :authenticate
+  load_and_authorize_resource
+  
   attr_reader :current_user, :payload
+
+  rescue_from ActionController::ParameterMissing do |exception|
+    render json: { errors: I18n.t('missing_params') }, status: :unprocessable_entity
+  end
+
+  rescue_from ActiveRecord::RecordNotFound do |exception|
+    render json: { errors: I18n.t('record_not_found') }, status: 404
+  end
+
+  rescue_from CanCan::AccessDenied do |exception|
+    render json: { message: exception.message, authorization_failure: true }, status: :unauthorized
+  end
+
+  def params_missing
+    render json: { message: I18n.t('organizations.error.invalid_params') }, 
+            status: :unprocessable_entity
+  end
 
   def render_json(message:, data: {}, status_code: :ok)
     return render(json: { message: message, data: data }, status: status_code)

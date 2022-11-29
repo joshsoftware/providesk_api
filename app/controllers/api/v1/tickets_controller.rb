@@ -3,16 +3,12 @@
 module Api::V1
   class TicketsController < ApplicationController
     def create
-      begin
-        result = Tickets::V1::Create.new(ticket_params, current_user).call
-        if result[:status]
-          render json: { message: I18n.t('tickets.success.create') }
-        else
-          render json: { message: I18n.t('tickets.error.create'), errors: result[:error_message]},
-                status: :unprocessable_entity
-        end
-      rescue ActionController::ParameterMissing
-        render json:{ message: I18n.t('tickets.error.invalid_params') }, status: :unprocessable_entity
+      result = Tickets::V1::Create.new(ticket_params, current_user).call
+      if result[:status]
+        render json: { message: I18n.t('tickets.success.create') }
+      else
+        render json: { message: I18n.t('tickets.error.create'), errors: result[:error_message]},
+              status: :unprocessable_entity
       end
     end
 
@@ -35,15 +31,11 @@ module Api::V1
     end
 
     def update
-      begin
-        result = Tickets::V1::Update.new(update_params, current_user).call
-        if result["status"]
-          render json: { message: I18n.t('tickets.success.update') }
-        else
-          render json: { message: I18n.t('tickets.error.update'), errors: result["error_message"] }, status: :unprocessable_entity
-        end
-      rescue ActionController::ParameterMissing
-        render json:{ message: I18n.t('tickets.error.invalid_params') }, status: :unprocessable_entity
+      result = Tickets::V1::Update.new(update_params, current_user).call
+      if result["status"]
+        render json: { message: I18n.t('tickets.success.update') }
+      else
+        render json: { message: I18n.t('tickets.error.update'), errors: result["error_message"] }, status: :unprocessable_entity
       end
     end
 

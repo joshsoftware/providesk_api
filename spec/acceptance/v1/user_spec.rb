@@ -36,9 +36,9 @@ resource 'Users' do
       example 'Could not update user - Invalid Role' do
         do_request({user: { role: "department_head"}})
         response_data = JSON.parse(response_body)
-        expect(response_status).to eq(422)
-        expect(response_data["message"]).to eq(I18n.t('users.error.update'))
-        expect(response_data["errors"]).to eq(I18n.t('users.error.role'))
+        expect(response_status).to eq(401)
+        expect(response_data["message"]).to eq("You are not authorized to access this page.")
+        expect(response_data["authorization_failure"]).to be true
       end
     end
     context '422' do
@@ -51,9 +51,9 @@ resource 'Users' do
         user.update!(email: "faker@joshsoftware.com", department_id: nil)
         do_request({user: { role: "department_head"}})
         response_data = JSON.parse(response_body)
-        expect(response_status).to eq(422)
-        expect(response_data["message"]).to eq(I18n.t('users.error.update'))
-        expect(response_data["errors"]).to eq(I18n.t('users.error.organization'))
+        expect(response_status).to eq(401)
+        expect(response_data["message"]).to eq("You are not authorized to access this page.")
+        expect(response_data["authorization_failure"]).to be true
       end
     end
   end

@@ -16,18 +16,20 @@ Rails.application.routes.draw do
       resources :organizations, only: :create
       resources :users, only: :update
       resources :departments do
-        member do 
+        member do
           get 'categories'
           get 'users'
         end
       end
       resources :organizations do
-        member do 
+        member do
           get 'departments'
+          # Only to get the users with nil department
+          get 'users'
         end
       end
       resources :tickets do
-        member do 
+        member do
           put 'reopen'
         end
       end

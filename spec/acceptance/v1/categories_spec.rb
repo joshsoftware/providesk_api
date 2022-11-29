@@ -5,8 +5,8 @@ require 'rspec_api_documentation/dsl'
 resource 'Categories' do
   let!(:organization) { FactoryBot.create(:organization, name: "Josh") }
 	let!(:department) { FactoryBot.create(:department, name: Faker::Name.name, organization_id: organization.id)}
-	let!(:category) { FactoryBot.create(:category, name: "Hardware", priority: "High", department_id: department.id)}
-	let!(:role) { FactoryBot.create(:role, name: 'employee')}
+	let!(:category) { FactoryBot.create(:category, name: "Hardware", priority: "High", department_id: user.department_id)}
+	let!(:role) { FactoryBot.create(:role, name: 'department_head')}
 	let!(:user) { FactoryBot.create(:user, role_id: role.id) }
 
   post '/categories' do
@@ -16,10 +16,10 @@ resource 'Categories' do
 		end
 		context '200' do
       example 'Categories created successfully' do
-        do_request({"categories": {
-					"name": "Software",
-          "priority": 0,
-					"department_id": department.id,
+        do_request({category: {
+					name: "Software",
+          priority: "Regular",
+					department_id: user.department_id,
           } 
 				})
         response_data = JSON.parse(response_body)
@@ -28,21 +28,19 @@ resource 'Categories' do
       end
     end
 
-    context '422' do
-      example 'Unable to create category due to invalid params' do
-        do_request({"categories": {
-          } 
-				})
+    context   '422' do
+      example 'Unable to create category due to invalid parameters' do
+        do_request({"category": {} })
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(422)
-        expect(response_data["message"]).to eq(I18n.t('categories.error.invalid_params'))
+        expect(response_data["errors"]).to eq(I18n.t('missing_params'))
       end
 
       example 'Unable to create category due to already existing name' do
-        do_request({"categories": {
+        do_request({"category": {
 					"name": "Hardware",
-          "priority": 0,
-					"department_id": department.id,
+          "priority": "Regular",
+					"department_id": user.department_id,
           } 
 				})
         response_data = JSON.parse(response_body)
@@ -52,9 +50,9 @@ resource 'Categories' do
       end
 
       example "Unable to create category when name is blank" do
-        do_request({"categories": {
-          "priority": 0,
-          "department_id": department.id
+        do_request({"category": {
+          "priority": "Regular",
+          "department_id": user.department_id
           } 
 				})
         response_data = JSON.parse(response_body)
@@ -64,9 +62,9 @@ resource 'Categories' do
       end
 
       example "Unable to create category when department is blank" do
-        do_request({"categories": {
+        do_request({"category": {
           "name": "Software",
-          "priority": 0
+          "priority": "Regular"
           } 
 				})
         response_data = JSON.parse(response_body)
