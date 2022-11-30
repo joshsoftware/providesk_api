@@ -42,7 +42,7 @@ class Ability
 
   def employee_abilities
     can [:departments], Organization, id: @user.organization_id
-    can [:users, :categories], Department, id: @user.department_id
+    can [:users, :categories], Department
     can [:create, :index], Ticket
     can [:show, :reopen], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
