@@ -26,7 +26,7 @@ module Api::V1
       if result["status"]
         render json: result["tickets"], status: 200
       else
-        render json: {message: result["message"], data: result["data"]}, status: result["status_code"]
+        render json: result["data"] , status: result["status_code"]
       end
     end
 
