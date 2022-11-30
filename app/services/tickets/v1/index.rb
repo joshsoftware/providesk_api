@@ -61,7 +61,8 @@ module Tickets::V1
                .order(created_at: :desc).to_a
      end
      if tickets == []
-       { status: false, 
+       { status: false,
+         data: [] ,
          message: I18n.t('tickets.show.not_availaible'),
          status_code: 200 }.as_json
      else
