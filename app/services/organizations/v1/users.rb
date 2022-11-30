@@ -9,7 +9,7 @@ module Organizations::V1
     end
 
     def show_users
-      users = User.where(organization_id: @organization.id, department_id: nil)
+      users = User.where(organization_id: @organization_id, department_id: nil)
       { 
         status: true,
         data: {
