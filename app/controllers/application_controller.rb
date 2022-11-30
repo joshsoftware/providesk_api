@@ -44,7 +44,7 @@ class ApplicationController < ActionController::API
   end
 
   def token_invalid
-    render_json(message: I18n.t('session.expired'), status_code: :unauthorized)
+    render_json(message: I18n.t('session.expired'), status_code: 440)
   end
 
   def load_current_user(payload)

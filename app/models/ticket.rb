@@ -1,8 +1,9 @@
 class Ticket < ApplicationRecord
   include AASM
+  attr_accessor :attribute_changed, :ticket_created
   audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
-  after_create :set_ticket_number, :send_notification, :create_activity
+  after_create :set_ticket_number, :send_notification
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
@@ -11,8 +12,8 @@ class Ticket < ApplicationRecord
   belongs_to :category
 
   # before_validation :downcase_ticket_type, only: [:create, :update]
-  after_save :create_activity, if: :status_changed? or :resolver_changed? or 
-             :department_id_changed? or :cactegory_id_changed?
+  before_save :status_or_resolver_or_department_or_category_changed?
+  after_save :create_activity, if: :attribute_changed and :ticket_created
 
   validates_associated :activities
   validates :title, presence: true
@@ -78,6 +79,10 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def status_or_resolver_or_department_or_category_changed?
+    @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || category_id_changed?) ? true : false
+  end
+
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, 
                          requester: requester.name, department: department.name)
@@ -87,6 +92,7 @@ class Ticket < ApplicationRecord
   def set_ticket_number
     ticket_number = ticket_type + "-" + id.to_s
     Ticket.find(id).update(ticket_number: ticket_number)
+    @ticket_created = true
   end
   
   def send_email_to_department_head
@@ -118,7 +124,7 @@ class Ticket < ApplicationRecord
 
   def get_description_of_update
     if Audited::Audit.where(auditable_id: self.id) == []
-      message = I18n.t('ticket.description.new_ticket', id: id)
+      message = [I18n.t('ticket.description.new_ticket', id: id)]
     else
       changes = Audited::Audit.where(auditable_id: self.id).order(:created_at).pluck(:audited_changes).last
       message = []

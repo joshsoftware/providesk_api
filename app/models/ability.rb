@@ -30,9 +30,8 @@ class Ability
   end
 
   def department_head_abilities
-    can [:categories, :users], Department do |department|
-      @user.department_id == department.id
-    end
+    can [:users, :departments], Organization, id: @user.organization_id
+    can [:categories, :users], Department, organization_id: @user.organization_id
     can [:create], Category, department_id: @user.department_id
     can [:create, :show, :index, :reopen, :update], Ticket, department_id: @user.department_id
     can [:update], User do |user|
@@ -42,7 +41,7 @@ class Ability
 
   def employee_abilities
     can [:departments], Organization, id: @user.organization_id
-    can [:users, :categories], Department
+    can [:users, :categories], Department, organization_id: @user.organization_id
     can [:create, :index], Ticket
     can [:show, :reopen], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
