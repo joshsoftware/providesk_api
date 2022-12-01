@@ -14,7 +14,7 @@ module Tickets::V1
           return { status: true, success_message: I18n.t('tickets.success.close') }.as_json
         else
           @ticket.reopen
-          @ticket[:description] += "[\"Reopen: #{@ticket_result[:started_reason]}\"]"
+          @ticket[:reason_for_update] = "Reopen: #{@ticket_result[:started_reason]}"
           @ticket.save
           { status: true, success_message: I18n.t('tickets.success.reopen') }.as_json
         end
