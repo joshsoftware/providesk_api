@@ -118,7 +118,7 @@ resource "Sessions" do
       example "Login Token Expired" do
         do_request()
         response_data = JSON.parse(response_body)
-        expect(status).to eq(401)
+        expect(status).to eq(440)
         expect(response_data["message"]).to eq(I18n.t('session.expired'))
       end
     end

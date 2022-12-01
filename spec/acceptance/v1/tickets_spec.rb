@@ -253,6 +253,24 @@ resource 'Tickets' do
 				expect(response_data["errors"]).to eq(I18n.t('tickets.error.resolver'))
 			end
 		end
+
+		context '401' do 
+			before do
+				@ticket = Ticket.create!(
+					title: 'Laptop Issue', 
+					description: 'RAM Issue', 
+					category_id: category.id, 
+					department_id: department_obj.id, 
+					ticket_type: 'Request', 
+					resolver_id: user1.id,
+					requester_id: user.id)
+			end
+			let(:id) {@ticket.id}
+			example 'Could not update ticket created by himself' do
+				do_request({ ticket: {department_id: department_hr.id }})
+				expect(response_status).to eq(401)
+			end
+		end
 	end
 
 	get 'tickets' do
@@ -294,6 +312,7 @@ resource 'Tickets' do
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
+				expect(response_data["data"]).to eq([])
 				expect(response_data["message"]).to eq(I18n.t('tickets.show.not_availaible'))
 			end
 		end

@@ -24,9 +24,9 @@ module Api::V1
     def index
       result = Tickets::V1::Index.new(params, current_user).call
       if result["status"]
-        render json: result["tickets"], status: 200
+        render json: { data: result["tickets"] }, status: 200
       else
-        render json: result["data"] , status: result["status_code"]
+        render json: { message: result["message"], data: result["data"] }, status: result["status_code"]
       end
     end
 
