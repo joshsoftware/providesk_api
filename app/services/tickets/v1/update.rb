@@ -89,6 +89,7 @@ module Tickets::V1
     end
 
     def set_status(ticket, status)
+      return true if ticket.status == @status
       case status
       when "inprogress"
         ticket.start

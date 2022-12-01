@@ -294,6 +294,7 @@ resource 'Tickets' do
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
+				expect(response_data["data"]).to eq([])
 				expect(response_data["message"]).to eq(I18n.t('tickets.show.not_availaible'))
 			end
 		end
