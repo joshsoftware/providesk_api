@@ -7,6 +7,7 @@ module Tickets::V1
       @category_id = update_request_params[:category_id]
       @department_id = update_request_params[:department_id]
       @resolver_id = update_request_params[:resolver_id]
+      @asset_url = update_request_params[:asset_url]
       @current_user = current_user
     end
 
@@ -84,8 +85,9 @@ module Tickets::V1
 
     def update
       return @error if @error
-      
-      return { status: true }.as_json if @ticket.update(@update_params.except(:id))
+      @ticket.asset_url += @asset_url
+      @ticket.save!
+      return { status: true }.as_json if @ticket.update(@update_params.except(:id, :asset_url))
     end
 
     def set_status(ticket, status)

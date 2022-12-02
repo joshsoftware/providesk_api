@@ -1,6 +1,6 @@
 class Ticket < ApplicationRecord
   include AASM
-  attr_accessor :attribute_changed, :ticket_created
+  attr_accessor :attribute_changed, :ticket_created, :asset_url_on_update
   audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
   after_create :set_ticket_number, :send_notification
@@ -81,6 +81,7 @@ class Ticket < ApplicationRecord
 
   def status_or_resolver_or_department_or_category_changed?
     @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || category_id_changed?) ? true : false
+    @asset_url_on_update = (asset_url_changed?) ? asset_url_change.last - asset_url_change.first : []
   end
 
   def send_notification
@@ -106,7 +107,7 @@ class Ticket < ApplicationRecord
   end
 
   def create_activity
-    activity_attr = {current_ticket_status: status, ticket_id: id,
+    activity_attr = {current_ticket_status: status, ticket_id: id, asset_url: asset_url_on_update,
                      description: get_description_of_update, reason_for_update: reason_for_update}
     if @previous_status
       activity_attr.merge!(previous_ticket_status: @previous_status)
