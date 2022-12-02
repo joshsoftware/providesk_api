@@ -24,9 +24,9 @@ module Api::V1
     def index
       result = Tickets::V1::Index.new(params, current_user).call
       if result["status"]
-        render json: result["tickets"], status: 200
+        render json: { data: result["tickets"] }, status: 200
       else
-        render json: result["data"] , status: result["status_code"]
+        render json: { message: result["message"], data: result["data"] }, status: result["status_code"]
       end
     end
 
@@ -51,11 +51,11 @@ module Api::V1
     private
 
     def update_params
-      params.require(:ticket).permit(:status, :category_id, :department_id, :resolver_id, :reason_for_update).merge(id: params[:id])
+      params.require(:ticket).permit(:status, :category_id, :department_id, :resolver_id, :reason_for_update, asset_url: []).merge(id: params[:id])
     end
 
     def ticket_params
-      params.require(:ticket).permit(:title, :description, :category_id, :department_id, :ticket_type, :resolver_id)
+      params.require(:ticket).permit(:title, :description, :category_id, :department_id, :ticket_type, :resolver_id, asset_url: [])
     end
   end
 end
