@@ -107,3 +107,4 @@ en:
       department: "Department has been changed from %{previous_department} to %{new_department}"
       resolver: "Resolver has been changed from %{previous_resolver} to %{new_resolver}"
       status: "Status has been updated from %{old_status} to %{updated_status}"
+      asset_url: "Image added"

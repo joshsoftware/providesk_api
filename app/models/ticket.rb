@@ -1,9 +1,9 @@
 class Ticket < ApplicationRecord
   include AASM
   attr_accessor :attribute_changed, :ticket_created, :asset_url_on_update
-  audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
+  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url], on: [:update]
 
-  after_create :set_ticket_number, :send_notification
+  after_create :set_ticket_number, :send_notification, :create_activity
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
@@ -13,8 +13,7 @@ class Ticket < ApplicationRecord
 
   # before_validation :downcase_ticket_type, only: [:create, :update]
   before_save :status_or_resolver_or_department_or_category_changed?
-  after_save :create_activity, if: :attribute_changed and :ticket_created
-
+  after_save :create_activity, if: :attribute_changed, unless: :ticket_created
   validates_associated :activities
   validates :title, presence: true
   validates :description, presence: true
@@ -80,8 +79,13 @@ class Ticket < ApplicationRecord
   end
 
   def status_or_resolver_or_department_or_category_changed?
-    @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || category_id_changed?) ? true : false
-    @asset_url_on_update = (asset_url_changed?) ? asset_url_change.last - asset_url_change.first : []
+    @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || 
+                          category_id_changed? || asset_url_changed?) ? true : false
+    if asset_url.blank?
+      @asset_url_on_update = []
+    else
+      asset_url_change.last - asset_url_change.first
+    end
   end
 
   def send_notification
@@ -148,6 +152,8 @@ class Ticket < ApplicationRecord
           new_department = Department.where(id: val[1]).pluck(:name)[0]
           message.append(I18n.t('ticket.description.department', previous_department: previous_department, 
                         new_department: new_department))
+        when "asset_url"
+          message.append(I18n.t('ticket.description.asset_url'))
         end
       end
     end

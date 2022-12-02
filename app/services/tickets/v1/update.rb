@@ -85,7 +85,8 @@ module Tickets::V1
 
     def update
       return @error if @error
-      @ticket.asset_url += @asset_url
+
+      @asset_url.nil? ? [] : (@ticket.asset_url += @asset_url) 
       @ticket.save!
       return { status: true }.as_json if @ticket.update(@update_params.except(:id, :asset_url))
     end
