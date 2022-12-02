@@ -21,6 +21,8 @@ module Users::V1
     def check_department
       if @department_id.present?
         @department = Department.find_by(organization_id: User.find(@user_id).organization_id, id: @department_id)
+        return @department.nil? ? (@error = { status: false, error_message: I18n.t('tickets.error.department') }.as_json) 
+                                : @user.department_id = @department.id
       else 
         return true
       end
@@ -32,7 +34,8 @@ module Users::V1
     def check_role
       if @role.present?
         @role = Role.find_by(name: @role)
-        return @role.nil? ? (@error = { status: false, error_message: I18n.t('users.error.role') }.as_json) : @user.role_id = @role.id
+        return @role.nil? ? (@error = { status: false, error_message: I18n.t('users.error.role') }.as_json) 
+                          : @user.role_id = @role.id
       else
         return true
       end
