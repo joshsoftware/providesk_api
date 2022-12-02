@@ -51,11 +51,11 @@ module Api::V1
     private
 
     def update_params
-      params.require(:ticket).permit(:status, :category_id, :department_id, :resolver_id, :reason_for_update).merge(id: params[:id])
+      params.require(:ticket).permit(:status, :category_id, :department_id, :resolver_id, :reason_for_update, asset_url: []).merge(id: params[:id])
     end
 
     def ticket_params
-      params.require(:ticket).permit(:title, :description, :category_id, :department_id, :ticket_type, :resolver_id)
+      params.require(:ticket).permit(:title, :description, :category_id, :department_id, :ticket_type, :resolver_id, asset_url: [])
     end
   end
 end

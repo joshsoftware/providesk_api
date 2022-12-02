@@ -20,8 +20,16 @@ resource 'Users' do
 		end
     context '200' do
       let(:id) { user.id }
-      example 'User updated successfully ' do
+      example 'User role updated successfully' do
         do_request({user: { role: "department_head"}})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(response_data["message"]).to eq(I18n.t('users.success.update'))
+      end
+
+      let!(:dept) { Department.create!(name: 'Learning and development', organization_id: organization1.id) }
+      example 'User department updated successfully' do
+        do_request({ user: { department_id: dept.id }})
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('users.success.update'))

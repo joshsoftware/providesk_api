@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_11_10_074726) do
+ActiveRecord::Schema.define(version: 2022_12_01_081158) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_074726) do
     t.string "assigned_from", null: false
     t.string "assigned_to", null: false
     t.string "description"
-    t.string "asset_url"
+    t.string "asset_url", default: [], array: true
     t.integer "current_ticket_status", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(version: 2022_11_10_074726) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "organization_id"
     t.string "reason_for_update"
+    t.string "asset_url", default: [], array: true
     t.index ["category_id"], name: "index_tickets_on_category_id"
     t.index ["department_id"], name: "index_tickets_on_department_id"
     t.index ["requester_id"], name: "index_tickets_on_requester_id"
