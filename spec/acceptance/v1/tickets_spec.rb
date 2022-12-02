@@ -20,8 +20,14 @@ resource 'Tickets' do
 			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
 		end
 		context '200' do
-      example 'Ticket created successfully ' do
-        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id))
+      example 'Ticket created successfully - without image' do
+        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id, nil))
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
+      end
+			example 'Ticket created successfully - with image' do
+        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id, "image"))
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
@@ -217,6 +223,13 @@ resource 'Tickets' do
 				expect(response_status).to eq(200)
 				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
 			end
+
+			example 'Ticket updated successfully - added image' do 
+				do_request({ticket: { asset_url: "image" }})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
 		end
 
 		context '422' do
@@ -371,7 +384,7 @@ resource 'Tickets' do
 
 	private
 
-	def create_params(title, description, category_id, department_id, ticket_type, resolver_id)
+	def create_params(title, description, category_id, department_id, ticket_type, resolver_id, asset_url)
 		{
 			"ticket":
 			{
@@ -380,7 +393,8 @@ resource 'Tickets' do
 					"category_id": category_id,
 					"department_id": department_id,
 					"ticket_type": ticket_type,
-					"resolver_id": resolver_id
+					"resolver_id": resolver_id,
+					"asset_url": asset_url
 			}
 		}
 	end

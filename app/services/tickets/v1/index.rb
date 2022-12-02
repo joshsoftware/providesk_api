@@ -50,15 +50,13 @@ module Tickets::V1
       elsif @assigned_to_me && where_hash == {}
         tickets = Ticket.where(resolver_id: @current_user.id)
       elsif @current_user.is_employee?
-        tickets = (Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user)).order(created_at: :desc).to_a
+        tickets = (Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user))
       elsif where_hash == {} && @current_user.is_department_head?
         tickets = Ticket.where(department_id: @current_user.department_id).or(Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user))
-                .order(created_at: :desc).to_a
       elsif !@created_by_me && !@assigned_to_me
         tickets = Ticket.where(where_hash)
       else
         tickets = Ticket.where(where_hash).or(Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user))
-                .order(created_at: :desc).to_a
       end
       if tickets == []
         { status: false,
@@ -66,7 +64,7 @@ module Tickets::V1
           message: I18n.t('tickets.show.not_availaible'),
           status_code: 200 }.as_json
       else
-        { status: true, tickets: serialize_resource(tickets, TicketSerializer) }.as_json  
+        { status: true, tickets: serialize_resource(tickets.order(created_at: :desc).to_a, TicketSerializer) }.as_json  
       end
     end
  
