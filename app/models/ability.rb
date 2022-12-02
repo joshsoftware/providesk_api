@@ -46,5 +46,6 @@ class Ability
     can [:show, :reopen], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
     end
+    can [:update], Ticket, resolver_id: @user.id
   end
 end

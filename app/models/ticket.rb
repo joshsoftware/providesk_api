@@ -3,7 +3,7 @@ class Ticket < ApplicationRecord
   attr_accessor :attribute_changed, :ticket_created
   audited only: [:resolver_id, :department_id, :category_id, :status], on: [:update]
 
-  after_create :set_ticket_number, :send_notification
+  after_create :set_ticket_number, :send_notification, :create_activity
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
@@ -13,8 +13,7 @@ class Ticket < ApplicationRecord
 
   # before_validation :downcase_ticket_type, only: [:create, :update]
   before_save :status_or_resolver_or_department_or_category_changed?
-  after_save :create_activity, if: :attribute_changed and :ticket_created
-
+  after_save :create_activity, if: :attribute_changed, unless: :ticket_created
   validates_associated :activities
   validates :title, presence: true
   validates :description, presence: true
