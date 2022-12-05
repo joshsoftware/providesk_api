@@ -12,7 +12,7 @@ class Ticket < ApplicationRecord
   belongs_to :category
 
   # before_validation :downcase_ticket_type, only: [:create, :update]
-  before_save :status_or_resolver_or_department_or_category_changed?
+  before_save :status_or_resolver_or_department_or_category_or_asset_url_changed?
   after_save :create_activity, if: :attribute_changed, unless: :ticket_created
   validates_associated :activities
   validates :title, presence: true
@@ -78,13 +78,15 @@ class Ticket < ApplicationRecord
     end
   end
 
-  def status_or_resolver_or_department_or_category_changed?
+  def status_or_resolver_or_department_or_category_or_asset_url_changed?
     @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || 
                           category_id_changed? || asset_url_changed?) ? true : false
     if asset_url.blank?
       @asset_url_on_update = []
+    elsif asset_url_changed?
+      @asset_url_on_update = asset_url_change.last - asset_url_change.first
     else
-      asset_url_change.last - asset_url_change.first
+      @asset_url_on_update = asset_url
     end
   end
 
