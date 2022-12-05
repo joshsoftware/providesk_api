@@ -27,7 +27,7 @@ resource 'Tickets' do
         expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
       end
 			example 'Ticket created successfully - with image' do
-        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id, "image"))
+        do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id, ["image"]))
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
@@ -225,7 +225,7 @@ resource 'Tickets' do
 			end
 
 			example 'Ticket updated successfully - added image' do 
-				do_request({ticket: { asset_url: "image" }})
+				do_request({ticket: { asset_url: ["image"] }})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
 				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
