@@ -9,7 +9,7 @@ module Tickets::V1
       @department_id = params[:department_id]
       @ticket_type = params[:ticket_type]
       @resolver_id = params[:resolver_id]
-      @asset_url = params[:asset_url]
+      @params = params
     end
 
     def call
@@ -45,8 +45,8 @@ module Tickets::V1
       @requester_id = @current_user.id
       @ticket = Ticket.new(title: @title, description: @description, priority: @priority,
          department_id: @department_id, category_id: @category_id, resolver_id: @resolver_id,
-         requester_id: @requester_id, ticket_type: @ticket_type, organization_id: @current_user.organization_id,
-         asset_url: @asset_url)
+         requester_id: @requester_id, ticket_type: @ticket_type, organization_id: @current_user.organization_id)
+      @ticket[:asset_url] = @params[:asset_url] if @params[:asset_url].present?
       if @ticket.save
         { status: true }
       else

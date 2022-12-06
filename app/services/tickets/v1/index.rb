@@ -13,6 +13,7 @@ module Tickets::V1
  
     def call
       where_hash = {}
+      where_hash["organization_id"] = @organization_id
       error_message = []
       if @department
         @department = change_case(@department)
@@ -45,18 +46,43 @@ module Tickets::V1
                 message: I18n.t('tickets.show.invalid_filter') + ", " + error_message.join(", "), 
                 status_code: 422 }.as_json
       end
-      if @created_by_me && where_hash == {}
-        tickets = Ticket.where(requester_id: @current_user.id)
-      elsif @assigned_to_me && where_hash == {}
+      
+      if @assigned_to_me && @created_by_me && where_hash.length == 1
+        tickets = Ticket.where(requester_id: @current_user.id).or(Ticket.where(resolver_id: @current_user.id))  
+      elsif @assigned_to_me && where_hash.length == 1
         tickets = Ticket.where(resolver_id: @current_user.id)
+      elsif @created_by_me && where_hash.length == 1
+        tickets = Ticket.where(requester_id: @current_user.id)
       elsif @current_user.is_employee?
-        tickets = (Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user))
-      elsif where_hash == {} && @current_user.is_department_head?
-        tickets = Ticket.where(department_id: @current_user.department_id).or(Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user))
-      elsif !@created_by_me && !@assigned_to_me
-        tickets = Ticket.where(where_hash)
-      else
-        tickets = Ticket.where(where_hash).or(Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user))
+        tickets = Ticket.where(requester_id: @current_user.id).or(Ticket.where(resolver_id: @current_user.id))
+      elsif @current_user.is_department_head?
+        if !@assigned_to_me && !@created_by_me && where_hash.length == 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(department_id: @current_user.department_id)).or\
+                   (Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user.id))
+        elsif !@assigned_to_me && !@created_by_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(department_id: @current_user.department_id))
+        elsif @assigned_to_me && @created_by_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(department_id: @current_user.department_id)).and\
+                   ((Ticket.where(requester_id: @current_user.id)).or(Ticket.where(resolver_id: @current_user.id)))
+        elsif @assigned_to_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(resolver_id: @current_user.id))
+        elsif @created_by_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(requester_id: @current_user.id))
+        end
+      elsif @current_user.is_admin?
+        if !@assigned_to_me && !@created_by_me && where_hash.length == 1
+          tickets = Ticket.where(where_hash).or(Ticket.where(requester_id: @current_user.id)).or\
+                   (Ticket.where(resolver_id: @current_user))
+        elsif !@assigned_to_me && !@created_by_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash)
+        elsif @assigned_to_me && @created_by_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and((Ticket.where(requester_id: @current_user.id)).or\
+                   (Ticket.where(resolver_id: @current_user)))
+        elsif @assigned_to_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(resolver_id: @current_user.id))
+        elsif @created_by_me && where_hash.length > 1
+          tickets = Ticket.where(where_hash).and(Ticket.where(requester_id: @current_user.id))
+        end
       end
       if tickets == []
         { status: false,

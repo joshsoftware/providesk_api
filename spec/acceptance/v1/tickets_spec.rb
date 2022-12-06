@@ -122,6 +122,24 @@ resource 'Tickets' do
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('tickets.success.reopen'))
       end
+
+			example 'Ticket reopened successfully with image' do
+				@ticket.start
+				@ticket.resolve
+				@ticket.save
+        do_request({
+					"ticket_result": {
+						"is_customer_satisfied": false,
+						"rating": 2,
+						"state_action": "reopen",
+						"started_reason": "Not satisfied with your service",
+						"asset_url": ["reopen"]
+					}
+				})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(response_data["message"]).to eq(I18n.t('tickets.success.reopen'))
+      end
     end
 
 		context '422' do
