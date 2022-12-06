@@ -4,6 +4,8 @@ module Tickets::V1
       @current_user = current_user
       @department = filters[:department].split(',') if filters[:department]
       @category = filters[:category].split(',') if filters[:category]
+      @department_id = filters[:department_id] if filters[:department_id].present?
+      @category_id = filters[:category_id] if filters[:category_id].present?
       @type = filters[:type].split(',') if filters[:type]
       @status = filters[:status].split(',') if filters[:status]
       @created_by_me = filters[:created_by_me] if filters[:created_by_me]
@@ -15,19 +17,17 @@ module Tickets::V1
       where_hash = {}
       where_hash["organization_id"] = @organization_id
       error_message = []
-      if @department
-        @department = change_case(@department)
-        departments_list = (Department.select(:id).where(name: @department, organization_id: @organization_id)).pluck(:id)
-        if departments_list.count != @department.count
+      if @department_id.present?
+        departments_list = (Department.select(:id).where(id: @department_id, organization_id: @organization_id)).pluck(:id)
+        if departments_list.empty?
           error_message.append("Department Invalid")
         else
           where_hash["department_id"] = departments_list if departments_list != []
         end
       end
-      if @category
-        @category = change_case(@category)
-        category_list = (Category.select(:id).where(name: @category)).pluck(:id)
-        if category_list.count != @category.count
+      if @category_id.present?
+        category_list = (Category.select(:id).where(id: @category_id)).pluck(:id)
+        if category_list.empty?
           error_message.append("Category Invalid")
         else
           where_hash["category_id"] = category_list if category_list != []
