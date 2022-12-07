@@ -323,15 +323,15 @@ resource 'Tickets' do
 				expect(response_status).to eq(200)
 			end
 
-			example 'show ticket with one filter' do
-				do_request({department: department_obj.name})
+			example 'show ticket with department filter' do
+				do_request({department_id: department_obj.id})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
 				expect(response_data).to eq(response_data)
 			end
 
-			example 'show ticket with multiple filters' do
-				do_request({department: department_obj.name, category: category.name})
+			example 'show ticket with multiple filters - department and category' do
+				do_request({department_id: department_obj.id, category_id: category.id})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
 				expect(response_data).to eq(response_data)
@@ -350,14 +350,14 @@ resource 'Tickets' do
 
 		context '422' do
 			example 'invalid filters' do
-				do_request({department: "NonExistingDepartment"})
+				do_request({department_id: Faker::Base.numerify('#')})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(422)
 				expect(response_data["message"]).to eq(response_data["message"]) 
 			end
 
 			example 'Combination of valid and invalid filter' do
-				do_request({department: department_obj.name, category: "NonExistingCategory"})
+				do_request({department_id: department_obj.id, category_id: Faker::Base.numerify('#')})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(422)
 				expect(response_data["message"]).to eq(response_data["message"])

@@ -2,8 +2,6 @@ module Tickets::V1
   class Index < ApplicationController
     def initialize(filters, current_user)
       @current_user = current_user
-      @department = filters[:department].split(',') if filters[:department]
-      @category = filters[:category].split(',') if filters[:category]
       @department_id = filters[:department_id] if filters[:department_id].present?
       @category_id = filters[:category_id] if filters[:category_id].present?
       @type = filters[:type].split(',') if filters[:type]
