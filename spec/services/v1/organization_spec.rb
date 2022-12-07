@@ -8,25 +8,34 @@ RSpec.describe Api::V1::OrganizationsController, type: :model do
   describe '#create' do
     context '200' do
       it 'Organization created successfully' do
-        response_body = Organizations::V1::Create.new(params[:organization], user).call
+        response_body = Organizations::V1::Create.new(params[:organization]).call
         expect(response_body[:status]).to eq(true)
       end
     end
 
     context '400' do
       it 'Unable to create organization due to invalid params' do
-        response_body = Organizations::V1::Create.new(invalid_params[:organization], user).call
+        response_body = Organizations::V1::Create.new(invalid_params[:organization]).call
         expect(response_body[:status]).to eq(false)
       end
 
       it 'Unable to create organization due to already existing name' do
-        response_body = Organizations::V1::Create.new(organization, user).call
+        response_body = Organizations::V1::Create.new(organization).call
         expect(response_body[:status]).to eq(false)  
       end
 
       it 'Unable to create organization due to blank name' do
-        response_body = Organizations::V1::Create.new(blank_name, user).call
+        response_body = Organizations::V1::Create.new(blank_name).call
         expect(response_body[:status]).to eq(false)  
+      end
+    end
+  end
+
+  describe '#index' do
+    context '200' do
+      it 'Show list of all existing organizations' do
+        response_body = Organizations::V1::Index.new().call
+        expect(response_body['status']).to eq(true)
       end
     end
   end
