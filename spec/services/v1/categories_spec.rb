@@ -10,29 +10,29 @@ RSpec.describe Api::V1::CategoriesController, type: :model do
   describe '#create' do
     context '200' do
       it 'Categories created successfully' do
-        response_body = Categories::V1::Create.new(params[:categories], user).call
+        response_body = Categories::V1::Create.new(params[:categories]).call
         expect(response_body[:status]).to eq(true)
       end
     end
 
     context '400' do
       it 'Unable to create category due to invalid params' do
-        response_body = Categories::V1::Create.new({}, user).call
+        response_body = Categories::V1::Create.new({}).call
         expect(response_body[:status]).to eq(false)
       end
 
       it 'Unable to create category due to already existing name' do
-        response_body = Categories::V1::Create.new(category, user).call
+        response_body = Categories::V1::Create.new(category).call
         expect(response_body[:status]).to eq(false)  
       end
 
       it 'Unable to create category due to blank name' do
-        response_body = Categories::V1::Create.new({"priority": 0, "department_id": 1}, user).call
+        response_body = Categories::V1::Create.new({"priority": 0, "department_id": 1}).call
         expect(response_body[:status]).to eq(false)  
       end
 
       it 'Unable to create category due to blank department' do
-        response_body = Categories::V1::Create.new({"name": "Knowledge management", "priority": 0}, user).call
+        response_body = Categories::V1::Create.new({"name": "Knowledge management", "priority": 0}).call
         expect(response_body[:status]).to eq(false)  
       end
     end

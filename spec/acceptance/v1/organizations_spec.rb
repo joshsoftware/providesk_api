@@ -6,6 +6,7 @@ resource 'Organizations' do
   let!(:organization) { FactoryBot.create(:organization, name: "google", domain: ["gmail.com"]) }
   let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:super_admin])}
 	let!(:user) { FactoryBot.create(:user, role_id: role.id) }
+
   post '/organizations' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
@@ -57,7 +58,36 @@ resource 'Organizations' do
     end
   end
 
-  get "/organizations/:id/departments" do
+  get '/organizations' do
+    before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
+		end
+    
+    context '200' do
+      example 'Fetch organization list' do
+        result = {
+          total: 2,
+          organizations:[
+            {
+              id: user.organization.id,
+              name: user.organization.name
+            },
+            {
+              id: organization.id,
+              name: organization.name
+            }
+          ]
+        }.as_json
+        do_request()
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(response_data["data"]).to eq(result)
+      end
+    end
+  end
+
+  get '/organizations/:id/departments' do
     before do
       @user = FactoryBot.create(:user)
       @department = Department.find(@user.department_id)
@@ -69,7 +99,7 @@ resource 'Organizations' do
     end
     context '200' do
       let(:id) { @organization.id }
-      example "Listing departments for organization with valid user" do
+      example 'Listing departments for organization with valid user' do
         expected_response = {
           data:{
             total: 1,
@@ -86,19 +116,21 @@ resource 'Organizations' do
         response_body.should eq(expected_response)
       end
     end
+
     context '401' do
       before do 
         @organization1 = FactoryBot.create(:organization, name: 'Josh3', domain: ["josh3.com"])
       end
       let(:id) { @organization1.id }
-      example "Unauthorized user" do
+      example 'Unauthorized user' do
         do_request()
         expect(status).to eq 401
       end
     end
+
     context '404' do
       let(:id) { 0 }
-      example "Pass invalid organization id which does not exist in database" do
+      example 'Pass invalid organization id which does not exist in database' do
         do_request()
         response_data = JSON.parse(response_body)
         expect(status).to eq(404)

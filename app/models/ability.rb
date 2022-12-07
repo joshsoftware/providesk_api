@@ -10,7 +10,7 @@ class Ability
   end
 
   def super_admin_abilities
-    can [:create, :departments], Organization
+    can [:create, :departments, :index], Organization
     can [:create], Department
     can [:update], User
   end
