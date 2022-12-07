@@ -11,7 +11,6 @@ class Ticket < ApplicationRecord
   belongs_to :department, :class_name => 'Department', :foreign_key => 'department_id'
   belongs_to :category
 
-  # before_validation :downcase_ticket_type, only: [:create, :update]
   before_save :status_or_resolver_or_department_or_category_or_asset_url_changed?
   after_save :create_activity, if: :attribute_changed, unless: :ticket_created
   validates_associated :activities
