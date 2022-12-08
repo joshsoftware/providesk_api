@@ -195,7 +195,7 @@ resource 'Tickets' do
     end
 	end
 
-	put 'tickets/:id' do
+	put 'tickets/:id/update_ticket_progress' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
 			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
@@ -362,6 +362,128 @@ resource 'Tickets' do
 			let(:id) {@ticket.id}
 			example 'Could not update ticket created by himself' do
 				do_request({ ticket: {department_id: department_hr.id }})
+				expect(response_status).to eq(401)
+			end
+		end
+	end
+
+	put 'tickets/:id' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: user1.id, email: user1.email, name: user1.name})
+			@ticket = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department_obj.id, 
+															 ticket_type: 'Request', 
+															 resolver_id: user.id,
+															 requester_id: user1.id,
+															 organization_id: user.organization_id)
+			@department = Department.create!(name: "Test Department", organization_id: user.organization_id)
+			@category = Category.create!(name: "Category for Test Department", department_id: @department.id)
+			@resolver = User.create!(name: "testuser", role_id: role.id, email: "shefali@joshsoftware.com", 
+															 department_id: @department.id, organization_id: user.organization_id)
+		end
+
+		context '200' do
+			let(:id) {@ticket.id}
+			example 'Ticket edited successfully - Department changed' do
+				do_request({ticket: { department_id: @department.id}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket edited successfully - Department and category changed' do
+				do_request({ticket: { department_id: @department.id, category_id: @category.id}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket edited successfully - Department and Resolver changed' do
+				do_request({ticket: { department_id: @department.id, resolver_id: @resolver.id}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket edited successfully - Title and description changed' do
+				do_request({ticket: { title: 'Ticket edit', description: 'editing ticket'}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket edited sccessfully - Ticket type changed' do
+				do_request({ticket: { ticket_type: 'Complaint' }})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket edited successfully - asset_url changed' do
+				do_request({ticket: { asset_url: "image added"}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+		end
+
+		context '422' do
+			let(:id) {@ticket.id}
+			example 'Could not edit ticket - Resolver invalid' do
+				do_request({ticket: { resolver_id: Faker::Base.numerify('#')}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.resolver'))
+			end
+
+			example 'Could not edit ticket - Category invalid' do
+				do_request({ticket: { category_id: Faker::Base.numerify('#')}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.category'))
+			end
+
+			example 'Could not edit ticket - Department invalid' do
+				do_request({ticket: { department_id: Faker::Base.numerify('#')}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.department'))
+			end
+
+			example 'Could not edit ticket - Status not in assigned state' do
+				@ticket.start
+				@ticket.save
+				do_request({ticket: { ticket_type: 'Complaint'}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(I18n.t('tickets.error.status'))
+			end
+		end
+
+		context '401' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
+				@ticket = Ticket.create!(title: 'Laptop Issue', 
+																 description: 'RAM Issue', 
+																 category_id: category.id, 
+																 department_id: department_obj.id, 
+																 ticket_type: 'Request', 
+																 resolver_id: user.id,
+																 requester_id: user1.id,
+																 organization_id: user.organization_id)
+			end
+
+			let(:id) {@ticket.id}
+			example 'Unauthorized user' do
+				do_request({ ticket: { department_id: department_hr.id }})
 				expect(response_status).to eq(401)
 			end
 		end
