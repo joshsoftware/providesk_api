@@ -103,6 +103,10 @@ module Tickets::V1
         ticket.resolve
       when "closed"
         ticket.close
+      when "on_hold"
+        ticket.hold
+      when "assigned"
+        ticket.activate
       end
     end
   end

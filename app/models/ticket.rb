@@ -1,7 +1,7 @@
 class Ticket < ApplicationRecord
   include AASM
   attr_accessor :attribute_changed, :ticket_created, :asset_url_on_update
-  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url], on: [:update]
+  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url, :eta], on: [:update]
 
   after_create :set_ticket_number, :send_notification, :create_activity
 
@@ -27,7 +27,8 @@ class Ticket < ApplicationRecord
     "for_approval": 2,
     "resolved": 3,
     "closed": 4,
-    "rejected": 5
+    "rejected": 5,
+    "on_hold": 6
   }
 
   enum priority: {
@@ -49,15 +50,16 @@ class Ticket < ApplicationRecord
     state :resolved
     state :closed
     state :rejected
+    state :on_hold
 
     after_all_events :send_notification
 
     event :start do
-      transitions from: [:assigned, :for_approval], to: :inprogress
+      transitions from: [:assigned, :for_approval, :on_hold], to: :inprogress
     end
 
     event :approve do 
-      transitions from: :assigned, to: :for_approval
+      transitions from: [:assigned, :on_hold], to: :for_approval
     end
 
     event :reject do
@@ -74,6 +76,14 @@ class Ticket < ApplicationRecord
 
     event :reopen do
       transitions from: :resolved, to: :for_approval
+    end
+
+    event :hold do
+      transitions from: [:assigned, :inprogress, :for_approval], to: :on_hold
+    end
+
+    event :activate do
+      transitions from: :on_hold, to: :assigned
     end
   end
 
@@ -153,6 +163,8 @@ class Ticket < ApplicationRecord
                         new_department: new_department))
         when "asset_url"
           message.append(I18n.t('ticket.description.asset_url'))
+        when "eta"
+          message.append(I18n.t('ticket.description.eta'))
         end
       end
     end
