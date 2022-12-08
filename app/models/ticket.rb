@@ -19,7 +19,7 @@ class Ticket < ApplicationRecord
   validates :ticket_type, presence: true
   #validates :ticket_number, presence: true
 
-  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2} # Time in days
+  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2, "on_hold": 3} # Time in days
 
   enum status: {
     "assigned": 0,
