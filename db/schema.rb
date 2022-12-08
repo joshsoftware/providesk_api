@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_01_081158) do
+ActiveRecord::Schema.define(version: 2022_12_08_063428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -98,13 +98,11 @@ ActiveRecord::Schema.define(version: 2022_12_01_081158) do
     t.integer "organization_id"
     t.string "reason_for_update"
     t.string "asset_url", default: [], array: true
+    t.date "eta"
     t.index ["category_id"], name: "index_tickets_on_category_id"
     t.index ["department_id"], name: "index_tickets_on_department_id"
     t.index ["requester_id"], name: "index_tickets_on_requester_id"
     t.index ["resolver_id"], name: "index_tickets_on_resolver_id"
-    t.check_constraint "priority = ANY (ARRAY[0, 1, 2, 3])", name: "priority_check"
-    t.check_constraint "status = ANY (ARRAY[0, 1, 2, 3, 4, 5])", name: "status_check"
-    t.check_constraint "ticket_type = ANY (ARRAY[0, 1])", name: "type_check"
   end
 
   create_table "users", force: :cascade do |t|
