@@ -90,7 +90,7 @@ class Ticket < ApplicationRecord
   def status_or_resolver_or_department_or_category_or_asset_url_changed?
     @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || 
                           category_id_changed? || asset_url_changed? || title_changed? || 
-                          description_changed? || ticket_type_changed? ) ? true : false
+                          description_changed? || ticket_type_changed? || eta_changed?) ? true : false
     if asset_url.blank? || !asset_url_changed?
       @asset_url_on_update = []
     elsif asset_url_changed?
