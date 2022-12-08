@@ -248,6 +248,48 @@ resource 'Tickets' do
 				expect(response_status).to eq(200)
 				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
 			end
+
+			example 'Ticket updated successfully - added ETA' do
+				do_request({ticket: { ETA: '04/01/2023'}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated successfully - status from assigned to on_hold' do 
+				do_request({ticket: { status: "on_hold"}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated successfully - status from inprogress to on_hold' do 
+				@ticket.start
+				@ticket.save
+				do_request({ticket: { status: "on_hold"}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated successfully - status from for_approval to on_hold' do 
+				@ticket.approve
+				@ticket.save
+				do_request({ticket: { status: "on_hold"}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Ticket updated successfully - status from on_hold to assigned' do 
+				@ticket.hold
+				@ticket.activate
+				@ticket.save
+				do_request({ticket: { status: "assigned"}})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.update'))
+			end
 		end
 
 		context '422' do
@@ -282,6 +324,27 @@ resource 'Tickets' do
 				expect(response_status).to eq(422)
 				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
 				expect(response_data["errors"]).to eq(I18n.t('tickets.error.resolver'))
+			end
+
+			example 'Could not update ticket - invalid transition from on_hold to resolved' do
+				@ticket.hold
+				do_request({ticket: { status: 'resolved' }})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(response_data["errors"])
+			end
+
+			example 'Could not update ticket - invalid transition from closed to on_hold' do
+				@ticket.start
+				@ticket.resolve
+				@ticket.close
+				@ticket.save
+				do_request({ticket: { status: 'on_hold' }})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(422)
+				expect(response_data["message"]).to eq(I18n.t('tickets.error.update'))
+				expect(response_data["errors"]).to eq(response_data["errors"])
 			end
 		end
 

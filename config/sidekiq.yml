@@ -27,3 +27,7 @@ production:
     cron: '* * 12 * * *'
     enabled: true
     active_job: true
+  EscalateStatusOnHoldJob:
+    cron: '* * * * * *'
+    enabled: true
+    active_job: true

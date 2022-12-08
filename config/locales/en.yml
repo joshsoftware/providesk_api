@@ -102,6 +102,7 @@ en:
     closed: "The complaint is closed by %{requester} from department %{department}"
     rejected: "The complaint is rejected by %{resolver} from department %{department}"
     for_approval: "The complaint will go through a approval"
+    on_hold: "Your request has been put on hold"
     description:
       ticket_escalation: "No action has been taken on this ticket-%{id} which has been assigned to you."
       new_ticket: "Ticket-%{id} has been created"
@@ -110,6 +111,7 @@ en:
       resolver: "Resolver has been changed from %{previous_resolver} to %{new_resolver}"
       status: "Status has been updated from %{old_status} to %{updated_status}"
       asset_url: "Image added"
+      eta: "Updated Estimated Time"
       ticket_type: "Ticket type changed from %{previous_type} to %{new_type}"
       title: "Title edited"
       description: "Description edited"

@@ -1,7 +1,7 @@
 class Ticket < ApplicationRecord
   include AASM
   attr_accessor :attribute_changed, :ticket_created, :asset_url_on_update
-  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url, :ticket_type, :title, :description], on: [:update]
+  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url, :eta, :ticket_type, :title, :description], on: [:update]
 
   after_create :set_ticket_number, :send_notification, :create_activity
 
@@ -19,7 +19,7 @@ class Ticket < ApplicationRecord
   validates :ticket_type, presence: true
   #validates :ticket_number, presence: true
 
-  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2} # Time in days
+  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2, "on_hold": 3} # Time in days
 
   enum status: {
     "assigned": 0,
@@ -27,7 +27,8 @@ class Ticket < ApplicationRecord
     "for_approval": 2,
     "resolved": 3,
     "closed": 4,
-    "rejected": 5
+    "rejected": 5,
+    "on_hold": 6
   }
 
   enum priority: {
@@ -49,15 +50,16 @@ class Ticket < ApplicationRecord
     state :resolved
     state :closed
     state :rejected
+    state :on_hold
 
     after_all_events :send_notification
 
     event :start do
-      transitions from: [:assigned, :for_approval], to: :inprogress
+      transitions from: [:assigned, :for_approval, :on_hold], to: :inprogress
     end
 
     event :approve do 
-      transitions from: :assigned, to: :for_approval
+      transitions from: [:assigned, :on_hold], to: :for_approval
     end
 
     event :reject do
@@ -75,12 +77,20 @@ class Ticket < ApplicationRecord
     event :reopen do
       transitions from: :resolved, to: :for_approval
     end
+
+    event :hold do
+      transitions from: [:assigned, :inprogress, :for_approval], to: :on_hold
+    end
+
+    event :activate do
+      transitions from: :on_hold, to: :assigned
+    end
   end
 
   def status_or_resolver_or_department_or_category_or_asset_url_changed?
     @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || 
                           category_id_changed? || asset_url_changed? || title_changed? || 
-                          description_changed? || ticket_type_changed? ) ? true : false
+                          description_changed? || ticket_type_changed? || eta_changed?) ? true : false
     if asset_url.blank? || !asset_url_changed?
       @asset_url_on_update = []
     elsif asset_url_changed?
@@ -154,6 +164,8 @@ class Ticket < ApplicationRecord
                         new_department: new_department))
         when "asset_url"
           message.append(I18n.t('ticket.description.asset_url'))
+        when "eta"
+          message.append(I18n.t('ticket.description.eta'))
         when "ticket_type"
           previous_type, new_type = Ticket.ticket_types.key(val[0]), Ticket.ticket_types.key(val[1])
           message.append(I18n.t('ticket.description.ticket_type', previous_type: previous_type, new_type: new_type))
