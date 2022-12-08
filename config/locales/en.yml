@@ -81,6 +81,7 @@ en:
       close: "Ticket closed successfully"
       reopen: "Ticket reopened successfully"
       update: "Ticket updated successfully"
+      edit: "Ticket edited successfully"
     error:
       create: "Unable to create ticket"
       category: "Category must exist in department"
@@ -89,6 +90,7 @@ en:
       invalid_params: "Invalid parameters"
       not_exists: "Could not find ticket"
       update: "Could not update the ticket"
+      status: "Your ticket is no more in assigned state"
     show:
       not_availaible: "No such tickets availaible"
       invalid_filter: "Filter invalid"
@@ -108,3 +110,6 @@ en:
       resolver: "Resolver has been changed from %{previous_resolver} to %{new_resolver}"
       status: "Status has been updated from %{old_status} to %{updated_status}"
       asset_url: "Image added"
+      ticket_type: "Ticket type changed from %{previous_type} to %{new_type}"
+      title: "Title edited"
+      description: "Description edited"
