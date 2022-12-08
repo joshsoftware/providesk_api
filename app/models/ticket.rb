@@ -1,7 +1,7 @@
 class Ticket < ApplicationRecord
   include AASM
   attr_accessor :attribute_changed, :ticket_created, :asset_url_on_update
-  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url], on: [:update]
+  audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url, :ticket_type, :title, :description], on: [:update]
 
   after_create :set_ticket_number, :send_notification, :create_activity
 
@@ -79,7 +79,8 @@ class Ticket < ApplicationRecord
 
   def status_or_resolver_or_department_or_category_or_asset_url_changed?
     @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || 
-                          category_id_changed? || asset_url_changed?) ? true : false
+                          category_id_changed? || asset_url_changed? || title_changed? || 
+                          description_changed? || ticket_type_changed? ) ? true : false
     if asset_url.blank? || !asset_url_changed?
       @asset_url_on_update = []
     elsif asset_url_changed?
@@ -153,6 +154,13 @@ class Ticket < ApplicationRecord
                         new_department: new_department))
         when "asset_url"
           message.append(I18n.t('ticket.description.asset_url'))
+        when "ticket_type"
+          previous_type, new_type = Ticket.ticket_types.key(val[0]), Ticket.ticket_types.key(val[1])
+          message.append(I18n.t('ticket.description.ticket_type', previous_type: previous_type, new_type: new_type))
+        when "title"
+          message.append(I18n.t('ticket.description.title'))
+        when "description"
+          message.append(I18n.t('ticket.description.description'))
         end
       end
     end

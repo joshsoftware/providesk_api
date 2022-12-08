@@ -25,9 +25,10 @@ class Ability
     end
     can [:create], Ticket
     can [:read, :show, :index, :reopen], Ticket, organization_id: @user.organization_id
-    can [:update], Ticket do |ticket|
+    can [:update_ticket_progress], Ticket do |ticket|
       ticket.organization_id == @user.organization_id && ticket.requester_id != @user.id
     end
+    can [:update], Ticket, requester_id: @user.id
     can [:update], User do |user|
       user.organization_id == @user.organization_id && user.id != @user.id
     end
@@ -41,9 +42,10 @@ class Ability
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end
-    can [:update], Ticket do |ticket|
+    can [:update_ticket_progress], Ticket do |ticket|
       ticket.organization_id == @user.organization_id && ticket.requester_id != @user.id
     end
+    can [:update], Ticket, requester_id: @user.id
     can [:update], User do |user|
       (user.department_id == @user.department_id) || (user.department_id.nil? && user.organization_id == @user.organization_id) &&
       user.id != @user.id
@@ -57,6 +59,7 @@ class Ability
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
     end
-    can [:update], Ticket, resolver_id: @user.id
+    can [:update_ticket_progress], Ticket, resolver_id: @user.id
+    can [:update], Ticket, requester_id: @user.id
   end
 end
