@@ -13,7 +13,7 @@ module Tickets::V1
     end
 
     def call
-      find_ticket && check_status && department_check && category_check && resolver_check && ticket_type_check && update
+      find_ticket && check_status && find_department && find_category && find_resolver && ticket_type_check && update
     end
 
     def find_ticket
@@ -28,7 +28,7 @@ module Tickets::V1
       @ticket.status.eql?('assigned') ? true : (@error = { status: false, error_message: I18n.t('tickets.error.status') }.as_json)
     end
 
-    def department_check
+    def find_department
       return @error if @error
 
       if @department_id.present?
@@ -41,7 +41,7 @@ module Tickets::V1
       @error = { status: false, error_message: I18n.t('tickets.error.department') }.as_json
     end
 
-    def category_check
+    def find_category
       return @error if @error
 
       if @department_id.present? && @category_id.present?
@@ -57,7 +57,7 @@ module Tickets::V1
       @error = { status: false, error_message: I18n.t('tickets.error.category') }.as_json
     end
 
-    def resolver_check
+    def find_resolver
       return @error if @error
 
       if @department_id.present? && @resolver_id.present?
