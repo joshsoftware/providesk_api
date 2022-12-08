@@ -11,6 +11,15 @@ module Api::V1
       end
     end
 
+    def index
+      result = Organizations::V1::Index.new().call
+      if result["status"]
+        render json: { data: result["data"] }
+      else
+        render json: { error: result["error_message"] }, status: :unprocessable_entity
+      end
+    end
+
     # To list users without department
     def users
       result = Organizations::V1::Users.new(params).call
@@ -35,7 +44,6 @@ module Api::V1
 
     def organization_params
       params.require(:organization).permit(:name, domain: [])
-    end
-     
+    end 
   end
 end

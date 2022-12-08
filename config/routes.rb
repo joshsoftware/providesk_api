@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       resources :categories, only: :create
       resources :departments, only: :create
 
-      resources :organizations, only: :create
+      resources :organizations, only: [:create, :index]
       resources :users, only: :update
       resources :departments do
         member do
