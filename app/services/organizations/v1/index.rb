@@ -9,7 +9,7 @@ module Organizations::V1
           status: true,
           data: {
             total: organizations.length,
-            organizations: organizations.order(created_at: :desc)
+            organizations: organizations.order(name: :asc)
           }
         }.as_json
     end
