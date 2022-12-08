@@ -24,7 +24,7 @@ module Departments::V1
           status: true,
           data: {
             total: users.length,
-            users: serialize_resource(users.order(created_at: :desc), UserSerializer)
+            users: serialize_resource(users.order(name: :asc), UserSerializer)
           }
         }.as_json
     end

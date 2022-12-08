@@ -24,7 +24,7 @@ module Departments::V1
         status: true,
         data: {
           total: categories.length,
-          categories: categories
+          categories: categories.order(name: :asc)
         }
       }.as_json
     end

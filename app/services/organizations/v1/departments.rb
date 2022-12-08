@@ -14,7 +14,7 @@ module Organizations::V1
           status: true,
           data: {
             total: departments.length,
-            departments: departments
+            departments: departments.order(name: :asc)
           }
         }.as_json
     end
