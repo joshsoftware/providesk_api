@@ -19,6 +19,7 @@ class Ticket < ApplicationRecord
   validates :ticket_type, presence: true
   #validates :ticket_number, presence: true
 
+  ASK_FOR_UPDATE = false
   ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2, "on_hold": 3} # Time in days
 
   enum status: {
@@ -118,6 +119,10 @@ class Ticket < ApplicationRecord
     end
     description = I18n.t('ticket.description.ticket_escalation', id: id)
     NotifyMailer.notify_status_escalate(department_head, requester, description, id).deliver_now
+  end
+
+  def send_email_to_resolver(ticket_link)
+    NotifyMailer.notify_status_update(resolver, requester, id, ticket_link).deliver_now
   end
 
   def create_activity

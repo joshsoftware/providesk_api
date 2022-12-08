@@ -57,6 +57,15 @@ module Api::V1
       end
     end
 
+    def ask_for_update
+      result = Tickets::V1::AskForUpdate.new(params).call
+      if result["status"]
+        render json: { message: I18n.t('tickets.success.ask_for_update')}
+      else
+        render json: { message: I18n.t('tickets.error.ask_for_update') }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def update_params
