@@ -570,7 +570,80 @@ resource 'Tickets' do
 				expect(response_status).to eq(200)
 				expect(response_data["data"]).to eq(response_data["data"])
 				expect(response_data["activities"]).to eq(response_data["activities"])
-			end	
+			end
+
+			example 'ask_for_update value set to true when eta is nil, last asked for update is nil and updated_at time > 2 days' do
+				@ticket.updated_at = Time.now - 3.days
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
+			end
+
+			example 'ask_for_update value set to true when eta < current time, last asked for update is nil' do
+				@ticket.eta = Time.now.to_date - 1
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
+			end
+
+			example 'ask_for_update value set to true when eta < current time and last asked for update > 1 day' do
+				@ticket.eta = Time.now.to_date - 1
+				@ticket.asked_for_update_at = Time.now - 2.day
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
+			end
+
+			example 'ask_for_update value set to true when eta is nil and last asked for update > 1 day' do
+				@ticket.asked_for_update_at = Time.now
+				@ticket.updated_at = Time.now - 2.day
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
+			end
+
+			example 'ask_for_update value set to false when eta is nil and last asked for update - updated_at time > 1' do
+				@ticket.asked_for_update_at = Time.now - 2.days
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(false)
+			end
+
+			example 'ask_for_update value set to false when eta < current time and last asked for update < 1 day' do
+				@ticket.eta = Time.now.to_date - 1
+				@ticket.asked_for_update_at = Time.now + 2.hours
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(false)
+			end
+
+			example 'ask_for_update value set to false when eta > current time' do
+				@ticket.eta = Time.now.to_date + 2
+				@ticket.save
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(false)
+			end
+
+			example 'ask_for_update value set to false when eta is nil, last asked for update is nil updated_at time < 2 days' do
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']['ticket']['ask_for_update']).to eq(false)
+			end
 		end
 
 		context '404' do
@@ -581,6 +654,29 @@ resource 'Tickets' do
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(404)
 				expect(response_data["errors"]).to eq(I18n.t('record_not_found'))
+			end	
+		end
+	end
+
+	get 'tickets/:id/ask_for_update' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: employee.id, email: employee.email, name: employee.name})
+			@ticket = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department_obj.id, 
+															 ticket_type: 'Request', 
+															 resolver_id: user.id,
+															 requester_id: employee.id)
+		end
+		context '200' do
+			let(:id) {@ticket.id}
+			example 'User asked for update' do
+				do_request({ticket_link: 'testticketlink'})
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["message"]).to eq(I18n.t('tickets.success.ask_for_update'))
 			end	
 		end
 	end

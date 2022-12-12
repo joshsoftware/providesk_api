@@ -32,6 +32,7 @@ Rails.application.routes.draw do
         member do
           put 'reopen'
           put 'update_ticket_progress'
+          get 'ask_for_update'
         end
       end
   end
