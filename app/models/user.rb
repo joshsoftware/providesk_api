@@ -2,7 +2,10 @@ class User < ApplicationRecord
   belongs_to :organization, optional: true
   belongs_to :role
   belongs_to :department, optional: true
+
   has_many :tickets
+  has_many :user_categories, dependent: :destroy
+  has_many :categories, through: :user_categories
 
   validates :name, presence: true
   validates :email,presence: true, uniqueness: true
@@ -20,6 +23,10 @@ class User < ApplicationRecord
 
   def is_department_head?
     Role.find(self.role_id).name.eql?(Role::ROLE[:department_head])
+  end
+
+  def is_resolver?
+    Role.find(self.role_id).name.eql?(Role::ROLE[:resolver])
   end
 
   def is_employee?

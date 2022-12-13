@@ -1,6 +1,9 @@
 class Category < ApplicationRecord
   belongs_to :department
 
+  has_many :user_categories, dependent: :destroy
+  has_many :users, through: :user_categories
+
   validates :name, uniqueness: { scope: :department }, presence: true
   validates :priority, inclusion: { in: ["Regular", "High", "Medium", "Low"] }
 
