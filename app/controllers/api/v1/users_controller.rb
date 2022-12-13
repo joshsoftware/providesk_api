@@ -13,7 +13,7 @@ module Api::V1
     private
 
     def user_update_params
-      params.require(:user).permit(:role, :department_id)
+      params.require(:user).permit(:role, :department_id, :category_ids)
     end
   end
 end

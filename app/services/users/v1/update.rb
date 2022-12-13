@@ -4,10 +4,11 @@ module Users::V1
       @user_id = user_id
       @role = user_update_params[:role]
       @department_id = user_update_params[:department_id]
+      @category_ids = user_update_params[:category_ids]
     end
 
     def call
-      check_user && check_department && check_role && user_update
+      check_user && find_department && find_categories && check_role && user_update
     end
 
     def check_user
@@ -18,7 +19,7 @@ module Users::V1
       end
     end
 
-    def check_department
+    def find_department
       if @department_id.present?
         @department = Department.find_by(organization_id: User.find(@user_id).organization_id, id: @department_id)
         return @department.nil? ? (@error = { status: false, error_message: I18n.t('tickets.error.department') }.as_json) 
@@ -29,6 +30,10 @@ module Users::V1
       return true if @department
 
       @error = { status: false, error_message: I18n.t('tickets.error.department') }.as_json
+    end
+
+    def find_categories
+      @category_list = Category.where(id: @category_id)
     end
 
     def check_role
@@ -45,6 +50,9 @@ module Users::V1
     def user_update
       return @error if @error
       
+      @category_list.each do |category|
+        @user.user_categories.create(:category => category)
+      end
       @user.save! if @user.changed?
       { status: true }.as_json
     end

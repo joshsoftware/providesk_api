@@ -7,6 +7,7 @@ resource 'Users' do
   let!(:super_admin_role){ FactoryBot.create(:role, name: "super_admin") }
   let!(:department_head_role){ FactoryBot.create(:role, name: "department_head") }
   let!(:department) { FactoryBot.create(:department, name: "Finance", organization_id: organization1.id) }
+  let!(:category) { FactoryBot.create(:category, name: "Loan", department_id: department.id)}
   let!(:super_admin) { FactoryBot.create(:user, name: "Super Admin", email: "superadmin@email.com", role_id: super_admin_role.id) }
   let!(:department_head) { FactoryBot.create(:user, name: "Dept_head", email: "dept_head@gmail.com", role_id: department_head_role.id, 
                                                     department_id: department.id, organization_id: organization1.id)}
@@ -33,6 +34,17 @@ resource 'Users' do
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('users.success.update'))
+      end
+
+      example 'Alloting a category to user' do
+        do_request({ user: {department_id: department.id, category_id: [category.id]} })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect()
+        expect(response_data["message"]).to eq(I18n.t('users.success.update'))
+      end
+
+      example 'Alloting multiple categories to user' do
       end
     end
     context '422' do
