@@ -33,7 +33,7 @@ module Users::V1
     end
 
     def find_categories
-      @category_list = Category.where(id: @category_id)
+      @category_list = Category.where(id: @category_ids)
     end
 
     def check_role
@@ -49,7 +49,8 @@ module Users::V1
 
     def user_update
       return @error if @error
-      
+
+      @user.user_categories.destroy_all if @user.user_categories.count > 0
       @category_list.each do |category|
         @user.user_categories.create(:category => category)
       end

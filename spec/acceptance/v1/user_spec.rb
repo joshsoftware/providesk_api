@@ -37,14 +37,31 @@ resource 'Users' do
       end
 
       example 'Alloting a category to user' do
-        do_request({ user: {department_id: department.id, category_id: [category.id]} })
+        do_request({ user: {department_id: department.id, category_ids: [category.id]} })
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
-        expect()
+        expect(user.user_categories.count).to eq(1)
         expect(response_data["message"]).to eq(I18n.t('users.success.update'))
       end
 
+      let!(:cat1) { Category.create!(name: 'loan', department_id: dept.id) }
+      let!(:cat2) { Category.create!(name: 'asset', department_id: dept.id) }
       example 'Alloting multiple categories to user' do
+        do_request({ user: {department_id: dept.id, category_ids: [cat1.id, cat2.id]} })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(user.user_categories.count).to eq(2)
+        expect(response_data["message"]).to eq(I18n.t('users.success.update'))
+      end
+
+      example 'Destroying previous user_categories and updating new ones' do
+        do_request({ user: {department_id: department.id, category_ids: [category.id]} })
+        expect(user.user_categories.count).to eq(1)
+        do_request({ user: {department_id: dept.id, category_ids: [cat1.id, cat2.id]} })
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(user.user_categories.count).to eq(2)
+        expect(response_data["message"]).to eq(I18n.t('users.success.update'))
       end
     end
     context '422' do

@@ -13,7 +13,7 @@ Role.create!([
   { name: "super_admin" },
   { name: "admin" },
   { name: "department_head" },
-  { name: "resolver" }
+  { name: "resolver" },
   { name: "employee" }
 ])
 
@@ -57,7 +57,7 @@ p "Created categories for various departments"
 
 User.create!([
   { name: "Sethupathi Asokan", email: "sethu@joshsoftware.com", role_id: 2 },
-  { name: "Ayush Maheshwari", email: "ayush.maheshwari@joshsoftware.com", role_id: 3, department_head: 1},
+  { name: "Ayush Maheshwari", email: "ayush.maheshwari@joshsoftware.com", role_id: 3, department_id: 1},
   { name: "Nandini Jhanwar", email: "nandini.jhanwar@joshosftware.com", role_id: 4, department_id: 2},
   { name: "Akansha Kumari", email: "akansha.kumari@joshsoftware.com", role_id: 4, department_id: 1},
   { name: "Finance Head", email: "finance.head@joshsoftware.com", role_id: 4, department_id: 3},
@@ -74,7 +74,7 @@ User.create!([
   { name: "Shefali Geel", email: "shefaligeel@accenture.com", role_id: 2},
   { name: "Reserach Head", email: "research.head@accenture.com", role_id: 4, department_id: 8},
   { name: "Sales Head", email: "sales.head@accenture.com", role_id: 4, department_id: 9},
-  { name: "Nutan Hiwale", email: "nutan.hiwale@accenture", role_id: 4, department_id: },
+  { name: "Nutan Hiwale", email: "nutan.hiwale@accenture", role_id: 4, department_id: 7},
   {name: "Unnati Dodiya", email: "unnati.dodiya@accenture.com", role_id: 1, department_id: 7}, 
   {name: "Nidhi Dhanwariya", email: "nidhi546@accenture.com", role_id: 4, department_id: 8}, 
   {name: "Saurabh Singh", email: "singhsaurabh@accenture.com", role_id: 4, department_id: 9}
