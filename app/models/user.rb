@@ -25,6 +25,10 @@ class User < ApplicationRecord
     Role.find(self.role_id).name.eql?(Role::ROLE[:department_head])
   end
 
+  def is_resolver?
+    Role.find(self.role_id).name.eql?(Role::ROLE[:resolver])
+  end
+
   def is_employee?
     Role.find(self.role_id).name.eql?(Role::ROLE[:employee])
   end
