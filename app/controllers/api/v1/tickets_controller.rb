@@ -66,6 +66,15 @@ module Api::V1
       end
     end
 
+    def timeline
+      result = Tickets::V1::Timeline.new(current_user).call
+      if result["status"]
+        render json: { data: result["data"] }
+      else
+        render json: { erros: result["error_message"] }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def update_params

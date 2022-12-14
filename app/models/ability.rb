@@ -24,7 +24,7 @@ class Ability
     can [:create], Category do |category|
       @user.organization_id == category.department.organization_id
     end
-    can [:create], Ticket
+    can [:create, :timeline], Ticket
     can [:read, :show, :index, :reopen], Ticket, organization_id: @user.organization_id
     can [:update_ticket_progress], Ticket do |ticket|
       ticket.organization_id == @user.organization_id && ticket.requester_id != @user.id
@@ -39,7 +39,7 @@ class Ability
     can [:users, :departments], Organization, id: @user.organization_id
     can [:categories, :users], Department, organization_id: @user.organization_id
     can [:create], Category, department_id: @user.department_id
-    can [:create], Ticket
+    can [:create, :timeline], Ticket
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end
@@ -56,7 +56,7 @@ class Ability
   def resolver_abilities
     can [:users, :departments], Organization, id: @user.organization_id
     can [:categories, :users], Department, organization_id: @user.organization_id
-    can [:create], Ticket
+    can [:create, :timeline], Ticket
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end

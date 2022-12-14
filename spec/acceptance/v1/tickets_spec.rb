@@ -681,6 +681,86 @@ resource 'Tickets' do
 		end
 	end
 
+	get 'tickets/timeline' do
+		before do
+			admin_role = Role.create(name: Role::ROLE[:admin])
+			@admin_user = User.create(name: 'Admin', role_id: admin_role.id, email: 'admin@joshsoftware.com', 
+															  organization_id: organization.id)
+			testdept = Department.create(name: "Learning and development", organization_id: organization.id)
+			testcat = Category.create(name: 'Traning', department_id: testdept.id)
+			@testuser = User.create(name: 'Test', email: 'test@joshsoftware.com', role_id: role.id, department_id: testdept.id)
+			@ticket1 = Ticket.create!(title: 'Laptop Issue', description: 'RAM Issue', category_id: category.id, ticket_type: 'Request',
+															 department_id: department_obj.id, resolver_id: user.id, requester_id: employee.id)
+			@ticket2 = Ticket.create(title: 'Require Mouse', description: 'Touchpad is not working', resolver_id: user.id,
+															 category_id: category.id, department_id: department_obj.id, ticket_type: 'Request',
+															 requester_id: employee.id)
+			@ticket3 = Ticket.create(title: 'Require Laptop', description: 'Display damaged', resolver_id: user.id,
+															 category_id: testcat.id, department_id: testdept.id, ticket_type: 'Request',
+															 requester_id: employee.id)				
+		end
+
+		context '200' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: @admin_user.id, email: @admin_user.email, name: @admin_user.name})
+			end
+
+			example 'Show overdue tickets to admin' do
+				@ticket1.update(eta: (Time.now - 2.day).to_date)
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["data"]["overdue"].count).to eq(1)
+			end
+
+			example 'Show overdue tickets within two days to admin' do
+				@ticket1.update(eta: Time.now.to_date)
+				@ticket2.update(eta: (Time.now + 2.day).to_date)
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["data"]["overdue_in_two_days"].count).to eq(2)
+			end
+
+			example 'Show overdue tickets after two days to admin' do
+				@ticket1.update(eta: (Time.now + 2.day).to_date )
+				@ticket2.update(eta: (Time.now + 4.day).to_date)
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["data"]["overdue_after_two_days"].count).to eq(1)
+			end
+		end
+
+		context '200' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: @testuser.id, email: @testuser.email, name: @testuser.name})
+			end
+
+			example 'Show overdue tickets after two days to department_head' do
+				@ticket1.update(eta: (Time.now + 2.day).to_date )
+				@ticket3.update(eta: (Time.now + 4.day).to_date)
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data["data"]["overdue_after_two_days"].count).to eq(1)
+			end
+		end
+
+		context '401' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: employee.id, email: employee.email, name: employee.name})
+			end
+
+			example 'Unauthorized user employee for listing overdue tickets' do
+				do_request()
+				expect(response_status).to eq(401)
+			end
+		end
+	end
+
 	private
 
 	def create_params(title, description, category_id, department_id, ticket_type, resolver_id, asset_url)
