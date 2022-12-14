@@ -34,6 +34,9 @@ Rails.application.routes.draw do
           put 'update_ticket_progress'
           get 'ask_for_update'
         end
+        collection do
+          get 'timeline'
+        end
       end
   end
 end
