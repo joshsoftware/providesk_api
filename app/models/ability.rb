@@ -56,7 +56,7 @@ class Ability
   def resolver_abilities
     can [:users, :departments], Organization, id: @user.organization_id
     can [:categories, :users], Department, organization_id: @user.organization_id
-    can [:create], Ticket
+    can [:create, :timeline], Ticket
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end
