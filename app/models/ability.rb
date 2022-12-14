@@ -5,6 +5,7 @@ class Ability
     user.blank? ? return : (@user = user)
     department_head_abilities if user.is_department_head?
     employee_abilities if user.is_employee?
+    resolver_abilities if user.is_resolver?
     admin_abilities if user.is_admin?
     super_admin_abilities if user.is_super_admin?
   end
@@ -52,6 +53,17 @@ class Ability
     end
   end
 
+  def resolver_abilities
+    can [:users, :departments], Organization, id: @user.organization_id
+    can [:categories, :users], Department, organization_id: @user.organization_id
+    can [:create], Ticket
+    can [:show, :reopen, :index], Ticket do |ticket|
+      ticket.department_id == @user.department_id || ticket.requester_id == @user.id
+    end
+    can [:update_ticket_progress], Ticket, resolver_id: @user.id
+    can [:update, :ask_for_update], Ticket, requester_id: @user.id
+  end
+
   def employee_abilities
     can [:departments], Organization, id: @user.organization_id
     can [:users, :categories], Department, organization_id: @user.organization_id
@@ -59,7 +71,6 @@ class Ability
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
     end
-    can [:update_ticket_progress], Ticket, resolver_id: @user.id
     can [:update, :ask_for_update], Ticket, requester_id: @user.id
   end
 end
