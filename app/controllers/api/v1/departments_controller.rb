@@ -20,11 +20,7 @@ module Api::V1
       if result["status"]
         render json: { data: result["data"] }
       else
-        if result["error"].eql?("no_department_found")
-          render json: {message: I18n.t('department.error.invalid_department_id')}, status: :unprocessable_entity
-        elsif result["error"].eql?("unauthorized_user")
-          render json:{ message: I18n.t('organization.error.unauthorized_user')}, status: 403
-        end
+        render json: { errors: result["errors"] }, status: :unprocessable_entity
       end
     end
     
@@ -33,11 +29,7 @@ module Api::V1
       if result["status"]
         render json: { data: result["data"] }
       else
-        if result["error"].eql?("no_department_found")
-          render json: {message: I18n.t('department.error.invalid_department_id')}, status: :unprocessable_entity
-        elsif result["error"].eql?("unauthorized_user")
-          render json:{ message: I18n.t('organization.error.unauthorized_user')}, status: 403
-        end
+        render json: { error: result["error"]}, status: :unprocessable_entity
       end
     end
 

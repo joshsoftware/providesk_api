@@ -52,7 +52,7 @@ module Users::V1
 
       @user.user_categories.destroy_all if @user.user_categories.count > 0
       @category_list.each do |category|
-        @user.user_categories.create(:category => category)
+        @user.user_categories.create!(:category => category)
       end
       @user.save! if @user.changed?
       { status: true }.as_json

@@ -1,7 +1,7 @@
 module Departments::V1
   class Categories
     def initialize(params)
-      @department_id= params[:id]
+      @department_id = params[:id]
     end
 
     def call

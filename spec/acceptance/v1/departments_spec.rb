@@ -10,13 +10,13 @@ resource 'Departments' do
   before do
     @org = user.organization
     @department = FactoryBot.create(:department, name: 'TAD', organization_id: @org.id)
-    @some_other_organization = FactoryBot.create(:organization, name: "SomeOther", domain: "someother.com")
+    @some_other_organization = FactoryBot.create(:organization, name: "SomeOther", domain: ["someother.com"])
     @some_other_department = FactoryBot.create(:department, name: 'TAD', organization_id: @some_other_organization.id)
     header 'Accept', 'application/vnd.providesk; version=1'
     header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
   end
   let!(:user1) { FactoryBot.create(:user, role_id: role1.id, department_id: @department.id)}
-
+  let!(:user2) { FactoryBot.create(:user, role_id: role1.id, department_id: @department.id)}
   post '/departments' do
     context '200' do
       example 'Create a department successfully ' do
@@ -40,7 +40,6 @@ resource 'Departments' do
         expect(response_data["errors"]).to eq(I18n.t('missing_params'))
       end
 
-
       example 'Fail to create a department with the same name' do
         dept_name = "My Dept"
         request = { department: { name: dept_name , organization_id: @org.id } }
@@ -55,15 +54,78 @@ resource 'Departments' do
   end
 
   get 'departments/:id/users' do
+    before do
+      @employee_id = Role.create(name: 'employee').id
+      @category = FactoryBot.create(:category, name: 'TAD1', priority:1, department_id: @department.id)
+      @user_with_no_department = FactoryBot.create(:user, name: "NoDeptUser", email: "nodeptuser@#{@org.domain[0]}", organization_id: @org.id, role_id: @employee_id )
+    end
+
     context '200' do
-      before do
-        @employee_id = Role.create(name: 'employee').id
-        @category = FactoryBot.create(:category, name: 'TAD1', priority:1, department_id: @department.id)
-        @user_with_no_department = FactoryBot.create(:user, name: "NoDeptUser", email: "nodeptuser@#{@org.domain[0]}", organization_id: @org.id, role_id: @employee_id )
-      end
       context 'user with department' do
         let!(:id){ user1.department_id }
         example 'List users of department successfully' do
+          expected_response = {
+            data:{
+              total: 2,
+              users: [
+                {
+                  id: user1.id,
+                  name: user1.name,
+                  department_id: user1.department_id,
+                  role: user1.role.name
+                },
+                {
+                  id: user2.id,
+                  name: user2.name,
+                  department_id: user2.department_id,
+                  role: user2.role.name
+                }
+              ]
+            }
+          }.to_json
+          do_request()
+          response_data = JSON.parse(response_body)
+          expect(response_status).to eq(200)
+          response_body.should eq(expected_response)
+        end
+      end
+
+      context 'user with department belonging to a category' do
+        before do
+          user1.user_categories.create!(:category => @category)
+        end
+
+        let!(:id){ user1.department_id }
+        example 'when category id is not passed in params' do
+          expected_response = {
+            data:{
+              total: 2,
+              users: [
+                {
+                  id: user1.id,
+                  name: user1.name,
+                  department_id: user1.department_id,
+                  role: user1.role.name
+                },
+                {
+                  id: user2.id,
+                  name: user2.name,
+                  department_id: user2.department_id,
+                  role: user2.role.name
+                }
+              ]
+            }
+          }.to_json
+          do_request()
+          response_data = JSON.parse(response_body)
+          expect(response_status).to eq(200)
+          response_body.should eq(expected_response)
+        end
+
+        let!(:id){ user1.department_id }
+        parameter :category_id, with_example: true
+			  let(:category_id) { @category.id }
+        example 'when category id is passed in params' do
           expected_response = {
             data:{
               total: 1,
@@ -79,12 +141,11 @@ resource 'Departments' do
           }.to_json
           do_request()
           response_data = JSON.parse(response_body)
-          # response_body = response_data["data"]["users"][0].except("department_id","role").to_json
           expect(response_status).to eq(200)
-
           response_body.should eq(expected_response)
         end
       end
+
       context 'user with no department' do
         let!(:id){ @user_with_no_department.department_id }
         example 'List users of with unassigned department' do
@@ -104,23 +165,33 @@ resource 'Departments' do
           do_request()
           response_data = JSON.parse(response_body)
           expect(response_status).to eq(200)
-
           response_body.should eq(expected_response)
         end
       end
     end
+
     context '422' do
-      let!(:id){ 0 }
-      example 'Pass invalid department id which does not exist on database' do
-        expected_response = {
-          errors: "Record not found"
-        }.to_json
+      let!(:id) {@department.id}
+      parameter :category_id, with_example: true
+      let(:category_id) { Faker::Base.numerify('#') }
+      example 'Pass invalid catgeory id which does not exist in database' do
+        do_request()
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(422)
+        expect(response_data['errors']).to eq(I18n.t('tickets.error.category'))
+      end
+    end
+
+    context '404' do
+      let!(:id){ Faker::Base.numerify('#') }
+      example 'Pass invalid department id which does not exist in database' do
         do_request()
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(404)
-        response_body.should eq(expected_response)
+        expect(response_data['errors']).to eq(I18n.t('record_not_found'))
       end
     end
+
     context '401' do
       let!(:id){ @some_other_department.id }
       example 'Pass invalid department id of organization to which user is not registered' do
