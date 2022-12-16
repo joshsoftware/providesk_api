@@ -79,6 +79,7 @@ resource 'Organizations' do
             }
           ]
         }.as_json
+        result['organizations'] = result['organizations'].sort_by{ |org| org['name'] }
         do_request()
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
