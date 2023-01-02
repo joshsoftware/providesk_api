@@ -761,6 +761,80 @@ resource 'Tickets' do
 		end
 	end
 
+	get 'tickets/analytical_reports' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
+			@ticket1 = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department_obj.id, 
+															 ticket_type: 'Request', 
+															 resolver_id: user.id,
+															 requester_id: employee.id,
+															 organization_id: user.organization_id)
+			@ticket2 = Ticket.create!(title: 'Laptop Issue', 
+																description: 'RAM Issue', 
+																category_id: category.id, 
+																department_id: department_obj.id, 
+																ticket_type: 'Request', 
+																resolver_id: user.id,
+																requester_id: employee.id,
+																organization_id: user.organization_id)
+			@ticket2.update(created_at: Time.now - 13.months)
+		end	
+
+		context '200' do
+			example 'Ticket count of organization status wise' do
+				@ticket1.start
+				@ticket1.save
+				do_request()
+				result = { 'total': 2, 'assigned': 1, 'inprogress': 1, 'for_approval': 0, 
+									 'resolved': 0, 'closed': 0, 'rejected': 0, 'on_hold': 0 }.as_json
+				response_data = JSON.parse(response_body)
+				expect(response_data['data']['status_wise_organization_tickets']).to eq(result)
+			end
+
+			example 'Ticket count of organization department and status wise' do
+				@ticket1.start
+				@ticket1.resolve
+				@ticket1.save
+				do_request()
+				result = { 
+					"total": 2,
+					"#{department_obj.id}": {
+						'assigned': 1, 'inprogress': 0, 'for_approval': 0, 'resolved': 1,
+						'closed': 0, 'rejected': 0, 'on_hold': 0
+					},
+					"#{department_hr.id}": {
+						'assigned': 0, 'inprogress': 0, 'for_approval': 0, 'resolved': 0,
+						'closed': 0, 'rejected': 0, 'on_hold': 0
+					}
+				}.as_json
+				response_data = JSON.parse(response_body)
+				expect(response_data['data']['status_wise_department_tickets']).to eq(result)
+			end
+
+			example 'Ticket count of organization status wise for last 12 months' do
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_data['data']['month_and_status_wise_tickets']['total']).to eq(1)
+			end
+		end
+
+		context '401' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: employee.id, email: employee.email, name: employee.name})
+			end
+
+			example 'Unauthorized user employee for listing overdue tickets' do
+				do_request()
+				expect(response_status).to eq(401)
+			end
+		end
+	end
+
 	private
 
 	def create_params(title, description, category_id, department_id, ticket_type, resolver_id, asset_url)
