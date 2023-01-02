@@ -802,11 +802,11 @@ resource 'Tickets' do
 				do_request()
 				result = { 
 					"total": 2,
-					"#{department_obj.name}": {
+					"#{department_obj.id}": {
 						'assigned': 1, 'inprogress': 0, 'for_approval': 0, 'resolved': 1,
 						'closed': 0, 'rejected': 0, 'on_hold': 0
 					},
-					"#{department_hr.name}": {
+					"#{department_hr.id}": {
 						'assigned': 0, 'inprogress': 0, 'for_approval': 0, 'resolved': 0,
 						'closed': 0, 'rejected': 0, 'on_hold': 0
 					}

@@ -23,7 +23,7 @@ module Tickets::V1
       date_range = (Time.zone.today-365..Time.zone.today)
       month_range = date_range.group_by(&:beginning_of_month).map { |_, month| month.first..month.last }
       month_range[1..-1].each do |ele|
-        tickets["#{Date::MONTHNAMES[ele.first.month]} #{ele.first.year}"] =
+        tickets["#{Date::MONTHNAMES[ele.first.month]}_#{ele.first.year}"] =
           Ticket.where('created_at >= ? AND created_at <= ? AND organization_id = ?',
                        ele.first.beginning_of_day,
                        ele.last.end_of_day,
@@ -31,9 +31,9 @@ module Tickets::V1
                 .group(:status)
                 .count
         Ticket.statuses.keys.each do |status|
-          tickets["#{Date::MONTHNAMES[ele.first.month]} #{ele.first.year}"][status] =
-            tickets["#{Date::MONTHNAMES[ele.first.month]} #{ele.first.year}"][status] || 0
-          tickets['total'] += tickets["#{Date::MONTHNAMES[ele.first.month]} #{ele.first.year}"][status]
+          tickets["#{Date::MONTHNAMES[ele.first.month]}_#{ele.first.year}"][status] =
+            tickets["#{Date::MONTHNAMES[ele.first.month]}_#{ele.first.year}"][status] || 0
+          tickets['total'] += tickets["#{Date::MONTHNAMES[ele.first.month]}_#{ele.first.year}"][status]
         end
       end
       tickets
@@ -51,7 +51,7 @@ module Tickets::V1
           department_tickets[status] = all_tickets[[department.id, status]] || 0
           tickets['total'] += department_tickets[status]
         end
-        tickets[department.name] = department_tickets
+        tickets[department.id] = department_tickets
       end
       tickets
     end
