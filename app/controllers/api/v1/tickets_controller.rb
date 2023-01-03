@@ -75,6 +75,15 @@ module Api::V1
       end
     end
 
+    def analytical_reports
+      result = Tickets::V1::AnalyticalReports.new(current_user).call
+      if result["status"]
+        render json: { data: result["data"] }
+      else
+        render json: { erros: result["error_message"] }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def update_params

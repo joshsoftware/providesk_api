@@ -36,6 +36,7 @@ Rails.application.routes.draw do
         end
         collection do
           get 'timeline'
+          get 'analytical_reports'
         end
       end
   end
