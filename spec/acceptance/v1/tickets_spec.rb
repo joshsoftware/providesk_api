@@ -7,7 +7,8 @@ resource 'Tickets' do
 	let!(:organization) { FactoryBot.create(:organization, name: "Josh", domain: ['joshsoftware.com']) }
 	let!(:department_obj) { FactoryBot.create(:department, name: Faker::Name.name, organization_id: organization.id)}
 	let!(:department_hr) { FactoryBot.create(:department, name: "HR", organization_id: organization.id)}
-	let!(:category) { FactoryBot.create(:category, name: "Hardware", priority: 0, department_id: department_obj.id)}
+	let!(:category) { FactoryBot.create(:category, name: "Hardware", priority: 0, department_id: department_obj.id, sla_unit: 3,
+																			sla_duration_type: 'Days', duration_in_hours: 72)}
 	let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:department_head])}
 	let!(:role1) { FactoryBot.create(:role, name: Role::ROLE[:employee])}
 	let(:user) { FactoryBot.create(:user, role_id: role.id, email: "faker@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id) }
@@ -29,9 +30,16 @@ resource 'Tickets' do
 			example 'Ticket created successfully - with image' do
         do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id, ["image"]))
         response_data = JSON.parse(response_body)
-        expect(response_status).to eq(200)
+        expect(response_status).to eq(200) 
         expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
       end
+			example 'Set eta to ticket equal to sla of category on ticket creation' do
+				do_request(create_params("Laptop Issue", "RAM issue", category.id, department_obj.id, "Request", user.id, nil))
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+				expect(Ticket.last.eta).to eq(Date.today + category.sla_unit.days)
+        expect(response_data["message"]).to eq(I18n.t('tickets.success.create'))
+			end 
     end
 
     context '422' do

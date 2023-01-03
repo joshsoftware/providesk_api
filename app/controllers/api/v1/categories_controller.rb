@@ -15,7 +15,7 @@ module Api::V1
     private 
 
     def category_params
-      params.require(:category).permit(:name, :priority, :department_id) 
+      params.require(:category).permit(:name, :priority, :department_id, :sla_unit, :sla_duration_type) 
     end
   end
 end

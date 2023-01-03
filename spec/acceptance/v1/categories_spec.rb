@@ -20,6 +20,8 @@ resource 'Categories' do
 					name: "Software",
           priority: "Regular",
 					department_id: user.department_id,
+          sla_unit: 3,
+          sla_duration_type: 'Days' 
           } 
 				})
         response_data = JSON.parse(response_body)
