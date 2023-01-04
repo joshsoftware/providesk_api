@@ -43,6 +43,8 @@ resource 'Categories' do
 					"name": "Hardware",
           "priority": "Regular",
 					"department_id": user.department_id,
+          "sla_unit": 3,
+          "sla_duration_type": 'Days'
           } 
 				})
         response_data = JSON.parse(response_body)
@@ -54,7 +56,9 @@ resource 'Categories' do
       example "Unable to create category when name is blank" do
         do_request({"category": {
           "priority": "Regular",
-          "department_id": user.department_id
+          "department_id": user.department_id,
+          "sla_unit": 3,
+          "sla_duration_type": 'Days'
           } 
 				})
         response_data = JSON.parse(response_body)
@@ -66,7 +70,9 @@ resource 'Categories' do
       example "Unable to create category when department is blank" do
         do_request({"category": {
           "name": "Software",
-          "priority": "Regular"
+          "priority": "Regular",
+          "sla_unit": 3,
+          "sla_duration_type": 'Days'
           } 
 				})
         response_data = JSON.parse(response_body)

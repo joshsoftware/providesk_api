@@ -109,7 +109,7 @@ class Ticket < ApplicationRecord
     ticket_number = ticket_type + "-" + id.to_s
     sla_duration_in_hours = Category.find(category_id).duration_in_hours
     eta = Date.today + (sla_duration_in_hours/24).to_i.days
-    Ticket.find(id).update(ticket_number: ticket_number, eta: eta)
+    self.update(ticket_number: ticket_number, eta: eta)
     @ticket_created = true
   end
   

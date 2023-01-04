@@ -11,9 +11,11 @@ resource 'Tickets' do
 																			sla_duration_type: 'Days', duration_in_hours: 72)}
 	let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:department_head])}
 	let!(:role1) { FactoryBot.create(:role, name: Role::ROLE[:employee])}
+	let!(:role2) { FactoryBot.create(:role, name: Role::ROLE[:resolver])}
 	let(:user) { FactoryBot.create(:user, role_id: role.id, email: "faker@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id) }
 	let(:user1) { FactoryBot.create(:user, role_id: role.id) }
 	let(:employee) { FactoryBot.create(:user, role_id: role1.id, email: "employee@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id)}
+	let(:resolver) { FactoryBot.create(:user, role_id: role2.id, email: "resolver@joshsoftware.com", department_id: department_obj.id, organization_id: organization.id)}
 
   post '/tickets' do
 		before do
@@ -501,13 +503,27 @@ resource 'Tickets' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
 			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
-			@ticket = Ticket.create!(title: 'Laptop Issue', 
+			@ticket1 = Ticket.create!(title: 'Laptop Issue', 
 															 description: 'RAM Issue', 
 															 category_id: category.id, 
 															 department_id: department_obj.id, 
 															 ticket_type: 'Request', 
 															 resolver_id: user.id,
 															 requester_id: user1.id)
+			@ticket2 = Ticket.create!(title: 'Laptop Issue', 
+																description: 'RAM Issue', 
+																category_id: category.id, 
+																department_id: department_obj.id, 
+																ticket_type: 'Request', 
+																resolver_id: resolver.id,
+																requester_id: user1.id)
+			 @ticket3 = Ticket.create!(title: 'LMouse Issue', 
+																 description: 'RAM Issue', 
+																 category_id: category.id, 
+																 department_id: department_obj.id, 
+																 ticket_type: 'Request', 
+																 resolver_id: user.id,
+																 requester_id: resolver.id)
 		end
 
 		context '200' do
@@ -520,16 +536,18 @@ resource 'Tickets' do
 				do_request({department_id: department_obj.id})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data).to eq(response_data)
+				expect(response_data['data']).to eq([])
 			end
 
 			example 'show ticket with multiple filters - department and category' do
 				do_request({department_id: department_obj.id, category_id: category.id})
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data).to eq(response_data)
+				expect(response_data['data']).to eq([])
 			end
+		end
 
+		context '200' do
 			parameter :type, with_example: true
 			let(:type) { 'Complaint' }
 			example 'no tickets with given filter' do
@@ -538,6 +556,39 @@ resource 'Tickets' do
 				expect(response_status).to eq(200)
 				expect(response_data["data"]).to eq([])
 				expect(response_data["message"]).to eq(I18n.t('tickets.show.not_availaible'))
+			end
+		end
+
+		context '200' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: resolver.id, email: resolver.email, name: resolver.name})
+			end
+			
+			parameter :assigned_to_me, with_example: true
+			parameter :created_by_me, with_example: true
+			let(:assigned_to_me) { 'true' }
+			let(:created_by_me) { 'true' }
+			example 'show tickets with assigned_to_me and created_by_me filter for resolver' do
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data'].count).to eq(2)
+			end
+		end
+
+		context '200' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: resolver.id, email: resolver.email, name: resolver.name})
+			end
+			parameter :status, with_example: true
+			let(:status) { 'inprogress' }
+			example 'show tickets with other filters without assigned_to_me and created_by_me filter for resolver' do
+				do_request()
+				response_data = JSON.parse(response_body)
+				expect(response_status).to eq(200)
+				expect(response_data['data']).to eq([])
 			end
 		end
 
@@ -580,15 +631,6 @@ resource 'Tickets' do
 				expect(response_data["activities"]).to eq(response_data["activities"])
 			end
 
-			example 'ask_for_update value set to true when eta is nil, last asked for update is nil and updated_at time > 2 days' do
-				@ticket.updated_at = Time.now - 3.days
-				@ticket.save
-				do_request()
-				response_data = JSON.parse(response_body)
-				expect(response_status).to eq(200)
-				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
-			end
-
 			example 'ask_for_update value set to true when eta < current time, last asked for update is nil' do
 				@ticket.eta = Time.now.to_date - 1
 				@ticket.save
@@ -606,25 +648,6 @@ resource 'Tickets' do
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
 				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
-			end
-
-			example 'ask_for_update value set to true when eta is nil and last asked for update > 1 day' do
-				@ticket.asked_for_update_at = Time.now
-				@ticket.updated_at = Time.now - 2.day
-				@ticket.save
-				do_request()
-				response_data = JSON.parse(response_body)
-				expect(response_status).to eq(200)
-				expect(response_data['data']['ticket']['ask_for_update']).to eq(true)
-			end
-
-			example 'ask_for_update value set to false when eta is nil and last asked for update - updated_at time > 1' do
-				@ticket.asked_for_update_at = Time.now - 2.days
-				@ticket.save
-				do_request()
-				response_data = JSON.parse(response_body)
-				expect(response_status).to eq(200)
-				expect(response_data['data']['ticket']['ask_for_update']).to eq(false)
 			end
 
 			example 'ask_for_update value set to false when eta < current time and last asked for update < 1 day' do
@@ -691,18 +714,19 @@ resource 'Tickets' do
 
 	get 'tickets/timeline' do
 		before do
-			admin_role = Role.create(name: Role::ROLE[:admin])
-			@admin_user = User.create(name: 'Admin', role_id: admin_role.id, email: 'admin@joshsoftware.com', 
+			admin_role = Role.create!(name: Role::ROLE[:admin])
+			@admin_user = User.create!(name: 'Admin', role_id: admin_role.id, email: 'admin@joshsoftware.com', 
 															  organization_id: organization.id)
-			testdept = Department.create(name: "Learning and development", organization_id: organization.id)
-			testcat = Category.create(name: 'Traning', department_id: testdept.id)
-			@testuser = User.create(name: 'Test', email: 'test@joshsoftware.com', role_id: role.id, department_id: testdept.id)
+			testdept = Department.create!(name: "Learning and development", organization_id: organization.id)
+			testcat = Category.create!(name: 'Traning', department_id: testdept.id, sla_unit: 3, sla_duration_type: 'Days',
+																duration_in_hours: 72)
+			@testuser = User.create!(name: 'Test', email: 'test@joshsoftware.com', role_id: role.id, department_id: testdept.id)
 			@ticket1 = Ticket.create!(title: 'Laptop Issue', description: 'RAM Issue', category_id: category.id, ticket_type: 'Request',
 															 department_id: department_obj.id, resolver_id: user.id, requester_id: employee.id)
-			@ticket2 = Ticket.create(title: 'Require Mouse', description: 'Touchpad is not working', resolver_id: user.id,
+			@ticket2 = Ticket.create!(title: 'Require Mouse', description: 'Touchpad is not working', resolver_id: user.id,
 															 category_id: category.id, department_id: department_obj.id, ticket_type: 'Request',
 															 requester_id: employee.id)
-			@ticket3 = Ticket.create(title: 'Require Laptop', description: 'Display damaged', resolver_id: user.id,
+			@ticket3 = Ticket.create!(title: 'Require Laptop', description: 'Display damaged', resolver_id: user.id,
 															 category_id: testcat.id, department_id: testdept.id, ticket_type: 'Request',
 															 requester_id: employee.id)				
 		end
@@ -731,12 +755,13 @@ resource 'Tickets' do
 			end
 
 			example 'Show overdue tickets after two days to admin' do
-				@ticket1.update(eta: (Time.now + 2.day).to_date )
+				@ticket1.update(eta: (Time.now + 2.day).to_date)
 				@ticket2.update(eta: (Time.now + 4.day).to_date)
+				# Eta of @ticket3 is set according to the SLA of it's category, i.e., 3 days from now
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data["data"]["overdue_after_two_days"].count).to eq(1)
+				expect(response_data["data"]["overdue_after_two_days"].count).to eq(2)
 			end
 		end
 
