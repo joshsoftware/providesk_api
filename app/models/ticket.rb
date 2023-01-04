@@ -3,7 +3,7 @@ class Ticket < ApplicationRecord
   attr_accessor :attribute_changed, :ticket_created, :asset_url_on_update
   audited only: [:resolver_id, :department_id, :category_id, :status, :asset_url, :eta, :ticket_type, :title, :description], on: [:update]
 
-  after_create :set_ticket_number_and_eta, :send_notification, :create_activity
+  after_create :set_ticket_number, :send_notification, :create_activity
 
   has_many :activities
   belongs_to :resolver, :class_name => 'User', :foreign_key => 'resolver_id'
@@ -105,11 +105,9 @@ class Ticket < ApplicationRecord
     NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
   end
 
-  def set_ticket_number_and_eta
+  def set_ticket_number
     ticket_number = ticket_type + "-" + id.to_s
-    sla_duration_in_hours = Category.find(category_id).duration_in_hours
-    eta = Date.today + (sla_duration_in_hours/24).to_i.days
-    self.update(ticket_number: ticket_number, eta: eta)
+    self.update(ticket_number: ticket_number)
     @ticket_created = true
   end
   

@@ -8,7 +8,7 @@ resource 'Tickets' do
 	let!(:department_obj) { FactoryBot.create(:department, name: Faker::Name.name, organization_id: organization.id)}
 	let!(:department_hr) { FactoryBot.create(:department, name: "HR", organization_id: organization.id)}
 	let!(:category) { FactoryBot.create(:category, name: "Hardware", priority: 0, department_id: department_obj.id, sla_unit: 3,
-																			sla_duration_type: 'Days', duration_in_hours: 72)}
+																								 sla_duration_type: 'Days', duration_in_hours: 72)}
 	let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:department_head])}
 	let!(:role1) { FactoryBot.create(:role, name: Role::ROLE[:employee])}
 	let!(:role2) { FactoryBot.create(:role, name: Role::ROLE[:resolver])}
@@ -509,21 +509,24 @@ resource 'Tickets' do
 															 department_id: department_obj.id, 
 															 ticket_type: 'Request', 
 															 resolver_id: user.id,
-															 requester_id: user1.id)
+															 requester_id: user1.id,
+															 eta: Date.today + 3.days)
 			@ticket2 = Ticket.create!(title: 'Laptop Issue', 
 																description: 'RAM Issue', 
 																category_id: category.id, 
 																department_id: department_obj.id, 
 																ticket_type: 'Request', 
 																resolver_id: resolver.id,
-																requester_id: user1.id)
+																requester_id: user1.id,
+																eta: Date.today + 3.days)
 			 @ticket3 = Ticket.create!(title: 'LMouse Issue', 
 																 description: 'RAM Issue', 
 																 category_id: category.id, 
 																 department_id: department_obj.id, 
 																 ticket_type: 'Request', 
 																 resolver_id: user.id,
-																 requester_id: resolver.id)
+																 requester_id: resolver.id,
+																 eta: Date.today + 3.days)
 		end
 
 		context '200' do
@@ -619,7 +622,8 @@ resource 'Tickets' do
 															 department_id: department_obj.id, 
 															 ticket_type: 'Request', 
 															 resolver_id: user.id,
-															 requester_id: employee.id)
+															 requester_id: employee.id,
+															 eta: Date.today + 3.days)
 		end
 		context '200' do
 			let(:id) {@ticket.id}
@@ -627,8 +631,8 @@ resource 'Tickets' do
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data["data"]).to eq(response_data["data"])
-				expect(response_data["activities"]).to eq(response_data["activities"])
+				expect(response_data['data']['ticket']['id']).to eq(@ticket.id)
+				expect(response_data['data']['activities'].count).to eq(1)
 			end
 
 			example 'ask_for_update value set to true when eta < current time, last asked for update is nil' do
@@ -742,7 +746,7 @@ resource 'Tickets' do
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data["data"]["overdue"].count).to eq(1)
+				expect(response_data['data']['overdue'].count).to eq(1)
 			end
 
 			example 'Show overdue tickets within two days to admin' do
@@ -751,17 +755,16 @@ resource 'Tickets' do
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data["data"]["overdue_in_two_days"].count).to eq(2)
+				expect(response_data['data']['overdue_in_two_days'].count).to eq(2)
 			end
 
 			example 'Show overdue tickets after two days to admin' do
 				@ticket1.update(eta: (Time.now + 2.day).to_date)
 				@ticket2.update(eta: (Time.now + 4.day).to_date)
-				# Eta of @ticket3 is set according to the SLA of it's category, i.e., 3 days from now
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data["data"]["overdue_after_two_days"].count).to eq(2)
+				expect(response_data['data']['overdue_after_two_days'].count).to eq(1)
 			end
 		end
 
@@ -777,7 +780,7 @@ resource 'Tickets' do
 				do_request()
 				response_data = JSON.parse(response_body)
 				expect(response_status).to eq(200)
-				expect(response_data["data"]["overdue_after_two_days"].count).to eq(1)
+				expect(response_data['data']['overdue_after_two_days'].count).to eq(1)
 			end
 		end
 
