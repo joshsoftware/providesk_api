@@ -8,9 +8,11 @@ resource "Sessions" do
     @employee_role = FactoryBot.create(:role, name: 'employee')
     @super_admin_role = FactoryBot.create(:role, name: 'super_admin')
     @admin_role = FactoryBot.create(:role, name: 'admin')
+    @resolver_role = FactoryBot.create(:role, name: 'resolver')
     @user = FactoryBot.create(:user, role_id: @employee_role.id)
     @super_admin_user = FactoryBot.create(:user, role_id: @super_admin_role.id)
     @admin_user = FactoryBot.create(:user, email: 'test@gmail.com', role_id: @admin_role.id, organization_id: @organization2.id)
+    @resolver = FactoryBot.create(:user, email: 'resolver@gmail.com', role_id: @resolver_role.id, organization_id: @organization2.id)
     @domain = @user.email.split('@')[1]
   end
 
@@ -71,6 +73,18 @@ resource "Sessions" do
         response_data = JSON.parse(response_body)
         expect(status).to eq 200
         expect(response_data).to eq(response_data)
+      end
+
+      example "Login existing user - resolver" do
+        request = {
+          user: {
+            email: @resolver.email,
+            name: @resolver.name,
+            google_user_id: 2
+          }
+        }
+        do_request(request)
+        expect(status).to eq(200)
       end
     end
     context '422' do

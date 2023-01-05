@@ -51,7 +51,7 @@ module Api::V1
         organization_list = Organization.all.select(:id, :name).order(id: :asc)
       elsif @user.is_admin?
         organization_list = ["id": @user.organization_id, "name": @user.organization.name]
-      elsif @user.is_department_head?
+      elsif @user.is_department_head? || @user.is_resolver?
         organization_list = [{ "id": @user.organization.id,
                                "name": @user.organization.name, 
                                "department_id": @user.department.id, 
