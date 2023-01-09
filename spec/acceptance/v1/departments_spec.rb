@@ -72,13 +72,15 @@ resource 'Departments' do
                   id: user1.id,
                   name: user1.name,
                   department_id: user1.department_id,
-                  role: user1.role.name
+                  role: user1.role.name,
+                  category_id: user1.user_categories.pluck(:category_id)
                 },
                 {
                   id: user2.id,
                   name: user2.name,
                   department_id: user2.department_id,
-                  role: user2.role.name
+                  role: user2.role.name,
+                  category_id: user2.user_categories.pluck(:category_id)
                 }
               ]
             }
@@ -105,13 +107,15 @@ resource 'Departments' do
                   id: user1.id,
                   name: user1.name,
                   department_id: user1.department_id,
-                  role: user1.role.name
+                  role: user1.role.name,
+                  category_id: user1.user_categories.pluck(:category_id)
                 },
                 {
                   id: user2.id,
                   name: user2.name,
                   department_id: user2.department_id,
-                  role: user2.role.name
+                  role: user2.role.name,
+                  category_id: user2.user_categories.pluck(:category_id)
                 }
               ]
             }
@@ -134,7 +138,8 @@ resource 'Departments' do
                   id: user1.id,
                   name: user1.name,
                   department_id: user1.department_id,
-                  role: user1.role.name
+                  role: user1.role.name,
+                  category_id: user1.user_categories.pluck(:category_id)
                 }
               ]
             }
@@ -157,7 +162,8 @@ resource 'Departments' do
                   id: @user_with_no_department.id,
                   name: @user_with_no_department.name,
                   department_id: @user_with_no_department.department_id,
-                  role: @user_with_no_department.role.name
+                  role: @user_with_no_department.role.name,
+                  category_id: @user_with_no_department.user_categories.pluck(:category_id)
                 }
               ]
             }

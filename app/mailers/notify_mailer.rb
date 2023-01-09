@@ -9,7 +9,7 @@ class NotifyMailer < ApplicationMailer
     mail(to: receiver.email, subject: "Ticket escalation notification")
   end
 
-  def notify_status_update(resolver, requester, ticket_id, ticket_link)
+  def notify_status_update(resolver, requester, ticket_number, ticket_link)
     @resolver, @ticket_link, @requester = resolver.name, ticket_link, requester.name
     mail(to: resolver.email, cc: requester.email, subject: "#{requester} has asked for update on Ticket-#{ticket_number}")
   end

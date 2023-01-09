@@ -51,7 +51,7 @@ module Api::V1
     def show
       result = Tickets::V1::Show.new(params, current_user).call
       if result["status"]
-        render json: { data: { ticket: result["data"], activites: result["activities"]} }
+        render json: { data: { ticket: result["data"], activities: result["activities"]} }
       else
         render json: { message: I18n.t('tickets.error.not_exists') }, status: :unprocessable_entity
       end

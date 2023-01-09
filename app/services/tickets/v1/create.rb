@@ -45,13 +45,21 @@ module Tickets::V1
       @requester_id = @current_user.id
       @ticket = Ticket.new(title: @title, description: @description, priority: @priority,
          department_id: @department_id, category_id: @category_id, resolver_id: @resolver_id,
-         requester_id: @requester_id, ticket_type: @ticket_type, organization_id: @current_user.organization_id)
+         requester_id: @requester_id, ticket_type: @ticket_type, organization_id: @current_user.organization_id,
+         eta: set_eta)
       @ticket[:asset_url] = @params[:asset_url] if @params[:asset_url].present?
       if @ticket.save
         { status: true }
       else
         { status: false, error_message: @ticket.errors.full_messages.join(", ") }
       end
+    end
+
+    private
+
+    def set_eta
+      sla_duration_in_hours = Category.find(@category_id).duration_in_hours
+      eta = Date.today + (sla_duration_in_hours/24).to_i.days
     end
   end
 end
