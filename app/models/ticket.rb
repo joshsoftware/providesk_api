@@ -119,37 +119,20 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def send_email_to_resolver(ticket_link)
+    NotifyMailer.notify_status_update(resolver, requester, id, ticket_link).deliver_now
+  end
+
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, 
                          requester: requester.name, department: department.name)
-    NotifyMailer.notify_status_change(resolver, requester, description, id).deliver_now
+    NotifyMailer.notify_status_change(resolver, requester, description, ticket_number, ticket_link).deliver_now
   end
 
   def set_ticket_number
-<<<<<<< Updated upstream
-    ticket_number = ticket_type + "-" + id.to_s
-    Ticket.find(id).update(ticket_number: ticket_number)
-    @ticket_created = true
-  end
-  
-  def send_email_to_department_head
-    department_head_id = Role.find_by(name: "department_head").id
-    department_head = User.find_by(department_id: department_id, role_id: department_head_id)
-    if !department_head
-      department_head = User.find_by(role_id: Role.find_by(name: "admin").id, organization_id: self.organization_id)
-    end
-    description = I18n.t('ticket.description.ticket_escalation', id: id)
-    NotifyMailer.notify_status_escalate(department_head, requester, description, id).deliver_now
-  end
-=======
     ticket_number = get_first_letters_of_department_and_category + '-' + SecureRandom.alphanumeric(6)
     self.update(ticket_number: ticket_number)
     @ticket_created = true
-  end
->>>>>>> Stashed changes
-
-  def send_email_to_resolver(ticket_link)
-    NotifyMailer.notify_status_update(resolver, requester, id, ticket_link).deliver_now
   end
 
   def create_activity
@@ -214,8 +197,6 @@ class Ticket < ApplicationRecord
   def downcase_ticket_type
     self.ticket_type.downcase!
   end
-<<<<<<< Updated upstream
-=======
 
   def get_first_letters_of_department_and_category
     splitted_dept_name = self.department.name.split
@@ -227,5 +208,4 @@ class Ticket < ApplicationRecord
   def set_ticket_link
     @ticket_link = "https://providesk.netlify.app/complaints/#{id}"
   end
->>>>>>> Stashed changes
 end
