@@ -35,22 +35,22 @@ Department.create!([
 p "Created departments for all organizations"
 
 Category.create!([
-  { name: "Recruitment", priority: 1, department_id: 1},
-  { name: "Referral Program", priority: 0, department_id: 1},
-  { name: "Offer Letter", priority: 0, department_id: 1},
-  { name: "Onboarding", priority: 0, department_id: 2 },
-  { name: "Compensation and Benefits", priority: 1, department_id: 2 },
-  { name: "Loan", priority: 2, department_id: 3 },
-  { name: "Branding and Strategy", priority: 0, department_id: 4 },
-  { name: "Content Management", priority: 0, department_id: 4 },
-  { name: "Onbarding", priority: 0, department_id: 5 },
-  { name: "Compensation and Benefits", priority: 0, department_id: 5 },
-  { name: "Branding and Strategy", priority: 0, department_id: 6 },
-  { name: "Loan", priority: 1, department_id: 6 },
-  { name: "Content Marketing", priority: 0, department_id: 7 },
-  { name: "Social Media", priority: 1, department_id: 7 },
-  { name: "Applied Research", priority: 2, department_id: 8 },
-  { name: "Casual Research", priority: 0, department_id: 8 }
+  { name: "Recruitment", priority: 1, department_id: 1, sla_unit: 2, sla_duration_type: 'days', duration_in_hours: 48},
+  { name: "Referral Program", priority: 0, department_id: 1, sla_unit: 18, sla_duration_type: 'hours', duration_in_hours: 18},
+  { name: "Offer Letter", priority: 0, department_id: 1, sla_unit: 1, sla_duration_type: 'days', duration_in_hours: 24},
+  { name: "Onboarding", priority: 0, department_id: 2, sla_unit: 7, sla_duration_type: 'days', duration_in_hours: 168},
+  { name: "Compensation and Benefits", priority: 1, department_id: 2, sla_unit: 4, sla_duration_type: 'days', duration_in_hours: 96},
+  { name: "Loan", priority: 2, department_id: 3, sla_unit: 23, sla_duration_type: 'hours', duration_in_hours: 23},
+  { name: "Branding and Strategy", priority: 0, department_id: 4, sla_unit: 2, sla_duration_type: 'days', duration_in_hours: 48},
+  { name: "Content Management", priority: 0, department_id: 4, sla_unit: 1, sla_duration_type: 'days', duration_in_hours: 24},
+  { name: "Onbarding", priority: 0, department_id: 5, sla_unit: 7, sla_duration_type: 'days', duration_in_hours: 168},
+  { name: "Compensation and Benefits", priority: 0, department_id: 5, sla_unit: 1, sla_duration_type: 'days', duration_in_hours: 24},
+  { name: "Branding and Strategy", priority: 0, department_id: 6, sla_unit: 2, sla_duration_type: 'days', duration_in_hours: 48},
+  { name: "Loan", priority: 1, department_id: 6, sla_unit: 23, sla_duration_type: 'hours', duration_in_hours: 23},
+  { name: "Content Marketing", priority: 0, department_id: 7, sla_unit: 5, sla_duration_type: 'days',duration_in_hours: 120},
+  { name: "Social Media", priority: 1, department_id: 7, sla_unit: 1, sla_duration_type: 'days', duration_in_hours: 24},
+  { name: "Applied Research", priority: 2, department_id: 8, sla_unit: 3, sla_duration_type: 'days', duration_in_hours: 72},
+  { name: "Casual Research", priority: 0, department_id: 8, sla_unit: 1, sla_duration_type: 'days', duration_in_hours: 24}
 ])
 
 p "Created categories for various departments"
