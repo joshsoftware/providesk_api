@@ -29,20 +29,10 @@ module Tickets::V1
     private
 
     # ask_for_update sets to true if eta < current time. Once asked, if last asked for update is greator than one day,
-    # then the value again sets to true.
-    # If eta is blank and asked_for_update is also blank, then value sets to true if updated_at time of ticket is
-    # greator than 2 days
-    # If eta is blank and asked for update is not blank, then value sets to true if the difference of updated_at time 
-    # last asked_for_update > 1 day 
+    # then the value again sets to true.  
 
     def set_value_in_ask_for_update
-      if @ticket.eta.blank? 
-        if @ticket.asked_for_update_at.blank?
-          (Time.now.to_date - @ticket.updated_at.to_date).to_i > 2 ? Ticket.const_set('ASK_FOR_UPDATE', true ) : Ticket.const_set('ASK_FOR_UPDATE', false )
-        else
-          (@ticket.asked_for_update_at.to_date - @ticket.updated_at.to_date).to_i > 1 ? Ticket.const_set('ASK_FOR_UPDATE', true ) : Ticket.const_set('ASK_FOR_UPDATE', false )
-        end
-      elsif (@ticket.eta - Time.now.to_date).to_i < 0 && (@ticket.asked_for_update_at.blank? || (Time.now.to_date - @ticket.asked_for_update_at.to_date).to_i > 1)
+      if (@ticket.eta - Time.now.to_date).to_i < 0 && (@ticket.asked_for_update_at.blank? || (Time.now.to_date - @ticket.asked_for_update_at.to_date).to_i > 1)
         Ticket.const_set('ASK_FOR_UPDATE', true ) 
       else
         Ticket.const_set('ASK_FOR_UPDATE', false )
