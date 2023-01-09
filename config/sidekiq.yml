@@ -10,24 +10,8 @@ production:
 :concurrency: 1
 :timeout: 30
 
-:schedule:  
-  EscalateStatusAssignedJob:
-    cron: '* * 12 * * *' # seconds minutes hours days month
-    enabled: true
-    active_job: true
-  EscalateStatusForApprovalJob:
-    cron: '* * 12 * * *' # will run  everyday at 12AM
-    enabled: true
-    active_job: true
-  EscalateStatusInprogressJob: 
+:schedule:
+  EscalateTicketJob: 
     cron: '* * 12 * * *'
-    enabled: true
-    active_job: true
-  EscalateStatusResolvedJob:
-    cron: '* * 12 * * *'
-    enabled: true
-    active_job: true
-  EscalateStatusOnHoldJob:
-    cron: '* * * * * *'
     enabled: true
     active_job: true
