@@ -106,7 +106,7 @@ en:
     for_approval: "The complaint will go through a approval"
     on_hold: "Your request has been put on hold"
     description:
-      ticket_escalation: "No action has been taken on this ticket-%{id} which has been assigned to you."
+      ticket_escalation: "No action has been taken on these tickets since some days which were supposed to be attended"
       new_ticket: "Ticket-%{id} has been created"
       category: "Category has been changed from %{previous_category} to %{new_category}"
       department: "Department has been changed from %{previous_department} to %{new_department}"

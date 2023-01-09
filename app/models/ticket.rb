@@ -88,6 +88,26 @@ class Ticket < ApplicationRecord
     end
   end
 
+  # all class method should be defined under this class
+  class << self
+    def send_escalation_email_to_department_head(tickets, department_id)
+      department_head_id = Role.find_by(name: Role::ROLE[:department_head]).id
+      department_head = User.find_by(department_id: department_id, role_id: department_head_id)
+      if !department_head
+        department_head = User.find_by(role_id: Role.find_by(name: Role::ROLE[:admin]).id, organization_id: self.organization_id)
+      end
+      description = I18n.t('ticket.description.ticket_escalation')
+      NotifyMailer.notify_status_escalate(department_head, description, tickets).deliver_now
+    end
+
+    def send_escalation_email_to_resolver(tickets, resolver_id)
+      resolver = User.find(resolver_id)
+      description = I18n.t('ticket.description.ticket_escalation')
+      NotifyMailer.notify_status_escalate(resolver, description, tickets).deliver_now
+    end
+  end
+
+  # all instance methods should be defined below
   def status_or_resolver_or_department_or_category_or_asset_url_changed?
     @attribute_changed = (status_changed? || resolver_id_changed? || department_id_changed? || 
                           category_id_changed? || asset_url_changed? || title_changed? || 
@@ -99,30 +119,20 @@ class Ticket < ApplicationRecord
     end
   end
 
+  def send_email_to_resolver(ticket_link)
+    NotifyMailer.notify_status_update(resolver, requester, id, ticket_link).deliver_now
+  end
+
   def send_notification
     description = I18n.t("ticket.#{status}", ticket_type: ticket_type, resolver: resolver.name, 
                          requester: requester.name, department: department.name)
-    NotifyMailer.notify_status_change(resolver, requester, description, ticket_number, @ticket_link).deliver_now
+    NotifyMailer.notify_status_change(resolver, requester, description, ticket_number, ticket_link).deliver_now
   end
 
   def set_ticket_number
-    ticket_number = get_first_letters_of_department + '-' + SecureRandom.alphanumeric(6)
+    ticket_number = get_first_letters_of_department_and_category + '-' + SecureRandom.alphanumeric(6)
     self.update(ticket_number: ticket_number)
     @ticket_created = true
-  end
-  
-  def send_email_to_department_head
-    department_head_id = Role.find_by(name: "department_head").id
-    department_head = User.find_by(department_id: department_id, role_id: department_head_id)
-    if !department_head
-      department_head = User.find_by(role_id: Role.find_by(name: Role::ROLE[:admin]).id, organization_id: self.organization_id)
-    end
-    description = I18n.t('ticket.description.ticket_escalation', id: id)
-    NotifyMailer.notify_status_escalate(department_head, requester, description, ticket_number).deliver_now
-  end
-
-  def send_email_to_resolver(ticket_link)
-    NotifyMailer.notify_status_update(resolver, requester, ticket_number, ticket_link).deliver_now
   end
 
   def create_activity
@@ -188,10 +198,11 @@ class Ticket < ApplicationRecord
     self.ticket_type.downcase!
   end
 
-  def get_first_letters_of_department
-    splitted_name = self.department.name.split
-    name = (splitted_name.length == 1) ? splitted_name[0, 2] : splitted_name.map(&:first).join
-    name.upcase!
+  def get_first_letters_of_department_and_category
+    splitted_dept_name = self.department.name.split
+    splitted_category_name = self.category.name.split
+    name = ((splitted_dept_name.length == 1) ? splitted_dept_name.first[0, 2] : splitted_dept_name.map(&:first).join).upcase! + '-'
+    name += ((splitted_category_name.length == 1) ? splitted_category_name.first[0, 2] : splitted_category_name.map(&:first).join).upcase!
   end
 
   def set_ticket_link
