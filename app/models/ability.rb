@@ -26,7 +26,7 @@ class Ability
     end
     can [:create, :timeline, :analytical_reports], Ticket
     can [:read, :show, :index, :reopen], Ticket, organization_id: @user.organization_id
-    can [:update_ticket_progress], Ticket do |ticket|
+    can [:update_ticket_progress, :bulk_update_ticket_progress], Ticket do |ticket|
       ticket.organization_id == @user.organization_id && ticket.requester_id != @user.id
     end
     can [:update, :ask_for_update], Ticket, requester_id: @user.id
@@ -43,7 +43,7 @@ class Ability
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end
-    can [:update_ticket_progress], Ticket do |ticket|
+    can [:update_ticket_progress, :bulk_update_ticket_progress], Ticket do |ticket|
       ticket.organization_id == @user.organization_id && ticket.requester_id != @user.id
     end
     can [:update, :ask_for_update], Ticket, requester_id: @user.id
@@ -60,7 +60,7 @@ class Ability
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end
-    can [:update_ticket_progress], Ticket, resolver_id: @user.id
+    can [:update_ticket_progress, :bulk_update_ticket_progress], Ticket, resolver_id: @user.id
     can [:update, :ask_for_update], Ticket, requester_id: @user.id
   end
 
