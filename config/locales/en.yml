@@ -80,7 +80,7 @@ en:
       create: "Ticket created successfully"
       close: "Ticket closed successfully"
       reopen: "Ticket reopened successfully"
-      update: "Ticket updated successfully"
+      update: "Ticket(s) updated successfully"
       edit: "Ticket edited successfully"
       ask_for_update: "Your request has been sent"
     error:
@@ -93,6 +93,7 @@ en:
       update: "Could not update the ticket"
       status: "Your ticket is no more in assigned state"
       ask_for_update: "Cannot process request at this time!"
+      resolver_not_associated_with_category: "Resolver must belong to this category"
     show:
       not_availaible: "No such tickets availaible"
       invalid_filter: "Filter invalid"

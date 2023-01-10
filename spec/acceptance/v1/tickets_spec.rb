@@ -377,6 +377,79 @@ resource 'Tickets' do
 		end
 	end
 
+	post 'tickets/bulk_update_ticket_progress' do
+		before do
+			header 'Accept', 'application/vnd.providesk; version=1'
+			header 'Authorization', JsonWebToken.encode({user_id: user.id, email: user.email, name: user.name})
+			@ticket1 = Ticket.create!(title: 'Laptop Issue', 
+															 description: 'RAM Issue', 
+															 category_id: category.id, 
+															 department_id: department_obj.id, 
+															 ticket_type: 'Request', 
+															 resolver_id: user.id,
+															 requester_id: user1.id,
+															 organization_id: user.organization_id)
+			@ticket2 = Ticket.create!(title: 'Laptop Issue', 
+																description: 'RAM Issue', 
+																category_id: category.id, 
+																department_id: department_obj.id, 
+																ticket_type: 'Request', 
+																resolver_id: user.id,
+																requester_id: employee.id,
+																organization_id: user.organization_id)
+			@department = Department.create!(name: "Test Department", organization_id: user.organization_id)
+			@category = Category.create!(name: "Category for Test Department", department_id: @department.id)
+			@resolver = User.create!(name: "testuser", role_id: role.id, email: "shefali@joshsoftware.com", 
+															 department_id: @department.id, organization_id: user.organization_id)
+		end
+
+		context '200' do
+			before do
+				UserCategory.create!(user_id: @resolver.id, category_id: @category.id)
+			end
+			example 'Update bulk tickets with resolver_id' do
+				do_request({ticket: { ticket_ids: [@ticket1.id, @ticket2.id], department_id: @department.id, 
+															category_id: @category.id, resolver_id: @resolver.id }})
+				response_data = JSON.parse(response_body)
+				ticket1 = Ticket.find @ticket1.id
+				ticket2 = Ticket.find @ticket2.id
+				expect(ticket1.resolver_id).to eq(@resolver.id)
+				expect(ticket2.resolver_id).to eq(@resolver.id)
+				expect(response_data['message']).to eq(I18n.t('tickets.success.update'))
+			end
+
+			example 'Update status of tickets in bulk' do
+				do_request({ticket: { ticket_ids: [@ticket1.id], status: 'inprogress' }})
+				response_data = JSON.parse(response_body)
+				ticket1 = Ticket.find @ticket1.id
+				expect(ticket1.status).to eq('inprogress')
+				expect(@ticket2.status).to eq('assigned')
+				expect(response_data['message']).to eq(I18n.t('tickets.success.update'))
+			end
+		end
+
+		context '422' do
+			example 'Unable to update tickets because resolver does not belong to category of the department' do
+				do_request({ticket: { ticket_ids: [@ticket1.id, @ticket2.id], department_id: @department.id, 
+										category_id: @category.id, resolver_id: @resolver.id }})
+				response_data = JSON.parse(response_body)
+				expect(response_data['message']).to eq(I18n.t('tickets.error.update'))
+				expect(response_data['errors']).to eq(I18n.t('tickets.error.resolver_not_associated_with_category'))
+			end
+		end
+
+		context '401' do
+			before do
+				header 'Accept', 'application/vnd.providesk; version=1'
+				header 'Authorization', JsonWebToken.encode({user_id: employee.id, email: employee.email, name: employee.name})
+			end
+			example 'Unauthorized user trying to update tickets' do
+				do_request()
+				expect(response_status).to eq(401)
+			end
+		end
+	end
+
 	put 'tickets/:id' do
 		before do
 			header 'Accept', 'application/vnd.providesk; version=1'
