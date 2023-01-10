@@ -20,8 +20,19 @@ resource 'Users' do
 			header 'Authorization', JsonWebToken.encode({user_id: super_admin.id, email: super_admin.email, name: super_admin.name})
 		end
     context '200' do
+      let!(:id) { department_head.id }
+      example 'User role updated successfully to employee and department set to nil' do
+        do_request({user: { role: "employee"}})
+        response_data = JSON.parse(response_body)
+        expect(response_status).to eq(200)
+        expect(User.find(department_head.id).department_id).to eq(nil)
+        expect(response_data["message"]).to eq(I18n.t('users.success.update'))
+      end
+    end
+
+    context '200' do
       let(:id) { user.id }
-      example 'User role updated successfully' do
+      example 'User role updated successfully to department head' do
         do_request({user: { role: "department_head"}})
         response_data = JSON.parse(response_body)
         expect(response_status).to eq(200)
@@ -35,7 +46,7 @@ resource 'Users' do
         expect(response_status).to eq(200)
         expect(response_data["message"]).to eq(I18n.t('users.success.update'))
       end
-
+      
       example 'Alloting a category to user' do
         do_request({ user: {department_id: department.id, category_ids: [category.id]} })
         response_data = JSON.parse(response_body)
@@ -64,6 +75,7 @@ resource 'Users' do
         expect(response_data["message"]).to eq(I18n.t('users.success.update'))
       end
     end
+
     context '422' do
       before do
         header 'Accept', 'application/vnd.providesk; version=1'

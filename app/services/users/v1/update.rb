@@ -38,6 +38,7 @@ module Users::V1
 
     def check_role
       if @role.present?
+        @user.department_id = nil if @role == Role::ROLE[:employee]
         @role = Role.find_by(name: @role)
         return @role.nil? ? (@error = { status: false, error_message: I18n.t('users.error.role') }.as_json) 
                           : @user.role_id = @role.id

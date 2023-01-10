@@ -51,6 +51,7 @@ module Tickets::V1
           department_tickets[status] = all_tickets[[department.id, status]] || 0
           tickets['total'] += department_tickets[status]
         end
+        department_tickets['total'] = department_tickets.values.sum
         tickets[department.id] = department_tickets
       end
       tickets
