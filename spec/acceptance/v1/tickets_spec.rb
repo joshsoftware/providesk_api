@@ -840,11 +840,11 @@ resource 'Tickets' do
 					"total": 2,
 					"#{department_obj.id}": {
 						'assigned': 1, 'inprogress': 0, 'for_approval': 0, 'resolved': 1,
-						'closed': 0, 'rejected': 0, 'on_hold': 0
+						'closed': 0, 'rejected': 0, 'on_hold': 0, 'total': 2
 					},
 					"#{department_hr.id}": {
 						'assigned': 0, 'inprogress': 0, 'for_approval': 0, 'resolved': 0,
-						'closed': 0, 'rejected': 0, 'on_hold': 0
+						'closed': 0, 'rejected': 0, 'on_hold': 0, 'total': 0
 					}
 				}.as_json
 				response_data = JSON.parse(response_body)

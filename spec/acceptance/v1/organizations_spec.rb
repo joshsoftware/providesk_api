@@ -158,7 +158,6 @@ resource 'Organizations' do
       example 'List of users with no department' do
         do_request()
         response_data = JSON.parse(response_body)
-        byebug
         expect(response_data['data']['total']).to eq(1)
       end
     end
