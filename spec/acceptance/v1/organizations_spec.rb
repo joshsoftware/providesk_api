@@ -4,7 +4,9 @@ require 'rspec_api_documentation/dsl'
 
 resource 'Organizations' do
   let!(:organization) { FactoryBot.create(:organization, name: "google", domain: ["gmail.com"]) }
-  let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:super_admin])}
+  let!(:role) { FactoryBot.create(:role, name: Role::ROLE[:super_admin]) }
+  let!(:employee_role) { FactoryBot.create(:role, name: Role::ROLE[:employee]) }
+  let!(:department_head_role) { FactoryBot.create(:role, name: Role::ROLE[:department_head]) }
 	let!(:user) { FactoryBot.create(:user, role_id: role.id) }
 
   post '/organizations' do
@@ -136,6 +138,28 @@ resource 'Organizations' do
         response_data = JSON.parse(response_body)
         expect(status).to eq(404)
         expect(response_data["errors"]).to eq(I18n.t('record_not_found'))
+      end
+    end
+  end
+
+  get '/organizations/:id/users' do
+    before do
+      @user_with_no_dept = FactoryBot.create(:user, name: 'user_with_no_department', email: 'nodept@gmail.com', 
+                                                    role_id: employee_role.id, department_id: nil)
+      @user = FactoryBot.create(:user, email: 'user@gmail.com', role_id: department_head_role.id)
+      payload = { user_id: @user.id, name: @user.name, email: @user.email, google_user_id: 1 }
+      token = JsonWebToken.encode(payload)
+      header "Accept", "application/vnd.providesk; version=1"
+      header "Authorization", token
+    end
+
+    context '200' do
+      let(:id) { organization.id }
+      example 'List of users with no department' do
+        do_request()
+        response_data = JSON.parse(response_body)
+        byebug
+        expect(response_data['data']['total']).to eq(1)
       end
     end
   end
