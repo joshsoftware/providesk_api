@@ -37,6 +37,7 @@ Rails.application.routes.draw do
         collection do
           get 'timeline'
           get 'analytical_reports'
+          post 'bulk_update_ticket_progress'
         end
       end
   end
