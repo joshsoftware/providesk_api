@@ -1,14 +1,16 @@
 require 'mina/rails'
 require 'mina/git'
 require 'mina/version_managers/rvm'
+require "mina_sidekiq/tasks"
 
+set :rails_env, 'production'
 set :application_name, 'providesk'
 set :domain, '13.127.12.184'
 set :deploy_to, '/www/providesk'
 set :repository, 'git@github.com:joshsoftware/providesk_api.git'
 set :branch, 'master'
 set :user, 'ubuntu'
-set :rvm_use_path, '/usr/local/rvm//bin'
+set :rvm_use_path, '/usr/local/rvm/scripts/rvm'
 
 set :shared_paths, ['config/database.yml', 'config/master.key','config/credentials.yml.enc','log', 'tmp', 'config/secrets.yml', "db/seeds.rb", '.env']
 
@@ -50,7 +52,7 @@ task :setup => :remote_environment do
 end
 
 desc "Deploys the current version to the server."
-task :deploy => :environment do
+task :deploy => :remote_environment do
   deploy do
     # Put things that will set up an empty directory into a fully set-up
     # instance of your project.
@@ -66,7 +68,7 @@ end
 
 namespace :application do
   desc 'Start the application'
-  task :start => :environment do
+  task :start => :remote_environment do
     #we need to stop & start the sidekiq server again
     invoke :'sidekiq:quiet'
     invoke :'sidekiq:stop'
@@ -74,13 +76,13 @@ namespace :application do
   end
 
   desc 'Stop the application'
-  task :stop => :environment do
+  task :stop => :remote_environment do
     invoke :'sidekiq:quiet'
     invoke :'sidekiq:stop'
   end
 
   desc 'Restart the application'
-  task :restart => :environment do
+  task :restart => :remote_environment do
 
     invoke 'application:stop'
     invoke 'application:start'
@@ -93,18 +95,18 @@ namespace :puma do
   desc "Start the application"
   task :start do
     command 'echo "-----> Start Puma"'
-    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{rails_env} && bin/puma.sh start"
+    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} && bin/puma.sh start"
   end
 
   desc "Stop the application"
   task :stop do
     command 'echo "-----> Stop Puma"'
-    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{rails_env} && bin/puma.sh stop"
+    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} && bin/puma.sh stop"
   end
 
   desc "Restart the application"
   task :restart do
     command 'echo "-----> Restart Puma"'
-    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{rails_env} && bin/puma.sh restart"
+    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} && bin/puma.sh restart"
   end
 end
