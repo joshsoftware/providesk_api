@@ -59,6 +59,8 @@ task :deploy => :remote_environment do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
+    invoke :'rails:db_migrate'
+    invoke :'deploy:cleanup'
 
     on :launch do
       invoke 'application:restart'
@@ -72,7 +74,8 @@ namespace :application do
     #we need to stop & start the sidekiq server again
     invoke :'sidekiq:quiet'
     invoke :'sidekiq:stop'
-    invoke :'sidekiq:start'
+    #invoke :'sidekiq:start'
+    command %{sudo service sidekiq start} 
   end
 
   desc 'Stop the application'
@@ -86,27 +89,15 @@ namespace :application do
 
     invoke 'application:stop'
     invoke 'application:start'
-    invoke :'puma:stop'
-    invoke :'puma:start'
+    invoke :'passenger:restart'
   end
 end
-
-namespace :puma do
-  desc "Start the application"
-  task :start do
-    command 'echo "-----> Start Puma"'
-    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} && bin/puma.sh start"
-  end
-
-  desc "Stop the application"
-  task :stop do
-    command 'echo "-----> Stop Puma"'
-    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} && bin/puma.sh stop"
-  end
-
-  desc "Restart the application"
+ namespace :passenger do
   task :restart do
-    command 'echo "-----> Restart Puma"'
-    command "cd #{fetch(:deploy_to)}/current && RAILS_ENV=#{fetch(:rails_env)} && bin/puma.sh restart"
+    command %{
+      echo "-----> Restarting passenger"
+      #{echo_cmd %[mkdir -p tmp]}
+      #{echo_cmd %[touch tmp/restart.txt]}
+    }
   end
 end
