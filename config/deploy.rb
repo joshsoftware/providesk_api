@@ -5,7 +5,7 @@ require "mina_sidekiq/tasks"
 
 set :rails_env, 'production'
 set :application_name, 'providesk'
-set :domain, '13.127.12.184'
+set :domain, 'providesk.joshsoftware.com'
 set :deploy_to, '/www/providesk'
 set :repository, 'git@github.com:joshsoftware/providesk_api.git'
 set :branch, 'master'

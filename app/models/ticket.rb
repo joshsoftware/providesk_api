@@ -201,8 +201,8 @@ class Ticket < ApplicationRecord
   def get_first_letters_of_department_and_category
     splitted_dept_name = self.department.name.split
     splitted_category_name = self.category.name.split
-    name = ((splitted_dept_name.length == 1) ? splitted_dept_name.first[0, 2] : splitted_dept_name.map(&:first).join).upcase! + '-'
-    name += ((splitted_category_name.length == 1) ? splitted_category_name.first[0, 2] : splitted_category_name.map(&:first).join).upcase!
+    name = ((splitted_dept_name.length == 1) ? splitted_dept_name.first[0, 2] : splitted_dept_name.map(&:first).join).upcase+"-"
+    name +=((splitted_category_name.length == 1) ? splitted_category_name.first[0, 2] : splitted_category_name.map(&:first).join).upcase
   end
 
   def set_ticket_link
