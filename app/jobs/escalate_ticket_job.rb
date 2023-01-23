@@ -11,7 +11,7 @@ class EscalateTicketJob < ApplicationJob
       department_name = Department.find(department_id).name
       escalation_tickets[department_name] = []
       department_tickets.each do |ticket|
-        escalation_tickets[department_name] << ["#{ticket.ticket_number} => https://providesk.netlify.app/complaints/#{ticket.id}"]
+        escalation_tickets[department_name] << ["#{ticket.ticket_number} => #{HOST_URL}/complaints/#{ticket.id}"]
       end
       Ticket.send_escalation_email_to_department_head(escalation_tickets, department_id)
     end
@@ -24,7 +24,7 @@ class EscalateTicketJob < ApplicationJob
       resolver_name = User.find(resolver_id).name
       escalation_tickets[resolver_name] = []
       resolver_tickets.each do |ticket|
-        escalation_tickets[resolver_name] << ["#{ticket.ticket_number} => https://providesk.netlify.app/complaints/#{ticket.id}"]
+        escalation_tickets[resolver_name] << ["#{ticket.ticket_number} => #{HOST_URL}/complaints/#{ticket.id}"]
       end
       Ticket.send_escalation_email_to_resolver(escalation_tickets[resolver_name], resolver_id)
     end

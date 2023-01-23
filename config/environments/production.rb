@@ -96,7 +96,7 @@ Rails.application.configure do
   ActionMailer::Base.smtp_settings = {
     user_name: Rails.application.credentials[:sendgrid][:username],
     password: Rails.application.credentials[:sendgrid][:password], 
-    domain: 'providesk.herokuapp.com',
+    domain: 'providesk.joshsoftware.com',
     address: 'smtp.sendgrid.net',
     port: 587,
     authentication: :plain,
@@ -122,5 +122,6 @@ Rails.application.configure do
   # these configuration options.
   # config.active_record.database_selector = { delay: 2.seconds }
   # config.active_record.database_resolver = ActiveRecord::Middleware::DatabaseSelector::Resolver
-  # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session
+  # config.active_record.database_resolver_context = ActiveRecord::Middleware::DatabaseSelector::Resolver::Session\
+  HOST_URL='https://providesk.joshsoftware.com'
 end

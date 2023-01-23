@@ -71,7 +71,7 @@ Rails.application.configure do
   ActionMailer::Base.smtp_settings = {
     user_name: Rails.application.credentials[:sendgrid][:username],
     password: Rails.application.credentials[:sendgrid][:password], 
-    domain: 'providesk.herokuapp.com',
+    domain: 'providesk.joshsoftware.com',
     address: 'smtp.sendgrid.net',
     port: 587,
     authentication: :plain,
@@ -80,4 +80,5 @@ Rails.application.configure do
 
   # config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
+  HOST_URL = 'http://localhost:8080'
 end

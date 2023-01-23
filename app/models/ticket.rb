@@ -206,6 +206,6 @@ class Ticket < ApplicationRecord
   end
 
   def set_ticket_link
-    @ticket_link = "https://providesk.netlify.app/complaints/#{id}"
+    @ticket_link = "#{HOST_URL}/complaints/#{id}"
   end
 end
