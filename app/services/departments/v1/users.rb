@@ -1,6 +1,6 @@
 module Departments::V1
   class Users < ApplicationController
-    def initialize(params)
+    def initialize(params,current_user)
       @department_id = params[:id]
       @category_id = params[:category_id] if params[:category_id]
     end
@@ -29,7 +29,7 @@ module Departments::V1
     end
 
     def show_users_with_department
-      users = User.where(department_id: @department.id)
+      users = User.where(department_id: @department.id, organization_id: current_user.organization_id)
       { 
         status: true,
         data: {

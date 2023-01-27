@@ -16,7 +16,7 @@ module Api::V1
     end
 
     def users
-      result = Departments::V1::Users.new(params).call
+      result = Departments::V1::Users.new(params, current_user).call
       if result["status"]
         render json: { data: result["data"] }
       else
