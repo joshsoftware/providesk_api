@@ -3,6 +3,7 @@ module Departments::V1
     def initialize(params,current_user)
       @department_id = params[:id]
       @category_id = params[:category_id] if params[:category_id]
+      @current_user = current_user
     end
 
     def call
@@ -29,7 +30,7 @@ module Departments::V1
     end
 
     def show_users_with_department
-      users = User.where(department_id: @department.id, organization_id: current_user.organization_id)
+      users = User.where(department_id: @department.id, organization_id:@ current_user.organization_id)
       { 
         status: true,
         data: {
