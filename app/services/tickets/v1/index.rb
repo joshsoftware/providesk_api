@@ -52,19 +52,19 @@ module Tickets::V1
         tickets = Ticket.where(requester_id: @current_user.id)
       elsif @current_user.is_employee?
         tickets = Ticket.where(requester_id: @current_user.id)
-      elsif @current_user.is_resolver?
-        if !@assigned_to_me && !@created_by_me && where_hash.length == 1
-          tickets = Ticket.where(resolver_id: @current_user.id).or(Ticket.where(requester_id: @current_user.id))
-        elsif !@assigned_to_me && !@created_by_me && where_hash.length > 1
-          tickets = Ticket.where(where_hash).and(Ticket.where(resolver_id: @current_user.id))
-        elsif @assigned_to_me && @created_by_me && where_hash.length > 1
-          tickets = Ticket.where(where_hash).and((Ticket.where(requester_id: @current_user.id)).or\
-                                                 (Ticket.where(resolver_id: @current_user.id)))
-        elsif @assigned_to_me && where_hash.length > 1
-          tickets = Ticket.where(where_hash).and(Ticket.where(resolver_id: @current_user.id))
-        elsif @created_by_me && where_hash.length > 1
-          tickets = Ticket.where(where_hash).and(Ticket.where(requester_id: @current_user.id))
-        end
+      # elsif @current_user.is_resolver?
+      #   if !@assigned_to_me && !@created_by_me && where_hash.length == 1
+      #     tickets = Ticket.where(resolver_id: @current_user.id).or(Ticket.where(requester_id: @current_user.id))
+      #   elsif !@assigned_to_me && !@created_by_me && where_hash.length > 1
+      #     tickets = Ticket.where(where_hash).and(Ticket.where(resolver_id: @current_user.id))
+      #   elsif @assigned_to_me && @created_by_me && where_hash.length > 1
+      #     tickets = Ticket.where(where_hash).and((Ticket.where(requester_id: @current_user.id)).or\
+      #                                            (Ticket.where(resolver_id: @current_user.id)))
+      #   elsif @assigned_to_me && where_hash.length > 1
+      #     tickets = Ticket.where(where_hash).and(Ticket.where(resolver_id: @current_user.id))
+      #   elsif @created_by_me && where_hash.length > 1
+      #     tickets = Ticket.where(where_hash).and(Ticket.where(requester_id: @current_user.id))
+      #   end
       elsif @current_user.is_department_head?
         if !@assigned_to_me && !@created_by_me && where_hash.length == 1
           tickets = Ticket.where(where_hash).and(Ticket.where(department_id: @current_user.department_id)).or\
