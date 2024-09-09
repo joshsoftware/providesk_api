@@ -30,7 +30,7 @@ module Departments::V1
     end
 
     def show_users_with_department
-      users = User.where(department_id: @department.id, organization_id:@ current_user.organization_id)
+      users = User.where(department_id: @department.id, organization_id:@current_user.organization_id)
       { 
         status: true,
         data: {
