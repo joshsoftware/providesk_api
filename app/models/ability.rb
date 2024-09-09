@@ -5,7 +5,7 @@ class Ability
     user.blank? ? return : (@user = user)
     department_head_abilities if user.is_department_head?
     employee_abilities if user.is_employee?
-    resolver_abilities if user.is_resolver?
+    # resolver_abilities if user.is_resolver?
     admin_abilities if user.is_admin?
     super_admin_abilities if user.is_super_admin?
   end
