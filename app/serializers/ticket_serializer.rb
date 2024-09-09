@@ -29,8 +29,9 @@ class TicketSerializer < ActiveModel::Serializer
     Ticket::ASK_FOR_UPDATE
   end
 
-  def permited_transitions
+   def permited_transitions
     status = object.status
+    role = scope&.role&.name
     case status
     when "assigned"
       ["inprogress", "for_approval", "rejected", "on_hold"]
@@ -39,7 +40,11 @@ class TicketSerializer < ActiveModel::Serializer
     when "inprogress"
       ["resolved", "on_hold"]
     when "resolved"
-      ["closed", "reopen"]
+      if role == "employee"
+        ["reopen"]
+      else  
+       ["closed", "reopen"]
+      end 
     when "on_hold"
       ["assigned", "for_approval", "inprogress"]
     else
