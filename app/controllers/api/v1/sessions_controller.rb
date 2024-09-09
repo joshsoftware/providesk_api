@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'net/http'
 module Api::V1
   class SessionsController < ApplicationController
     skip_before_action :authenticate
@@ -8,9 +9,8 @@ module Api::V1
 
     def create
       payload = { user_id: @user.id,
-                  name: permitted_params[:name],
-                  email: permitted_params[:email],
-                  google_user_id: permitted_params[:google_user_id]
+                  name: @user.name,
+                  email: @user.email,
                 }
       token = JsonWebToken.encode(payload)
       render json: {
@@ -26,14 +26,19 @@ module Api::V1
     private
 
     def permitted_params
-      params.require(:user).permit(:email, :name, :google_user_id)
+      params.require(:user).permit(:token)
     end
 
     def find_or_create_user
-      @user = User.find_or_initialize_by(email: permitted_params[:email])
+      user_data = fetch_google_oauth_data
+      unless user_data
+        render json: { error: I18n.t('login.failure') }, status: 403
+        return
+      end
+      @user = User.find_or_initialize_by(email: user_data["email"])
       @user.assign_attributes({
-        name: permitted_params[:name],
-        email: permitted_params[:email]
+        name: user_data["name"],
+        email: user_data["email"]
       })
       @user.role_id = params[:user][:role_id] if params[:user][:role_id].present?
 
@@ -51,14 +56,23 @@ module Api::V1
         organization_list = Organization.all.select(:id, :name).order(id: :asc)
       elsif @user.is_admin?
         organization_list = ["id": @user.organization_id, "name": @user.organization.name]
-      elsif @user.is_department_head? || @user.is_resolver?
+      elsif @user.is_department_head? #|| @user.is_resolver?
         organization_list = [{ "id": @user.organization.id,
                                "name": @user.organization.name, 
                                "department_id": @user.department.id, 
-                               "department_name": @user.department.name }]
+                               "department_name": @user.department.name }]                                                         
       else
-        organization_list = ["id": @user.organization_id, "name": @user.organization.name]
+        organization_list = ["id": @user.organization_id, "name": @user.organization.name]                                                                                                                                                                                                    
       end
+    end
+
+    def fetch_google_oauth_data
+      uri = URI(GOOGLE_ID_TOKEN_VERIFICATION_URL)
+      google_oauth_params = { id_token: permitted_params[:token] }
+      uri.query = URI.encode_www_form(google_oauth_params)
+      response = Net::HTTP.get_response(uri)
+      return JSON.parse(                                                                                                                                                                                                                                                                  response.body) if response.is_a?(Net::HTTPSuccess)
+      nil
     end
   end
 end
