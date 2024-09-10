@@ -38,9 +38,9 @@ class TicketSerializer < ActiveModel::Serializer
     when "for_approval"
       ["inprogress", "rejected", "on_hold"]
     when "inprogress"
-      ["resolved", "on_hold"]
+      ["resolved", "on_hold"]  
     when "resolved"
-      if role=="employee"
+      if role == 'employee'
         ["reopen"]
       else
         ["closed","reopen"]
