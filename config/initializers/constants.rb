@@ -1,1 +1,0 @@
-GOOGLE_ID_TOKEN_VERIFICATION_URL = 'https://www.googleapis.com/oauth2/v3/tokeninfo'
