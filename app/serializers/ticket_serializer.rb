@@ -31,6 +31,7 @@ class TicketSerializer < ActiveModel::Serializer
 
   def permited_transitions
     status = object.status
+    role = @instance_options[:root]&.[](:role)
     case status
     when "assigned"
       ["inprogress", "for_approval", "rejected", "on_hold"]
