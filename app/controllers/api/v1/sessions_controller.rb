@@ -31,10 +31,7 @@ module Api::V1
 
     def find_or_create_user
       user_data = fetch_google_oauth_data
-      unless user_data
-        render json: { error: I18n.t('login.failure') }, status: 403
-        return
-      end
+      render json: { error: I18n.t('login.failure') }, status: 403 and return unless user_data
       @user = User.find_or_initialize_by(email: user_data["email"])
       @user.assign_attributes({
         name: user_data["name"],
@@ -60,9 +57,9 @@ module Api::V1
         organization_list = [{ "id": @user.organization.id,
                                "name": @user.organization.name, 
                                "department_id": @user.department.id, 
-                               "department_name": @user.department.name }]                                                         
+                               "department_name": @user.department.name }]
       else
-        organization_list = ["id": @user.organization_id, "name": @user.organization.name]                                                                                                                                                                                                    
+        organization_list = ["id": @user.organization_id, "name": @user.organization.name]
       end
     end
 
@@ -71,8 +68,7 @@ module Api::V1
       google_oauth_params = { id_token: permitted_params[:token] }
       uri.query = URI.encode_www_form(google_oauth_params)
       response = Net::HTTP.get_response(uri)
-      return JSON.parse(                                                                                                                                                                                                                                                                  response.body) if response.is_a?(Net::HTTPSuccess)
-      nil
+      return JSON.parse(response.body) if response.is_a?(Net::HTTPSuccess)
     end
   end
 end
