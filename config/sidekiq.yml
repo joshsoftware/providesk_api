@@ -12,6 +12,6 @@ production:
 
 :schedule:
   EscalateTicketJob: 
-    cron: '* * 12 * * *'
+    cron: '0 12 * * *' # Everyday at 12 pm 
     enabled: true
     active_job: true
