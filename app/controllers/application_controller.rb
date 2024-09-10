@@ -3,7 +3,6 @@
 class ApplicationController < ActionController::API
   before_action :authenticate
   load_and_authorize_resource
-  serialization_scope :current_user
   
   attr_reader :current_user, :payload
 
@@ -53,7 +52,7 @@ class ApplicationController < ActionController::API
   end
 
   def serialize_resource(resources, serializer, root = nil, extra = {} )
-    opts = { each_serializer: serializer, root: root, scope: current_user }.merge(extra)
+    opts = { each_serializer: serializer, root: root }.merge(extra)
     ActiveModelSerializers::SerializableResource.new(resources, opts) if resources
   end
 end
