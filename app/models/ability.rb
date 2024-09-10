@@ -53,16 +53,16 @@ class Ability
     end
   end
 
-  # def resolver_abilities
-  #   can [:users, :departments], Organization, id: @user.organization_id
-  #   can [:categories, :users], Department, organization_id: @user.organization_id
-  #   can [:create, :timeline], Ticket
-  #   can [:show, :reopen, :index], Ticket do |ticket|
-  #     ticket.department_id == @user.department_id || ticket.requester_id == @user.id
-  #   end
-  #   can [:update_ticket_progress, :bulk_update_ticket_progress], Ticket, resolver_id: @user.id
-  #   can [:update, :ask_for_update], Ticket, requester_id: @user.id
-  # end
+  def resolver_abilities
+    can [:users, :departments], Organization, id: @user.organization_id
+    can [:categories, :users], Department, organization_id: @user.organization_id
+    can [:create, :timeline], Ticket
+    can [:show, :reopen, :index], Ticket do |ticket|
+      ticket.department_id == @user.department_id || ticket.requester_id == @user.id
+    end
+    can [:update_ticket_progress, :bulk_update_ticket_progress], Ticket, resolver_id: @user.id
+    can [:update, :ask_for_update], Ticket, requester_id: @user.id
+  end
 
   def employee_abilities
     can [:departments], Organization, id: @user.organization_id
