@@ -22,7 +22,7 @@ module Tickets::V1
       return @error if @error
 
       set_value_in_ask_for_update
-      { status: true, data: serialize_resource(@ticket, TicketSerializer), 
+      { status: true, data: serialize_resource(@ticket, TicketSerializer, role: current_user.role.name), 
                       activities: serialize_resource(@ticket.activities.order(created_at: :desc), ActivitySerializer) }.as_json
     end
 
