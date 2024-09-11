@@ -53,8 +53,10 @@ class Ticket < ApplicationRecord
     state :rejected
     state :on_hold
 
-    after_all_events :set_ticket_link
-    after_all_events :send_notification
+    after_all_events do
+      set_ticket_link
+      send_notification
+    end
 
     event :start do
       transitions from: [:assigned, :for_approval, :on_hold], to: :inprogress
