@@ -53,6 +53,7 @@ class Ticket < ApplicationRecord
     state :rejected
     state :on_hold
 
+    after_all_events :set_ticket_link
     after_all_events :send_notification
 
     event :start do
