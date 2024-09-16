@@ -5,7 +5,7 @@ module Categories::V1
       @priority = categories[:priority].to_i
       @department_id = categories[:department_id]
       @sla_unit = categories[:sla_unit].to_i
-      @sla_duration_type = categories[:sla_duration_type].downcase
+      @sla_duration_type = categories[:sla_duration_type]&.downcase
     end
 
     def call
