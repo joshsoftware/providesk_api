@@ -31,6 +31,7 @@ class TicketSerializer < ActiveModel::Serializer
 
   def permited_transitions
     status = object.status
+    role = @instance_options[:root]&.[](:role)
     case status
     when "assigned"
       ["inprogress", "for_approval", "rejected", "on_hold"]
@@ -39,7 +40,11 @@ class TicketSerializer < ActiveModel::Serializer
     when "inprogress"
       ["resolved", "on_hold"]
     when "resolved"
-      ["closed", "reopen"]
+      if role == 'employee'
+        ["reopen"]
+      else
+        ["closed","reopen"]
+      end
     when "on_hold"
       ["assigned", "for_approval", "inprogress"]
     else
