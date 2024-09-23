@@ -93,6 +93,20 @@ module Api::V1
       end
     end
 
+    def create_presigned_url
+      bucket_name = Rails.application.credentials[:aws][:bucket_name] 
+      object_key = params[:object_key] 
+
+      s3_service = S3Service.new
+      presigned_url = s3_service.get_presigned_url(bucket_name, object_key)
+
+      if presigned_url
+        render json: { url: presigned_url.to_s }
+      else
+        render json: { error: "Failed to generate presigned URL" }, status: :unprocessable_entity
+      end
+    end
+
     private
 
     def update_params
