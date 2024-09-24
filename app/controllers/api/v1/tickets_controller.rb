@@ -97,8 +97,7 @@ module Api::V1
       bucket_name = Rails.application.credentials[:aws][:bucket_name] 
       object_key = params[:object_key] 
 
-      s3_service = S3Service.new
-      presigned_url = s3_service.get_presigned_url(bucket_name, object_key)
+      presigned_url = S3Service.new.get_presigned_url(bucket_name, object_key)
 
       render json: { url: presigned_url }
     rescue => e 
