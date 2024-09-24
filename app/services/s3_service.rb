@@ -17,3 +17,4 @@ class S3Service
     URI(url) 
   end
 end
+
