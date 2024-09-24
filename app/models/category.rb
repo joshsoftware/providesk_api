@@ -7,7 +7,7 @@ class Category < ApplicationRecord
   validates :name, uniqueness: { scope: :department }, presence: true
   validates :priority, inclusion: { in: ["Regular", "High", "Medium", "Low"] }
 
-  before_validation :change_case_name, only: [:create, :update], if: :name?
+  # before_validation :change_case_name, only: [:create, :update], if: :name?
 
   enum priority: {
     "Regular": 0,
