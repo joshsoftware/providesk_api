@@ -94,6 +94,7 @@ en:
       status: "Your ticket is no more in assigned state"
       ask_for_update: "Cannot process request at this time!"
       resolver_not_associated_with_category: "Resolver must belong to this category"
+      presigned url: "Failed to generate presigned URL"
     show:
       not_availaible: "No such tickets availaible"
       invalid_filter: "Filter invalid"

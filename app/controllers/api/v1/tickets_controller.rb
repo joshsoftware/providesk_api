@@ -103,8 +103,10 @@ module Api::V1
       if presigned_url
         render json: { url: presigned_url.to_s }
       else
-        render json: { error: "Failed to generate presigned URL" }, status: :unprocessable_entity
+        render json: { error: presigned_url }, status: :unprocessable_entity
       end
+    rescue => e 
+      render json: { message: I18n.t('tickets.error.presigned url')}, status: :unprocessable_entity    
     end
 
     private
