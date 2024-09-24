@@ -11,13 +11,9 @@ class S3Service
   end
 
   def get_presigned_url(bucket, object_key)
-    begin
     bucket = @s3_resource.bucket(bucket)
     obj = bucket.object(object_key)
     url = obj.presigned_url(:put)
-    URI(url)
-    rescue Aws::Errors::ServiceError => e
-      "Couldn't create presigned URL for #{bucket.name}:#{object_key}. Here's why: #{e.message}"
-    end  
+    URI(url) 
   end
 end

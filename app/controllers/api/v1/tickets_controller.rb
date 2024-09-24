@@ -100,11 +100,7 @@ module Api::V1
       s3_service = S3Service.new
       presigned_url = s3_service.get_presigned_url(bucket_name, object_key)
 
-      if presigned_url
-        render json: { url: presigned_url.to_s }
-      else
-        render json: { error: presigned_url }, status: :unprocessable_entity
-      end
+      render json: { url: presigned_url }
     rescue => e 
       render json: { message: I18n.t('tickets.error.presigned url')}, status: :unprocessable_entity    
     end
