@@ -25,6 +25,7 @@ class Ability
       @user.organization_id == category.department.organization_id
     end
     can [:create, :timeline, :analytical_reports, :create_presigned_url], Ticket
+    can [:get, :presigned_url_for_get], Ticket
     can [:read, :show, :index, :reopen], Ticket, organization_id: @user.organization_id
     can [:update_ticket_progress, :bulk_update_ticket_progress], Ticket do |ticket|
       ticket.organization_id == @user.organization_id && ticket.requester_id != @user.id
@@ -40,6 +41,7 @@ class Ability
     can [:categories, :users], Department, organization_id: @user.organization_id
     can [:create], Category, department_id: @user.department_id
     can [:create, :timeline, :analytical_reports, :create_presigned_url], Ticket
+    can [:get, :presigned_url_for_get], Ticket
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.department_id == @user.department_id || ticket.requester_id == @user.id
     end
@@ -68,6 +70,7 @@ class Ability
     can [:departments], Organization, id: @user.organization_id
     can [:users, :categories], Department, organization_id: @user.organization_id
     can [:create, :create_presigned_url], Ticket
+    can [:get, :presigned_url_for_get], Ticket
     can [:show, :reopen, :index], Ticket do |ticket|
       ticket.resolver_id == @user.id || ticket.requester_id == @user.id
     end

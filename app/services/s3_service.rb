@@ -10,10 +10,10 @@ class S3Service
     )
   end
 
-  def get_presigned_url(bucket, object_key)
+  def get_presigned_url(bucket, object_key, method)
     bucket = @s3_resource.bucket(bucket)
     obj = bucket.object(object_key)
-    url = obj.presigned_url(:put)
+    url = obj.presigned_url(method)
     URI(url) 
   end
 end
