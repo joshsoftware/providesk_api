@@ -103,7 +103,7 @@ module Api::V1
       render json: { url: presigned_url }
       
     rescue => e
-      render json: { message: I18n.t('tickets.error.presigned url') }, status: :unprocessable_entity
+      render json: { message: I18n.t('tickets.error.presigned url')}, status: :unprocessable_entity
     end
 
     private
