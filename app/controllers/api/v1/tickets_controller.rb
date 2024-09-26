@@ -95,13 +95,15 @@ module Api::V1
 
     def create_presigned_url
       bucket_name = Rails.application.credentials[:aws][:bucket_name] 
-      object_key = params[:object_key] 
-
-      presigned_url = S3Service.new.get_presigned_url(bucket_name, object_key)
+      object_key = params[:object_key]
+      method = params[:method]
+      
+      presigned_url =  S3Service.new.get_presigned_url(bucket_name, object_key, method)
 
       render json: { url: presigned_url }
-    rescue => e 
-      render json: { message: I18n.t('tickets.error.presigned url')}, status: :unprocessable_entity    
+      
+    rescue => e
+      render json: { message: I18n.t('tickets.error.presigned url')}, status: :unprocessable_entity
     end
 
     private
