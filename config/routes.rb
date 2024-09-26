@@ -39,7 +39,7 @@ Rails.application.routes.draw do
           get 'analytical_reports'
           post 'bulk_update_ticket_progress'
           post 'create_presigned_url'
-          get 'presigned_url_for_get'
+          get  'create_presigned_url'
         end
       end
   end
