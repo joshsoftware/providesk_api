@@ -37,8 +37,9 @@ Rails.application.routes.draw do
         collection do
           get 'timeline'
           get 'analytical_reports'
+          get  'create_presigned_url'
           post 'bulk_update_ticket_progress'
-          post 'create_presigned_url'
+          post 'create_presigned_url'          
         end
       end
   end
