@@ -95,8 +95,7 @@ module Api::V1
 
     def create_presigned_url
       bucket_name = Rails.application.credentials[:aws][:bucket_name]
-      folder_name = 'providesk-stage'
-      object_key = "#{folder_name}/#{params[:object_key]}"
+      object_key = "#{AWS_BUCKET_FOLDER_NAME}/#{params[:object_key]}"
       method = params[:method]
       
       presigned_url =  S3Service.new.get_presigned_url(bucket_name, object_key, method)
