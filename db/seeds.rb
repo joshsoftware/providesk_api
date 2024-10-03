@@ -67,3 +67,4 @@ User.create!([
 ])
 
 p "Created users with different roles for various organizations"
+
