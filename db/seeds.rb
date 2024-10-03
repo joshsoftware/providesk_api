@@ -3,8 +3,6 @@
 
 Organization.create!([
   { name: "Josh Software", domain: ["joshsoftware.com"] },
-  { name: "Google", domain: ["gmail.com"] },
-  { name: "Accenture", domain: ["accenture.com"]}
 ])
 
 p "Created 3 organizations"
@@ -13,11 +11,10 @@ Role.create!([
   { name: "super_admin" },
   { name: "admin" },
   { name: "department_head" },
-  { name: "resolver" },
   { name: "employee" }
 ])
 
-p "Created 5 Roles: employee, admin, super_admin, department_head, resolver"
+p "Created 4 Roles: employee, admin, super_admin, department_head"
 
 Department.create!([
   { name: "HR", organization_id: 1 },
@@ -41,8 +38,6 @@ Category.create!([
   { name: "Laptop Repair/Service Request", priority: 0, department_id: 2, sla_unit: 1, sla_duration_type: 'hours', duration_in_hours: 1},
   { name: "Laptop Procurement", priority: 0, department_id: 2, sla_unit: 1, sla_duration_type: 'hours', duration_in_hours: 1},
   
-
-
   { name: "Taxation", priority: 0, department_id: 3, sla_unit: 1, sla_duration_type: 'hours', duration_in_hours: 1},
   { name: "Form 16", priority: 0, department_id: 3, sla_unit: 1, sla_duration_type: 'hours',duration_in_hours: 1},
   { name: "TDS", priority: 0, department_id: 3, sla_unit: 1, sla_duration_type: 'hours', duration_in_hours: 1}
