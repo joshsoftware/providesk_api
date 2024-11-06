@@ -58,8 +58,12 @@ module Tickets::V1
     private
 
     def set_eta
-      sla_duration_in_hours = Category.find(@category_id).duration_in_hours
-      eta = Date.today + (sla_duration_in_hours/24).to_i.days
+      sla_duration_in_hours = Category.find(@category_id)&.duration_in_hours
+      if sla_duration_in_hours
+        Date.today + (sla_duration_in_hours / 24).to_i.days
+      else
+        Date.today + 7.days 
+      end
     end
   end
 end
