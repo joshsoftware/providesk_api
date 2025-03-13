@@ -20,16 +20,15 @@ class Ticket < ApplicationRecord
   #validates :ticket_number, presence: true
 
   ASK_FOR_UPDATE = false
-  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3, "resolved": 2, "on_hold": 3} # Time in days
+  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3,  "on_hold": 3} # Time in days
 
   enum status: {
     "assigned": 0,
     "inprogress": 1,
     "for_approval": 2,
-    "resolved": 3,
-    "closed": 4,
-    "rejected": 5,
-    "on_hold": 6
+    "closed": 3,
+    "rejected": 4,
+    "on_hold": 5
   }
 
   enum priority: {
@@ -48,7 +47,6 @@ class Ticket < ApplicationRecord
     state :assigned, initial: true
     state :inprogress
     state :for_approval
-    state :resolved
     state :closed
     state :rejected
     state :on_hold
@@ -70,16 +68,12 @@ class Ticket < ApplicationRecord
       transitions from: [:assigned, :for_approval], to: :rejected
     end
 
-    event :resolve do
-      transitions from: :inprogress, to: :resolved
-    end
-
     event :close do
-      transitions from: :resolved, to: :closed
+      transitions from: :inprogress, to: :closed
     end
 
     event :reopen do
-      transitions from: :resolved, to: :for_approval
+      transitions from: :closed, to: :for_approval
     end
 
     event :hold do

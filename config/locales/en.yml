@@ -102,7 +102,6 @@ en:
   ticket:
     assigned: "%{ticket_type} has been assigned to: %{resolver} from department %{department}"
     inprogress: "The work has been started on the %{ticket_type}"
-    resolved: "Your %{ticket_type} is resolved by %{resolver} from department %{department}"
     closed: "This ticket is closed."
     rejected: "The complaint is rejected by %{resolver} from department %{department}"
     for_approval: "The complaint will go through a approval"

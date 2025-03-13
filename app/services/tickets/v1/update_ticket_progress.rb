@@ -99,8 +99,6 @@ module Tickets::V1
         ticket.approve
       when "rejected"
         ticket.reject
-      when "resolved"
-        ticket.resolve
       when "closed"
         ticket.close
       when "on_hold"
