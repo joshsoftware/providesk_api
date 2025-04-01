@@ -4,7 +4,7 @@ class EscalateTicketJob < ApplicationJob
   def perform
     # Escalation Mail to department head
     escalation_tickets = {}
-    tickets =  Ticket.where("eta < ?",Date.today).where.not(status: ['closed', 'resolved'])
+    tickets =  Ticket.where("eta < ?",Date.today).where.not(status: ['closed'])
     tickets_by_department = tickets.select(:department_id, :ticket_number, :id)
                              .group_by(&:department_id)
     tickets_by_department.each do |department_id, department_tickets|
