@@ -1,18 +1,42 @@
 require 'mina/rails'
 require 'mina/git'
-require 'mina/version_managers/rvm'
-require "mina_sidekiq/tasks"
+require 'mina/bundler'
+require 'mina/default'
+require 'mina/deploy'
+require 'mina/rvm'
 
-set :rails_env, 'production'
-set :application_name, 'providesk'
-set :domain, 'providesk.joshsoftware.com'
-set :deploy_to, '/www/providesk'
 set :repository, 'git@github.com:joshsoftware/providesk_api.git'
-set :branch, 'master'
 set :user, 'ubuntu'
-set :rvm_use_path, '/usr/local/rvm/scripts/rvm'
+set :forward_agent, true
 
-set :shared_paths, ['config/database.yml', 'config/master.key','config/credentials.yml.enc','log', 'tmp', 'config/secrets.yml', "db/seeds.rb", '.env']
+set :shared_dirs, [
+  'log',
+  'tmp'
+]
+
+set :shared_files, [
+  'config/database.yml',
+  'config/master.key',
+  'config/credentials.yml.enc',
+  'config/secrets.yml',
+  'db/seeds.rb',
+  '.env'
+]
+
+server = ENV['server'] || 'staging'
+
+case server
+when 'staging'
+  set :deploy_to, '/www/providesk'
+  set :domain, 'providesk-stage.joshsoftware.com'
+  set :branch, ENV['branch'] || 'staging'
+  set :rails_env, 'staging'
+when 'production'
+  set :deploy_to, '/www/providesk'
+  set :domain, 'providesk.joshsoftware.com'
+  set :branch, ENV['branch'] || 'master'
+  set :rails_env, 'production'
+end
 
 task :remote_environment do
   # For those using RVM, use this to load an RVM version@gemset.
@@ -63,41 +87,8 @@ task :deploy => :remote_environment do
     invoke :'deploy:cleanup'
 
     on :launch do
-      invoke 'application:restart'
+      invoke :remote_environment
+      invoke 'pm2 restart /www/providesk_ecosystem.config.js'
     end
-  end
-end
-
-namespace :application do
-  desc 'Start the application'
-  task :start => :remote_environment do
-    #we need to stop & start the sidekiq server again
-    invoke :'sidekiq:quiet'
-    invoke :'sidekiq:stop'
-    #invoke :'sidekiq:start'
-    command %{sudo service sidekiq start} 
-  end
-
-  desc 'Stop the application'
-  task :stop => :remote_environment do
-    invoke :'sidekiq:quiet'
-    invoke :'sidekiq:stop'
-  end
-
-  desc 'Restart the application'
-  task :restart => :remote_environment do
-
-    invoke 'application:stop'
-    invoke 'application:start'
-    invoke :'passenger:restart'
-  end
-end
- namespace :passenger do
-  task :restart do
-    command %{
-      echo "-----> Restarting passenger"
-      #{echo_cmd %[mkdir -p tmp]}
-      #{echo_cmd %[touch tmp/restart.txt]}
-    }
   end
 end
