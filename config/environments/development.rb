@@ -69,8 +69,8 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   ActionMailer::Base.smtp_settings = {
-    user_name: Rails.application.credentials[:sendgrid][:username],
-    password: Rails.application.credentials[:sendgrid][:password], 
+    user_name: 'Rails.application.credentials[:sendgrid][:username]',
+    password: 'Rails.application.credentials[:sendgrid][:password]', 
     domain: 'providesk.joshsoftware.com',
     address: 'smtp.sendgrid.net',
     port: 587,
