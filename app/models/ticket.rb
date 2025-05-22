@@ -151,7 +151,7 @@ class Ticket < ApplicationRecord
 
   def get_description_of_update
     if Audited::Audit.where(auditable_id: self.id) == []
-      message = [I18n.t('ticket.description.new_ticket', id: id)]
+      message = [I18n.t('ticket.description.new_ticket')]
     else
       changes = Audited::Audit.where(auditable_id: self.id).order(:created_at).pluck(:audited_changes).last
       message = []
