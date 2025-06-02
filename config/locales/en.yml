@@ -96,7 +96,7 @@ en:
       resolver_not_associated_with_category: "Resolver must belong to this category"
       presigned url: "Failed to generate presigned URL"
     show:
-      not_availaible: "No such tickets availaible"
+      not_availaible: "No such tickets available"
       invalid_filter: "Filter invalid"
       access: 'You cannot access tickets of another department'
   ticket:
@@ -108,7 +108,7 @@ en:
     on_hold: "Your request has been put on hold"
     description:
       ticket_escalation: "Below is the list of tickets that have exceeded their respective ETA. Please prioritize these tickets."
-      new_ticket: "Ticket-%{id} has been created"
+      new_ticket: "Ticket has been created"
       category: "Category has been changed from %{previous_category} to %{new_category}"
       department: "Department has been changed from %{previous_department} to %{new_department}"
       resolver: "Resolver has been changed from %{previous_resolver} to %{new_resolver}"
