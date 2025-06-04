@@ -20,7 +20,7 @@ class Ticket < ApplicationRecord
   #validates :ticket_number, presence: true
 
   ASK_FOR_UPDATE = false
-  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3,  "on_hold": 3} # Time in days
+  ESCALATE_STATUS = { "assigned": 1, "for_approval": 2, "inprogress": 3,  "on_hold": 4} # Time in days
 
   enum status: {
     "assigned": 0,
@@ -133,7 +133,7 @@ class Ticket < ApplicationRecord
   end
 
   def create_activity
-    activity_attr = {current_ticket_status: status, ticket_id: id, asset_url: asset_url_on_update,
+    activity_attr = {current_ticket_status: self.status, ticket_id: id, asset_url: asset_url_on_update,
                      description: get_description_of_update, reason_for_update: reason_for_update}
     if @previous_status
       activity_attr.merge!(previous_ticket_status: @previous_status)
